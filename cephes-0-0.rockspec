@@ -7,7 +7,7 @@ source = {
 }
 
 description = {
-  summary = "Cephes mathematical library, wrapped for Lua",
+  summary = "Cephes mathematical functions library, wrapped for Torch",
   homepage = "http://www.netlib.org/cephes/"
 }
 
