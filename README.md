@@ -1,8 +1,8 @@
-#Cephes mathematical library wrapped for Torch
+#Cephes Mathematical Functions Library, wrapped for Torch
 
-Provides and wraps the mathematical functions from the [Cephes mathematical library](http://www.netlib.org/cephes/), which is also used at the heart of scipy.
+Provides and wraps the mathematical functions from the [Cephes mathematical library](http://www.netlib.org/cephes/), developped by [Stephen L. Moshier](http://www.moshier.net).
 
-This C library has a <b>lot</b> of math functions, as you can see in [its function list](doc/cephes.doc) and [its documentation for double-precision](http://www.netlib.org/cephes/doubldoc.html).
+This C library provides a <b>lot</b> of mathematical functions, as you can see in [its function list](doc/cephes.doc) and [its documentation for double-precision](http://www.netlib.org/cephes/doubldoc.html). It is used, among many other places, [at the heart of SciPy](https://github.com/scipy/scipy/tree/master/scipy/special/cephes).
 
 ##Using already wrapped Cephes functions
 
