@@ -31,6 +31,6 @@ Cephes has many functions, that we will import as required. If you need a functi
     double ndtr(double df); // Gaussian CDF from cprob
     ]]
     ```
-3. Please add a quick unit test in [`testCephes.lua`](tests/testCephes.lua) to make sure it works :)
+3. Please add a quick unit test in the [`tests`](tests/) folder to make sure it works :)
 
 and that's all!
