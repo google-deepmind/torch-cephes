@@ -6,7 +6,7 @@ FIND_PACKAGE(Torch REQUIRED)
 ADD_SUBDIRECTORY(cephes)
 
 # install the lua code for the cephes package
-SET(luasrc init.lua)
+FILE(GLOB luasrc "*.lua")
 ADD_TORCH_PACKAGE(cephes "${src}" "${luasrc}")
 
 SUBDIRS(doc)
