@@ -109,8 +109,6 @@ args = parser.parse_args()
 with open(args.functionList, 'r') as functionFile:
     functions = functionFile.read().split()
 
-tF, tA = 0, 0
-
 sectionName = os.path.basename(args.inputPath)
 
 ffiFilePath = os.path.join("ffi.lua")
@@ -119,7 +117,10 @@ testFilePath = os.path.join("tests/test_%s.lua" % (sectionName,))
 print("OUTPUTTING TO: " + str(ffiFilePath) + "; " + str(testFilePath))
 
 def testsForFunction(function):
-    return "TODO TEST"
+
+    testString = ""
+
+    return testString
 
 def ffiForFunction(function):
     functionString = str(function['returnType']) + " " + str(function['functionName'])
@@ -127,10 +128,16 @@ def ffiForFunction(function):
     functionString += "(" + (", ".join(argsWithTypes)) + ");\n"
     return "   " + functionString
 
-
+allFunctions = []
 
 with open(testFilePath, 'w') as testFile:
     with open(ffiFilePath, 'a') as ffiFile:
+        testFile.write("""
+require 'cephes'
+local callTests = {}
+local tester = torch.Tester()
+
+""")
         ffiFile.write(
 """
 -- imports for folder %s
@@ -138,20 +145,17 @@ ffi.cdef[[
 """ % (sectionName,))
         for cFile in glob.glob(os.path.join(args.inputPath,"*.c")):
             print("checking C file %s" %(cFile))
-            #totalFunctions, totalArguments = 
             extracted = list(extractFunctions(functions, cFile))
             if extracted:
                 ffiFile.write("   // %s\n" %(cFile,))
             for extractedFunction in extracted:
                 ffiFile.write(ffiForFunction(extractedFunction))
-#                outputFile.write(str(functionString) + "\n")
                 testFile.write(testsForFunction(extractedFunction))
+                allFunctions.append(extractedFunction)
 
         ffiFile.write("]]\n")
+        testFile.write("""
+tester:add(callTests)
+tester:run()
+""")
 
-#    tF += totalFunctions
-#    tA += totalArguments
-
-#print("TOTAL FUNCTIONS:" + str(tF))
-#print("TOTAL ARGUMENTS:" + str(tA))
-#print("MEAN ARGS:" + str(float(tA) / tF))
