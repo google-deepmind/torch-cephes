@@ -12,8 +12,6 @@ class ConvertFunctionError(RuntimeError):
 
 def extractFunctions(functions, inputPath):
 
-    print("=" * 120)
-
     functionRegex = {}
 
     totalFunctions = 0
@@ -44,26 +42,39 @@ def extractFunctions(functions, inputPath):
         for line in inputFile:
             if inFunctionDeclaration:
                 if line.startswith("{"):
+                    argumentsWithTypes = []
+                    print(argumentTypes)
+                    for arg in arguments:
+                        if arg in argumentTypes:
+                            argumentsWithTypes.append((arg, argumentTypes[arg]))
+                        elif arg + "[]" in argumentTypes:
+                            # If we can't find the argument directly, check whether it was stored as an array type
+                            argumentsWithTypes.append((arg + "[]", argumentTypes[arg + "[]"]))
+                        else:
+                            raise RuntimeError("Cannot find type for argument %s" % (arg,))
+
                     functionDescription = {
                             'returnType' : returnType,
                             'functionName' : inFunctionDeclaration,
-                            'arguments' : [ (x, argumentTypes[x]) for x in arguments ]
+                            'arguments' : argumentsWithTypes
                         }
-#                    print("*****")
-#                    print("types:" + str(types))
-#                    print("arguments:" + str(arguments))
-#                    functionString = str(returnType) + " " + str(inFunctionDeclaration)
-#                    argsWithTypes = [ argumentTypes[x] + " " + x for x in arguments ]
-#                    functionString += "(" + (", ".join(argsWithTypes)) + ");"
-#                    yield functionString
                     yield functionDescription
-#                    print(functionString)
-                    print("*****")
                     inFunctionDeclaration = None
                 else:
-                    print("## %s ## " % (inFunctionDeclaration,) + line)
-                    typeName = line.split()[0]
-                    for argumentName in "".join(line.split()[1:]).strip(";").split(","):
+                    lineBeforeSemicolon = line.split(";")[0]
+                    lineWords = lineBeforeSemicolon.split()
+
+                    typeName = None
+                    if lineWords[0] == "register":
+                        typeName = lineWords[1]
+                        lineWords = lineWords[2:]
+                        print("REGISTER :" + typeName + " " + str(lineWords))
+                    else:
+                        typeName = lineWords[0]
+                        lineWords = lineWords[1:]
+                        print("NORMAL :" + typeName + " " + str(lineWords))
+
+                    for argumentName in "".join(lineWords).strip().split(","):
                         if argumentName.startswith("*"):
                             argumentTypes[argumentName[1:]] = typeName + " *"
                         else:
@@ -86,9 +97,6 @@ def extractFunctions(functions, inputPath):
                         argumentTypes = {}
 
 
-    print("=" * 120)
-    print
-
 
 
 
@@ -101,13 +109,11 @@ args = parser.parse_args()
 with open(args.functionList, 'r') as functionFile:
     functions = functionFile.read().split()
 
-print functions
-
 tF, tA = 0, 0
 
 sectionName = os.path.basename(args.inputPath)
 
-ffiFilePath = os.path.join("ffi_%s.lua" % (sectionName,))
+ffiFilePath = os.path.join("ffi.lua")
 testFilePath = os.path.join("tests/test_%s.lua" % (sectionName,))
 
 print("OUTPUTTING TO: " + str(ffiFilePath) + "; " + str(testFilePath))
@@ -119,20 +125,29 @@ def ffiForFunction(function):
     functionString = str(function['returnType']) + " " + str(function['functionName'])
     argsWithTypes = [ typeName + " " + arg for (arg, typeName) in function['arguments'] ]
     functionString += "(" + (", ".join(argsWithTypes)) + ");\n"
-    return functionString
+    return "   " + functionString
 
 
 
 with open(testFilePath, 'w') as testFile:
-    with open(ffiFilePath, 'w') as ffiFile:
+    with open(ffiFilePath, 'a') as ffiFile:
+        ffiFile.write(
+"""
+-- imports for folder %s
+ffi.cdef[[
+""" % (sectionName,))
         for cFile in glob.glob(os.path.join(args.inputPath,"*.c")):
-#            output = os.path.join(args.outputPath, os.path.splitext(os.path.basename(cFile))[0] + ".h")
+            print("checking C file %s" %(cFile))
             #totalFunctions, totalArguments = 
-            ffiFile.write("// %s\n" %(cFile,))
-            for extractedFunction in extractFunctions(functions, cFile):
+            extracted = list(extractFunctions(functions, cFile))
+            if extracted:
+                ffiFile.write("   // %s\n" %(cFile,))
+            for extractedFunction in extracted:
                 ffiFile.write(ffiForFunction(extractedFunction))
 #                outputFile.write(str(functionString) + "\n")
                 testFile.write(testsForFunction(extractedFunction))
+
+        ffiFile.write("]]\n")
 
 #    tF += totalFunctions
 #    tA += totalArguments
