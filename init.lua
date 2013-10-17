@@ -1,5 +1,7 @@
 local ffi = require("ffi")
-cephes = ffi.load(package.searchpath('libcephes', package.cpath))
+
+cephes = {}
+cephes.ffi = ffi.load(package.searchpath('libcephes', package.cpath))
 
 -- Define cmplx struct
 ffi.cdef[[
@@ -315,4 +317,47 @@ ffi.cdef[[
    // cephes/polyn/revers.c
    void revers(double y[], double x[], int n);
 ]]
+
+-- For those few exceptions that escaped our automatic parser
+ffi.cdef[[
+    // Escaped due to return type on a line per itself
+    // cephes/cmath/clog.c
+    void csinh(cmplx *z, cmplx *w);
+    void casinh(cmplx *z, cmplx *w);
+    void ccosh(cmplx *z, cmplx *w);
+    void cacosh(cmplx *z, cmplx *w);
+    void ctanh(cmplx *z, cmplx *w);
+    void catanh(cmplx *z, cmplx *w);
+    void cpow(cmplx *a, cmplx *z, cmplx *w);
+    // cephes/cprob/kolmogorov.c
+    double kolmogi(double p);
+    double kolmogorov(double y);
+    double smirnov(int n, double e);
+    double smirnovi(int n, double e);
+    // cephes/polyn/polmisc.c
+    void polatn(double num[], double den[], double ans[], int nn);
+    void polsqt(double pol[], double ans[], int nn);
+    void polsin(double x[], double y[], int nn);
+    void polcos(double x[], double y[], int nn);
+    // cephes/misc/polylog.c
+    double polylog(int n, double x);
+
+    // Escaped due to space between function name and parenthesis
+    // cephes/misc/ei.c
+    double ei(double x);
+    // cephes/cprob/expx2.c
+    double expx2(double x, int sign);
+]]
+
+-- Error handling with soft wrapping of all functions
+torch.include('cephes', 'error_handling.lua')
+
+-- Use metatable to pass all undefined indexing to cephes.ffi
+local mt = {}
+setmetatable(cephes, mt)
+mt.__index = function(table, key)
+    return rawget(cephes, key) or cephes.ffi[key]
+end
+
 return cephes
+
