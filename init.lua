@@ -1,5 +1,15 @@
 local ffi = require("ffi")
-cephes = ffi.load(package.searchpath('libcephes', package.cpath))
+
+cephes = {}
+cephes.ffi = ffi.load(package.searchpath('libcephes', package.cpath))
+
+local mt = {}
+setmetatable(cephes, mt)
+
+-- If no lua wrapper, directly call the ffi function
+mt.__index = function(table, key)
+    return rawget(cephes, key) or cephes.ffi[key]
+end
 
 -- Define cmplx struct
 ffi.cdef[[
@@ -315,4 +325,6 @@ ffi.cdef[[
    // cephes/polyn/revers.c
    void revers(double y[], double x[], int n);
 ]]
+
 return cephes
+
