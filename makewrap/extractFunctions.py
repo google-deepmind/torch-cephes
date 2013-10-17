@@ -5,10 +5,13 @@ import glob
 import os
 import collections
 import re
+import cPickle as pickle
+import logging
+from collections import defaultdict
+logging.basicConfig(level=logging.INFO)
 
 class ConvertFunctionError(RuntimeError):
     pass
-
 
 def extractFunctions(functions, inputPath):
 
@@ -26,9 +29,11 @@ def extractFunctions(functions, inputPath):
                 (%s)             # Type (group 1)
                 \                # Space
                 %s               # Function name
+                \s*              # Optional whitespace
                 \(               # Open bracket
                 ([^()]*)         # All of the arguments
                 \)               # Close bracket
+                \s*              # Optional whitespace
                 $                # End of line
                 """ % (typeRegex, funcNameRegex)
             , re.VERBOSE)
@@ -37,13 +42,12 @@ def extractFunctions(functions, inputPath):
     argumentTypes = None
     arguments = None
 
-
     with open(inputPath, 'r') as inputFile:
         for line in inputFile:
             if inFunctionDeclaration:
                 if line.startswith("{"):
                     argumentsWithTypes = []
-                    print(argumentTypes)
+                    logging.debug(argumentTypes)
                     for arg in arguments:
                         if arg in argumentTypes:
                             argumentsWithTypes.append((arg, argumentTypes[arg]))
@@ -56,7 +60,8 @@ def extractFunctions(functions, inputPath):
                     functionDescription = {
                             'returnType' : returnType,
                             'functionName' : inFunctionDeclaration,
-                            'arguments' : argumentsWithTypes
+                            'arguments' : argumentsWithTypes,
+                            'origin' : inputPath
                         }
                     yield functionDescription
                     inFunctionDeclaration = None
@@ -68,11 +73,11 @@ def extractFunctions(functions, inputPath):
                     if lineWords[0] == "register":
                         typeName = lineWords[1]
                         lineWords = lineWords[2:]
-                        print("REGISTER :" + typeName + " " + str(lineWords))
+                        logging.debug("REGISTER :" + typeName + " " + str(lineWords))
                     else:
                         typeName = lineWords[0]
                         lineWords = lineWords[1:]
-                        print("NORMAL :" + typeName + " " + str(lineWords))
+                        logging.debug("NORMAL :" + typeName + " " + str(lineWords))
 
                     for argumentName in "".join(lineWords).strip().split(","):
                         if argumentName.startswith("*"):
@@ -84,78 +89,52 @@ def extractFunctions(functions, inputPath):
                 for function in functions:
                     match = functionRegex[function].match(line)
                     if match:
-                        print("Found function %s:" % (function,))
-                        print(line)
-                        print(match.groups())
+                        logging.debug("Found function %s:" % (function,))
+                        logging.debug(line)
+                        logging.debug(match.groups())
                         returnType = match.group(1)
                         arguments = [ x.strip(" ,") for x in match.group(2).split(",") ]
                         totalArguments += len(arguments)
                         totalFunctions += 1
-                        print("return type: " + returnType)
-                        print("arguments " + str(arguments))
+                        logging.debug("return type: " + returnType)
+                        logging.debug("arguments " + str(arguments))
                         inFunctionDeclaration = function
                         argumentTypes = {}
 
-
-
-
-
 parser = argparse.ArgumentParser()
 parser.add_argument("functionList")
-parser.add_argument("inputPath")
+parser.add_argument("outputPath")
+parser.add_argument("--input", action='append')
+parser.add_argument("--debug", action='store_true')
 
 args = parser.parse_args()
+
+if args.debug:
+    logging.getLogger().setLevel(logging.DEBUG)
 
 with open(args.functionList, 'r') as functionFile:
     functions = functionFile.read().split()
 
-sectionName = os.path.basename(args.inputPath)
+allFunctions = defaultdict(lambda: [])
+seenNames = set()
 
-ffiFilePath = os.path.join("ffi.lua")
-testFilePath = os.path.join("tests/test_%s.lua" % (sectionName,))
+for inputDir in args.input:
+    sectionName = os.path.basename(inputDir)
+    logging.info("Processing directory %s" %(sectionName,))
 
-print("OUTPUTTING TO: " + str(ffiFilePath) + "; " + str(testFilePath))
+    for cFile in glob.glob(os.path.join(inputDir,"*.c")):
+        logging.info("Looking for functions in %s" %(cFile))
+        for function in extractFunctions(functions, cFile):
+            logging.info("Extracted function %s" % (function['functionName'],))
+            allFunctions[sectionName].append(function)
+            seenNames.add(function['functionName'])
 
-def testsForFunction(function):
+logging.info("Writing function list to: " + str(args.outputPath))
+with open(args.outputPath, 'w') as outputFile:
+    pickle.dump(dict(allFunctions), outputFile)
 
-    testString = ""
 
-    return testString
-
-def ffiForFunction(function):
-    functionString = str(function['returnType']) + " " + str(function['functionName'])
-    argsWithTypes = [ typeName + " " + arg for (arg, typeName) in function['arguments'] ]
-    functionString += "(" + (", ".join(argsWithTypes)) + ");\n"
-    return "   " + functionString
-
-allFunctions = []
-
-with open(testFilePath, 'w') as testFile:
-    with open(ffiFilePath, 'a') as ffiFile:
-        testFile.write("""
-require 'cephes'
-local callTests = {}
-local tester = torch.Tester()
-
-""")
-        ffiFile.write(
-"""
--- imports for folder %s
-ffi.cdef[[
-""" % (sectionName,))
-        for cFile in glob.glob(os.path.join(args.inputPath,"*.c")):
-            print("checking C file %s" %(cFile))
-            extracted = list(extractFunctions(functions, cFile))
-            if extracted:
-                ffiFile.write("   // %s\n" %(cFile,))
-            for extractedFunction in extracted:
-                ffiFile.write(ffiForFunction(extractedFunction))
-                testFile.write(testsForFunction(extractedFunction))
-                allFunctions.append(extractedFunction)
-
-        ffiFile.write("]]\n")
-        testFile.write("""
-tester:add(callTests)
-tester:run()
-""")
+missingNames = set(functions) - seenNames
+for name in missingNames:
+    logging.warn("Could not find %s" % (name,))
 
