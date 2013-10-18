@@ -8,7 +8,7 @@ SET(INSTALL_DOCUMENTATION OFF CACHE BOOL "Install the description in Torch tree"
 ADD_SUBDIRECTORY(cephes)
 
 # install the lua code for the cephes package
-SET(luasrc init.lua)
+FILE(GLOB luasrc "*.lua")
 ADD_TORCH_PACKAGE(cephes "${src}" "${luasrc}")
 
 IF (INSTALL_DOCUMENTATION)
