@@ -192,11 +192,11 @@ local function create_wrapper(name)
         end
         -- Reset error status
         cephes.ffi.merror = 0
-        local r = cephes.ffi[name](...)
+        local result = cephes.ffi[name](...)
         if cephes.ffi.merror ~= 0 then
             error("Cephes error '" .. ffi.string(cephes.ffi.errtxt) .. "'")
         end
-        return r
+        return result
     end
     return wrapper
 end
