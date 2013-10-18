@@ -1,3 +1,5 @@
+local ffi = require 'ffi'
+
 -- List all functions, and wrap them automatically
 local functions_list = {
     'acos',
@@ -188,7 +190,13 @@ local function create_wrapper(name)
                 error("Bad cephes call - argument " .. index .. " is nil when calling function " .. name .. "!")
             end
         end
-        return cephes.ffi[name](...)
+        -- Reset error status
+        cephes.ffi.merror = 0
+        local result = cephes.ffi[name](...)
+        if cephes.ffi.merror ~= 0 then
+            error("Cephes error '" .. ffi.string(cephes.ffi.errtxt) .. "'")
+        end
+        return result
     end
     return wrapper
 end
