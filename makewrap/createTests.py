@@ -15,15 +15,16 @@ if args.debug:
     logging.getLogger().setLevel(logging.DEBUG)
 
 testValues = {
-    'double' : [0.0, 1.0, 10.0, "math.huge"],
-    'int' : [0, 1, -1],
-    'cmplx' : [], # TODO
-    'fract' : [], # TODO
-    'cmplx *' : [], # TODO
-    'void *' : [], # TODO
-    'double *' : [], # TODO
-    'int *' : [], # TODO
-    'fract *' : [] # TODO
+#    'double' : [0.0, 1.0, 10.0, "math.huge"],
+    'double' : [0.0],
+    'int' : [0],
+    'cmplx' : ["cephes.new_cmplx(1, 1) -- TODO: check this parameter makes sense!"],
+    'fract' : ["--TODO: fract parameter needed!"],
+    'cmplx *' : ["cephes.new_cmplx(1, 1) -- TODO: check this parameter makes sense!"],
+    'void *' : ["-- TODO: void * parameter needed!"],
+    'double *' : ['cephes.ffi.new("double[1]", {0}) -- TODO: check this array is sensible!'],
+    'int *' : ['cephes.ffi.new("int[1]", {0}) -- TODO: check this array is sensible!'],
+    'fract *' : ["-- TODO: fract * parameter needed!"]
 }
 
 def testsForFunction(function):
