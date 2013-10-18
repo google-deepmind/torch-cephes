@@ -3,15 +3,16 @@ import os
 import argparse
 import itertools
 import logging
-logging.basicConfig(level=logging.DEBUG)
-
+logging.basicConfig(level=logging.INFO)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("functions")
 parser.add_argument("--outputDir", default="tests")
+parser.add_argument("--debug", action='store_true')
 args = parser.parse_args()
 
-# cephes.ffi.cmplx
+if args.debug:
+    logging.getLogger().setLevel(logging.DEBUG)
 
 testValues = {
     'double' : [0.0, 1.0, 10.0, "math.huge"],
