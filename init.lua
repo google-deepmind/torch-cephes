@@ -178,6 +178,8 @@ ffi.cdef[[
    double chdtri(double df, double y);
    // cephes/cprob/drand.c
    int drand(double * a);
+   // cephes/cprob/expx2.c
+   double expx2(double x, int sign);
    // cephes/cprob/fdtr.c
    double fdtrc(int ia, int ib, double x);
    double fdtr(int ia, int ib, double x);
@@ -232,6 +234,8 @@ ffi.cdef[[
    double chbevl(double x, double array[], int n);
    // cephes/misc/dawsn.c
    double dawsn(double xx);
+   // cephes/misc/ei.c
+   double ei(double x);
    // cephes/misc/expn.c
    double expn(int n, double x);
    // cephes/misc/fac.c
@@ -306,9 +310,8 @@ ffi.cdef[[
    void polsbt(double a[], int na, double b[], int nb, double c[]);
    double poleva(double a[], int na, double x);
    // cephes/polyn/polyr.c
-   void polini(int maxdeg);
-
    /* NB. Disabling to avoid naming clash with regular polynomials
+   void polini(int maxdeg);
    void polprt(fract a[], int na, int d);
    void polclr(fract a[], int n);
    void polmov(fract a[], int na, fract b[]);
@@ -319,7 +322,6 @@ ffi.cdef[[
    void polsbt(fract a[], int na, fract b[], int nb, fract c[]);
    void poleva(fract a[], int na, fract * x, fract * s);
    */
-
    // cephes/polyn/revers.c
    void revers(double y[], double x[], int n);
 ]]
@@ -347,12 +349,6 @@ ffi.cdef[[
     void polcos(double x[], double y[], int nn);
     // cephes/misc/polylog.c
     double polylog(int n, double x);
-
-    // Escaped due to space between function name and parenthesis
-    // cephes/misc/ei.c
-    double ei(double x);
-    // cephes/cprob/expx2.c
-    double expx2(double x, int sign);
 ]]
 
 -- Error handling with soft wrapping of all functions
