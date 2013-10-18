@@ -41,6 +41,7 @@ ffi.cdef[[
         for function in functions:
             if not function['origin'] in seenFiles:
                 ffiFile.write("   // %s\n" %(function['origin'],))
+                seenFiles.add(function['origin'])
             ffiFile.write(ffiForFunction(function))
 
         ffiFile.write("]]\n")
