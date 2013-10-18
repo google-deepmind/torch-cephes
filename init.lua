@@ -356,7 +356,14 @@ torch.include('cephes', 'error_handling.lua')
 local mt = {}
 setmetatable(cephes, mt)
 mt.__index = function(table, key)
-    return rawget(cephes, key) or cephes.ffi[key]
+    return rawget(cephes, key) or ffi[key]
+end
+
+cephes.new_cmplx = function(re, im)
+    local z = ffi.new("cmplx")
+    z.r = re
+    z.i = im
+    return z
 end
 
 return cephes
