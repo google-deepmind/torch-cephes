@@ -180,8 +180,21 @@ local functions_list = {
     'zetac'
 }
 
+local function create_wrapper(name)
+
+    local function wrapper(...)
+        for index = 1,select("#", ...) do
+            if select(index, ...) == nil then
+                error("Bad cephes call - argument " .. index .. " is nil when calling function " .. name .. "!")
+            end
+        end
+        return cephes.ffi[name](...)
+    end
+    return wrapper
+end
+
 -- To allow easy listing from lua, add one entry in the lua
 -- table for each function
 for k, v in pairs(functions_list) do
-    rawset(cephes, v, cephes.ffi[v])
+    rawset(cephes, v, create_wrapper(v))
 end
