@@ -9,5 +9,5 @@ ADD_SUBDIRECTORY(cephes)
 SET(luasrc init.lua)
 ADD_TORCH_PACKAGE(cephes "${src}" "${luasrc}")
 
-SUBDIRS(doc)
+# SUBDIRS(doc)
 SUBDIRS(tests)
