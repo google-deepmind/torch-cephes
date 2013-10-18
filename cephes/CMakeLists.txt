@@ -6,9 +6,16 @@ FILE(GLOB src
     "misc/*.c"
     "ellf/*.c"
     "polyn/*.c"
+    "torch_mtherr.c"
     )
 # note: single/ is not compiled because it conflicts
 # with many functions in cmath and cprob :(
+
+# use our custom mtherr instead of cmath/mtherr.c
+LIST(REMOVE_ITEM src
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmath/mtherr.c"
+    )
+
 
 # ignore files which have a main() 
 LIST(REMOVE_ITEM src
