@@ -8,6 +8,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("functions")
+parser.add_argument("--outputDir", default="tests")
 args = parser.parse_args()
 
 # cephes.ffi.cmplx
@@ -61,7 +62,7 @@ with open(args.functions, 'r') as inputFile:
     allFunctions = pickle.load(inputFile)
 
 for sectionName, functions in allFunctions.iteritems():
-    testFilePath = os.path.join("testsFOO/test_%s.lua" % (sectionName,))
+    testFilePath = os.path.join(args.outputDir, "test_%s.lua" % (sectionName,))
     with open(testFilePath, 'w') as testFile:
         testFile.write("""
 require 'cephes'
