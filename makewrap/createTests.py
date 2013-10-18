@@ -32,9 +32,13 @@ def testsForFunction(function):
 
     functionCArgs = ", ".join(argType + " " + argName for argName, argType in function['arguments'])
 
-    valueGenerators = [ testValues[argType] for argName, argType in function['arguments'] ]
+    for i, (argName, argType) in enumerate(function['arguments']):
+        if argName.endswith("[]"):
+            argType += " *"
+            argName = argName[0:-2]
+            function['arguments'][i] = (argName, argType)
 
-    # TODO handle case of argName ending in [] ...!
+    valueGenerators = [ testValues[argType] for argName, argType in function['arguments'] ]
 
     testString = """
 -- Test simple calls for {functionName}
@@ -46,11 +50,14 @@ function callTests.test_{functionName}()
         functionCArgs = functionCArgs
     )
 
+    argNames = [ argName for argName, _ in function['arguments'] ]
+
     for argValues in itertools.product(*valueGenerators):
-        testString += """
+        testString += """    {argDeclarations}
     tester:assert(cephes.{functionName}({functionArgs}))""".format(
             functionName = function['functionName'],
-            functionArgs = ", ".join(str(x) for x in argValues),
+            functionArgs = ", ".join(str(x) for x in argNames),
+            argDeclarations = "\n    ".join("local %s = %s" % (argNames[i], argValue) for i, argValue in enumerate(argValues))
         )
     testString += """
 end
