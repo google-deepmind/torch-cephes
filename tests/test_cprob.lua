@@ -27,7 +27,7 @@ end
 -- Signature: double bdtri(int k, int n, double y)
 function callTests.test_bdtri()
     local k = 1
-    local n = 1
+    local n = 2
     local y = 0.5
     tester:assert(cephes.bdtri(k, n, y))
 end
@@ -44,7 +44,7 @@ end
 -- Test simple calls for chdtrc
 -- Signature: double chdtrc(double df, double x)
 function callTests.test_chdtrc()
-    local df = 0.5
+    local df = 2
     local x = 0.5
     tester:assert(cephes.chdtrc(df, x))
 end
@@ -52,7 +52,7 @@ end
 -- Test simple calls for chdtr
 -- Signature: double chdtr(double df, double x)
 function callTests.test_chdtr()
-    local df = 0.5
+    local df = 2
     local x = 0.5
     tester:assert(cephes.chdtr(df, x))
 end
@@ -60,16 +60,9 @@ end
 -- Test simple calls for chdtri
 -- Signature: double chdtri(double df, double y)
 function callTests.test_chdtri()
-    local df = 0.5
+    local df = 2
     local y = 0.5
     tester:assert(cephes.chdtri(df, y))
-end
-
--- Test simple calls for drand
--- Signature: int drand(double * a)
-function callTests.test_drand()
-    local a = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    tester:assert(cephes.drand(a))
 end
 
 -- Test simple calls for expx2
