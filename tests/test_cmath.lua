@@ -8,7 +8,7 @@ local tester = torch.Tester()
 -- Test simple calls for acosh
 -- Signature: double acosh(double x)
 function callTests.test_acosh()
-    local x = 0.5
+    local x = 2.0
     tester:assert(cephes.acosh(x))
 end
 
@@ -66,117 +66,117 @@ end
 -- Signature: double chbevl(double x, double array[], int n)
 function callTests.test_chbevl()
     local x = 0.5
-    local array = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local n = 1
+    local array = ffi.new("double[2]", {0, 0})
+    local n = 2
     tester:assert(cephes.chbevl(x, array, n))
 end
 
 -- Test simple calls for clog
 -- Signature: void clog(cmplx * z, cmplx * w)
 function callTests.test_clog()
-    local z = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local w = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.clog(z, w))
+    local z = cephes.new_cmplx(1, 1)
+    local w = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.clog(z, w), nil)
 end
 
 -- Test simple calls for cexp
 -- Signature: void cexp(cmplx * z, cmplx * w)
 function callTests.test_cexp()
-    local z = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local w = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.cexp(z, w))
+    local z = cephes.new_cmplx(1, 1)
+    local w = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.cexp(z, w), nil)
 end
 
 -- Test simple calls for csin
 -- Signature: void csin(cmplx * z, cmplx * w)
 function callTests.test_csin()
-    local z = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local w = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.csin(z, w))
+    local z = cephes.new_cmplx(1, 1)
+    local w = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.csin(z, w), nil)
 end
 
 -- Test simple calls for ccos
 -- Signature: void ccos(cmplx * z, cmplx * w)
 function callTests.test_ccos()
-    local z = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local w = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.ccos(z, w))
+    local z = cephes.new_cmplx(1, 1)
+    local w = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.ccos(z, w), nil)
 end
 
 -- Test simple calls for ctan
 -- Signature: void ctan(cmplx * z, cmplx * w)
 function callTests.test_ctan()
-    local z = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local w = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.ctan(z, w))
+    local z = cephes.new_cmplx(1, 1)
+    local w = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.ctan(z, w), nil)
 end
 
 -- Test simple calls for ccot
 -- Signature: void ccot(cmplx * z, cmplx * w)
 function callTests.test_ccot()
-    local z = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local w = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.ccot(z, w))
+    local z = cephes.new_cmplx(1, 1)
+    local w = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.ccot(z, w), nil)
 end
 
 -- Test simple calls for casin
 -- Signature: void casin(cmplx * z, cmplx * w)
 function callTests.test_casin()
-    local z = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local w = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.casin(z, w))
+    local z = cephes.new_cmplx(1, 1)
+    local w = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.casin(z, w), nil)
 end
 
 -- Test simple calls for cacos
 -- Signature: void cacos(cmplx * z, cmplx * w)
 function callTests.test_cacos()
-    local z = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local w = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.cacos(z, w))
+    local z = cephes.new_cmplx(1, 1)
+    local w = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.cacos(z, w), nil)
 end
 
 -- Test simple calls for catan
 -- Signature: void catan(cmplx * z, cmplx * w)
 function callTests.test_catan()
-    local z = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local w = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.catan(z, w))
+    local z = cephes.new_cmplx(1, 1)
+    local w = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.catan(z, w), nil)
 end
 
 -- Test simple calls for cadd
 -- Signature: void cadd(cmplx * a, cmplx * b, cmplx * c)
 function callTests.test_cadd()
-    local a = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local b = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local c = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.cadd(a, b, c))
+    local a = cephes.new_cmplx(1, 1)
+    local b = cephes.new_cmplx(1, 1)
+    local c = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.cadd(a, b, c), nil)
 end
 
 -- Test simple calls for csub
 -- Signature: void csub(cmplx * a, cmplx * b, cmplx * c)
 function callTests.test_csub()
-    local a = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local b = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local c = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.csub(a, b, c))
+    local a = cephes.new_cmplx(1, 1)
+    local b = cephes.new_cmplx(1, 1)
+    local c = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.csub(a, b, c), nil)
 end
 
 -- Test simple calls for cmul
 -- Signature: void cmul(cmplx * a, cmplx * b, cmplx * c)
 function callTests.test_cmul()
-    local a = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local b = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local c = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.cmul(a, b, c))
+    local a = cephes.new_cmplx(1, 1)
+    local b = cephes.new_cmplx(1, 1)
+    local c = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.cmul(a, b, c), nil)
 end
 
 -- Test simple calls for cdiv
 -- Signature: void cdiv(cmplx * a, cmplx * b, cmplx * c)
 function callTests.test_cdiv()
-    local a = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local b = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local c = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.cdiv(a, b, c))
+    local a = cephes.new_cmplx(1, 1)
+    local b = cephes.new_cmplx(1, 1)
+    local c = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.cdiv(a, b, c), nil)
 end
 
 -- Test simple calls for cmov
@@ -197,16 +197,16 @@ end
 -- Test simple calls for cabs
 -- Signature: double cabs(cmplx * z)
 function callTests.test_cabs()
-    local z = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
+    local z = cephes.new_cmplx(1, 1)
     tester:assert(cephes.cabs(z))
 end
 
 -- Test simple calls for csqrt
 -- Signature: void csqrt(cmplx * z, cmplx * w)
 function callTests.test_csqrt()
-    local z = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    local w = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.csqrt(z, w))
+    local z = cephes.new_cmplx(1, 1)
+    local w = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.csqrt(z, w), nil)
 end
 
 -- Test simple calls for hypot
@@ -227,7 +227,7 @@ end
 -- Test simple calls for drand
 -- Signature: int drand(double * a)
 function callTests.test_drand()
-    local a = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local a = ffi.new("double[1]", {0})
     tester:assert(cephes.drand(a))
 end
 
@@ -335,7 +335,7 @@ end
 -- Signature: double polevl(double x, double coef[], int N)
 function callTests.test_polevl()
     local x = 0.5
-    local coef = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local coef = ffi.new("double[2]", {0, 0})
     local N = 1
     tester:assert(cephes.polevl(x, coef, N))
 end
