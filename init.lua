@@ -3,12 +3,6 @@ local ffi = require("ffi")
 cephes = {}
 cephes.ffi = ffi.load(package.searchpath('libcephes', package.cpath))
 
--- Link to torch_merr.c error reporting
-ffi.cdef[[
-    int merror;
-    char errtxt[100];
-]]
-
 -- Define cmplx struct
 ffi.cdef[[
 typedef struct

@@ -182,6 +182,12 @@ local functions_list = {
     'zetac'
 }
 
+-- Link to torch_merr.c error reporting
+ffi.cdef[[
+    int merror;
+    char errtxt[100];
+]]
+
 local function create_wrapper(name)
 
     local function wrapper(...)
