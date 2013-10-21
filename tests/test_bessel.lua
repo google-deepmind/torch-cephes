@@ -9,10 +9,10 @@ local tester = torch.Tester()
 -- Signature: int airy(double x, double * ai, double * aip, double * bi, double * bip)
 function callTests.test_airy()
     local x = 0.5
-    local ai = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local aip = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local bi = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local bip = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local ai = ffi.new("double[1]", {0})
+    local aip = ffi.new("double[1]", {0})
+    local bi = ffi.new("double[1]", {0})
+    local bip = ffi.new("double[1]", {0})
     tester:assert(cephes.airy(x, ai, aip, bi, bip))
 end
 
@@ -29,7 +29,7 @@ end
 -- Test simple calls for hyperg
 -- Signature: double hyperg(double a, double b, double x)
 function callTests.test_hyperg()
-    local a = 0.5
+    local a = 1.0
     local b = 0.5
     local x = 0.5
     tester:assert(cephes.hyperg(a, b, x))
@@ -42,7 +42,7 @@ function callTests.test_hyp2f0()
     local b = 0.5
     local x = 0.5
     local type = 1
-    local err = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local err = ffi.new("double[1]", {0})
     tester:assert(cephes.hyp2f0(a, b, x, type, err))
 end
 
@@ -176,7 +176,7 @@ function callTests.test_onef2()
     local b = 0.5
     local c = 0.5
     local x = 0.5
-    local err = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local err = ffi.new("double[1]", {0})
     tester:assert(cephes.onef2(a, b, c, x, err))
 end
 
@@ -187,7 +187,7 @@ function callTests.test_threef0()
     local b = 0.5
     local c = 0.5
     local x = 0.5
-    local err = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local err = ffi.new("double[1]", {0})
     tester:assert(cephes.threef0(a, b, c, x, err))
 end
 
