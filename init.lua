@@ -320,6 +320,7 @@ ffi.cdef[[
 
 -- Error handling with soft wrapping of all functions
 torch.include('cephes', 'error_handling.lua')
+torch.include('cephes', 'limits.lua')
 
 -- Use metatable to pass all undefined indexing to cephes.ffi
 local mt = {}
