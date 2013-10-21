@@ -54,8 +54,8 @@ end
 -- Signature: int fresnl(double xxa, double * ssa, double * cca)
 function callTests.test_fresnl()
     local xxa = 0.5
-    local ssa = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local cca = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local ssa = ffi.new("double[1]", {0})
+    local cca = ffi.new("double[1]", {0})
     tester:assert(cephes.fresnl(xxa, ssa, cca))
 end
 
@@ -69,10 +69,10 @@ end
 -- Test simple calls for revers
 -- Signature: void revers(double y[], double x[], int n)
 function callTests.test_revers()
-    local y = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local x = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local y = ffi.new("double[2]", {0, 1})
+    local x = ffi.new("double[2]", {0, 1})
     local n = 1
-    tester:assert(cephes.revers(y, x, n))
+    tester:asserteq(cephes.revers(y, x, n), nil)
 end
 
 -- Test simple calls for rgamma
@@ -86,8 +86,8 @@ end
 -- Signature: int shichi(double x, double * si, double * ci)
 function callTests.test_shichi()
     local x = 0.5
-    local si = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local ci = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local si = ffi.new("double[1]", {0})
+    local ci = ffi.new("double[1]", {0})
     tester:assert(cephes.shichi(x, si, ci))
 end
 
@@ -95,15 +95,15 @@ end
 -- Signature: int sici(double x, double * si, double * ci)
 function callTests.test_sici()
     local x = 0.5
-    local si = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local ci = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local si = ffi.new("double[1]", {0})
+    local ci = ffi.new("double[1]", {0})
     tester:assert(cephes.sici(x, si, ci))
 end
 
 -- Test simple calls for simpsn
 -- Signature: double simpsn(double f[], double delta)
 function callTests.test_simpsn()
-    local f = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local f = ffi.new("double[8]", {0, 0, 0, 0, 0, 0, 0, 0})
     local delta = 0.5
     tester:assert(cephes.simpsn(f, delta))
 end
@@ -118,7 +118,7 @@ end
 -- Test simple calls for zeta
 -- Signature: double zeta(double x, double q)
 function callTests.test_zeta()
-    local x = 0.5
+    local x = 1.5
     local q = 0.5
     tester:assert(cephes.zeta(x, q))
 end
