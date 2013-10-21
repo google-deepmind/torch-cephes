@@ -813,7 +813,7 @@ For other precisions, see the archives and descriptions listed above.
  *
  * Coefficients are stored in reverse order, i.e. the zero
  * order term is last in the array.  Note N is the number of
- * coefficients, not the order.
+ * coefficients, not the order; N must be greater than 1.
  *
  * If coefficients are for the interval a to b, x must
  * have been transformed to x -&gt; 2(2x - b - a)/(b-a) before
@@ -5074,7 +5074,7 @@ C
  *
  *  The function p1evl() assumes that coef[N] = 1.0 and is
  * omitted from the array.  Its calling arguments are
- * otherwise the same as polevl().
+ * otherwise the same as polevl(). N must be greater than 1.
  *
  *
  * SPEED:

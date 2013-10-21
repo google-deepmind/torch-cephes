@@ -135,7 +135,7 @@ if( (pt1 == NULL) || (pt2 == NULL) || (pt3 == NULL) )
 
 /* Print the coefficients of a, with d decimal precision.
  */
-static char *form = "abcdefghijk";
+static char form[] = "abcdefghijk";
 
 void polprt( a, na, d )
 double a[];
