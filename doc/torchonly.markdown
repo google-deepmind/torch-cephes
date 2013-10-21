@@ -70,9 +70,11 @@ Checks if a number is finite.
 
 ###cephes.new_cmplx(re, im)
 ><b>Input:</b> 
+>
 > * `re` : any number, to initialize the real part
 > * `im` : any number, to initalize the imaginary part
-><b>Returns: a pointer to a new Cephes FFI complex number with real part `r` and imaginary part `im`.
+>
+><b>Returns:</b> a pointer to a new Cephes FFI complex number with real part `r` and imaginary part `im`.
 
 ##Direct access to FFI
 
