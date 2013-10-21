@@ -182,16 +182,18 @@ end
 -- Test simple calls for cmov
 -- Signature: void cmov(void * a, void * b)
 function callTests.test_cmov()
-    local a = nil ; error(' TODO: void * parameter needed!')
-    local b = nil ; error(' TODO: void * parameter needed!')
-    tester:assert(cephes.cmov(a, b))
+    local a = cephes.new_cmplx(1, 1)
+    local b = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.cmov(a, b), nil)
 end
 
 -- Test simple calls for cneg
 -- Signature: void cneg(cmplx * a)
 function callTests.test_cneg()
-    local a = cephes.new_cmplx(1, 1) ; error(' TODO: check this pointer makes sense!')
-    tester:assert(cephes.cneg(a))
+    local a = cephes.new_cmplx(1, 1)
+    tester:asserteq(cephes.cneg(a), nil)
+    tester:asserteq(a.i, -1)
+    tester:asserteq(a.r, -1)
 end
 
 -- Test simple calls for cabs
@@ -277,7 +279,7 @@ end
 -- Signature: double frexp(double x, int * pw2)
 function callTests.test_frexp()
     local x = 0.5
-    local pw2 = ffi.new("int[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local pw2 = ffi.new("int[1]", {0})
     tester:assert(cephes.frexp(x, pw2))
 end
 
@@ -344,8 +346,8 @@ end
 -- Signature: double p1evl(double x, double coef[], int N)
 function callTests.test_p1evl()
     local x = 0.5
-    local coef = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local N = 1
+    local coef = ffi.new("double[3]", {0, 0, 0})
+    local N = 2
     tester:assert(cephes.p1evl(x, coef, N))
 end
 
@@ -399,8 +401,8 @@ end
 -- Signature: int sincos(double x, double * s, double * c, int flg)
 function callTests.test_sincos()
     local x = 0.5
-    local s = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local c = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local s = ffi.new("double[1]", {0})
+    local c = ffi.new("double[1]", {0})
     local flg = 1
     tester:assert(cephes.sincos(x, s, c, flg))
 end
