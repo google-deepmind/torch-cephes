@@ -33,10 +33,10 @@ end
 function callTests.test_ellpj()
     local u = 0.5
     local m = 0.5
-    local sn = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local cn = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local dn = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local ph = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
+    local sn = ffi.new("double[1]", {0})
+    local cn = ffi.new("double[1]", {0})
+    local dn = ffi.new("double[1]", {0})
+    local ph = ffi.new("double[1]", {0})
     tester:assert(cephes.ellpj(u, m, sn, cn, dn, ph))
 end
 
