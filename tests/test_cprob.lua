@@ -105,6 +105,18 @@ end
 function callTests.test_gamma()
     local x = 0.5
     tester:assert(cephes.gamma(x))
+    tester:assertError(cephes.gamma(-3))
+    tester:asserteq(cephes.gamma(-3 + 1e-350), -math.huge)
+    tester:asserteq(cephes.gamma(-3 - 1e-350), math.huge)
+    tester:assertError(cephes.gamma(-4))
+    tester:asserteq(cephes.gamma(-4 + 1e-350), math.huge)
+    tester:asserteq(cephes.gamma(-4 - 1e-350), -math.huge)
+    tester:assertError(cephes.gamma(0))
+    tester:asserteq(cephes.gamma(0 + 1e-350), math.huge)
+    tester:asserteq(cephes.gamma(0 - 1e-350), -math.huge)
+    tester:asserteq(cephes.gamma(1e600), math.huge)
+    tester:assert(cephes.isnan(cephes.gamma(-math.huge)))
+    tester:asserteq(cephes.gamma(math.huge), math.huge)
 end
 
 -- Test simple calls for lgam
@@ -112,18 +124,6 @@ end
 function callTests.test_lgam()
     local x = 0.5
     tester:assert(cephes.lgam(x))
-    tester:assertError(cephes.lgam(-3))
-    tester:asserteq(cephes.lgam(-3 + 1e-350), -math.huge)
-    tester:asserteq(cephes.lgam(-3 - 1e-350), math.huge)
-    tester:assertError(cephes.lgam(-4))
-    tester:asserteq(cephes.lgam(-4 + 1e-350), math.huge)
-    tester:asserteq(cephes.lgam(-4 - 1e-350), -math.huge)
-    tester:assertError(cephes.lgam(0))
-    tester:asserteq(cephes.lgam(0 + 1e-350), math.huge)
-    tester:asserteq(cephes.lgam(0 - 1e-350), -math.huge)
-    tester:asserteq(cephes.lgam(1e600), math.huge)
-    tester:assert(cephes.isnan(cephes.lgam(-math.huge)))
-    tester:asserteq(cephes.lgam(math.huge), math.huge)
 end
 
 -- Test simple calls for gdtr
