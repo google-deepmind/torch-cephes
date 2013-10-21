@@ -21,15 +21,6 @@ function callTests.test_lbeta()
     tester:assert(cephes.lbeta(a, b))
 end
 
--- Test simple calls for chbevl
--- Signature: double chbevl(double x, double array[], int n)
-function callTests.test_chbevl()
-    local x = 0.5
-    local array = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local n = 1
-    tester:assert(cephes.chbevl(x, array, n))
-end
-
 -- Test simple calls for dawsn
 -- Signature: double dawsn(double xx)
 function callTests.test_dawsn()
@@ -66,24 +57,6 @@ function callTests.test_fresnl()
     local ssa = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
     local cca = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
     tester:assert(cephes.fresnl(xxa, ssa, cca))
-end
-
--- Test simple calls for polevl
--- Signature: double polevl(double x, double coef[], int N)
-function callTests.test_polevl()
-    local x = 0.5
-    local coef = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local N = 1
-    tester:assert(cephes.polevl(x, coef, N))
-end
-
--- Test simple calls for p1evl
--- Signature: double p1evl(double x, double coef[], int N)
-function callTests.test_p1evl()
-    local x = 0.5
-    local coef = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local N = 1
-    tester:assert(cephes.p1evl(x, coef, N))
 end
 
 -- Test simple calls for psi

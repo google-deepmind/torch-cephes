@@ -176,8 +176,6 @@ ffi.cdef[[
    double chdtrc(double df, double x);
    double chdtr(double df, double x);
    double chdtri(double df, double y);
-   // cephes/cprob/drand.c
-   int drand(double * a);
    // cephes/cprob/expx2.c
    double expx2(double x, int sign);
    // cephes/cprob/fdtr.c
@@ -213,16 +211,9 @@ ffi.cdef[[
    double pdtrc(int k, double m);
    double pdtr(int k, double m);
    double pdtri(int k, double y);
-   // cephes/cprob/polevl.c
-   double polevl(double x, double coef[], int N);
-   double p1evl(double x, double coef[], int N);
    // cephes/cprob/stdtr.c
    double stdtr(int k, double t);
    double stdtri(int k, double p);
-   // cephes/cprob/unity.c
-   double log1p(double x);
-   double expm1(double x);
-   double cosm1(double x);
 ]]
 
 -- imports for folder misc
@@ -230,8 +221,6 @@ ffi.cdef[[
    // cephes/misc/beta.c
    double beta(double a, double b);
    double lbeta(double a, double b);
-   // cephes/misc/chbevl.c
-   double chbevl(double x, double array[], int n);
    // cephes/misc/dawsn.c
    double dawsn(double xx);
    // cephes/misc/ei.c
@@ -242,9 +231,6 @@ ffi.cdef[[
    double fac(int i);
    // cephes/misc/fresnl.c
    int fresnl(double xxa, double * ssa, double * cca);
-   // cephes/misc/polevl.c
-   double polevl(double x, double coef[], int N);
-   double p1evl(double x, double coef[], int N);
    // cephes/misc/psi.c
    double psi(double x);
    // cephes/misc/revers.c
@@ -267,16 +253,6 @@ ffi.cdef[[
 
 -- imports for folder ellf
 ffi.cdef[[
-   // cephes/ellf/cmplx.c
-   void cadd(cmplx * a, cmplx * b, cmplx * c);
-   void csub(cmplx * a, cmplx * b, cmplx * c);
-   void cmul(cmplx * a, cmplx * b, cmplx * c);
-   void cdiv(cmplx * a, cmplx * b, cmplx * c);
-   void cmov(void * a, void * b);
-   void cneg(cmplx * a);
-   double cabs(cmplx * z);
-   void csqrt(cmplx * z, cmplx * w);
-   double hypot(double x, double y);
    // cephes/ellf/ellie.c
    double ellie(double phi, double m);
    // cephes/ellf/ellik.c
@@ -287,9 +263,6 @@ ffi.cdef[[
    int ellpj(double u, double m, double * sn, double * cn, double * dn, double * ph);
    // cephes/ellf/ellpk.c
    double ellpk(double x);
-   // cephes/ellf/polevl.c
-   double polevl(double x, double coef[], int N);
-   double p1evl(double x, double coef[], int N);
 ]]
 
 -- imports for folder polyn

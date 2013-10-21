@@ -253,24 +253,6 @@ function callTests.test_pdtri()
     tester:assert(cephes.pdtri(k, y))
 end
 
--- Test simple calls for polevl
--- Signature: double polevl(double x, double coef[], int N)
-function callTests.test_polevl()
-    local x = 0.5
-    local coef = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local N = 1
-    tester:assert(cephes.polevl(x, coef, N))
-end
-
--- Test simple calls for p1evl
--- Signature: double p1evl(double x, double coef[], int N)
-function callTests.test_p1evl()
-    local x = 0.5
-    local coef = ffi.new("double[1]", {0}) ; error(" TODO: check this array is sensible!")
-    local N = 1
-    tester:assert(cephes.p1evl(x, coef, N))
-end
-
 -- Test simple calls for stdtr
 -- Signature: double stdtr(int k, double t)
 function callTests.test_stdtr()
@@ -285,27 +267,6 @@ function callTests.test_stdtri()
     local k = 1
     local p = 0.5
     tester:assert(cephes.stdtri(k, p))
-end
-
--- Test simple calls for log1p
--- Signature: double log1p(double x)
-function callTests.test_log1p()
-    local x = 0.5
-    tester:assert(cephes.log1p(x))
-end
-
--- Test simple calls for expm1
--- Signature: double expm1(double x)
-function callTests.test_expm1()
-    local x = 0.5
-    tester:assert(cephes.expm1(x))
-end
-
--- Test simple calls for cosm1
--- Signature: double cosm1(double x)
-function callTests.test_cosm1()
-    local x = 0.5
-    tester:assert(cephes.cosm1(x))
 end
 
 tester:add(callTests)
