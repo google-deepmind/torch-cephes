@@ -56,6 +56,12 @@ end
 function callTests.test_fac()
     local i = 1
     tester:assert(cephes.fac(i))
+    tester:asserteq(cephes.fac(0), 1)
+    tester:asserteq(cephes.fac(1), 1)
+    tester:asserteq(cephes.fac(3), 6)
+
+    -- Check against values from matlab
+    tester:assertalmosteq(cephes.fac(31), 8.222838654177922e+33, 1e-14)
 end
 
 -- Test simple calls for fresnl
