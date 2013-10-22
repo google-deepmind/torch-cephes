@@ -321,19 +321,13 @@ ffi.cdef[[
 -- Error handling with soft wrapping of all functions
 torch.include('cephes', 'error_handling.lua')
 torch.include('cephes', 'limits.lua')
+torch.include('cephes', 'cmath.lua')
 
 -- Use metatable to pass all undefined indexing to cephes.ffi
 local mt = {}
 setmetatable(cephes, mt)
 mt.__index = function(table, key)
-    return rawget(cephes, key) or ffi[key]
-end
-
-cephes.new_cmplx = function(re, im)
-    local z = ffi.new("cmplx")
-    z.r = re
-    z.i = im
-    return z
+    return rawget(cephes, key) or cephes.ffi[key]
 end
 
 return cephes
