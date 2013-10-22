@@ -150,5 +150,22 @@ function callTests.test_polygamma()
     tester:assertalmosteq(cephes.polygamma(0, 0.7), cephes.psi(0.7), 1e-14)
 end
 
+function callTests.test_betagrad()
+    local x = 0.5
+    local y = 0.5
+    tester:assert(cephes.betagrad(x, y))
+
+    local fdBetagrad = function(x, y)
+        local a = x - 1e-10
+        local b = x + 1e-10
+        assert(a ~= x)
+
+        return (cephes.beta(b, y) - cephes.beta(a, y)) / (b - a)
+    end
+
+    tester:assertalmosteq(fdBetagrad(0.5, 0.5), cephes.betagrad(0.5, 0.5), 1e-5)
+    tester:assertalmosteq(fdBetagrad(60, 50), cephes.betagrad(60, 50), 1e-5)
+end
+
 tester:add(callTests)
 tester:run()

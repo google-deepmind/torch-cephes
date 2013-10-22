@@ -54,6 +54,17 @@ The `(m+1)`-th derivative of the logarithm of the gamma function [(see MathWorld
 >
 ><b>Returns:</b> `(m+1)`-th derivative of the logarithm of the gamma function, evaluated at `x`
 
+###cephes.betagrad(x, y)
+
+The partial-derivative of the beta function, with respect to the first variable.
+
+><b>Input:</b> 
+>
+> * `x` : positive real number
+> * `y` : positive real number
+>
+><b>Returns:</b> Partial-derivative of the beta function with respect to the first variable, evaluated at (`x`, `y`)
+
 
 ##Limits
 
