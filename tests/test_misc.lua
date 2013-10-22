@@ -11,6 +11,14 @@ function callTests.test_beta()
     local a = 0.5
     local b = 0.5
     tester:assert(cephes.beta(a, b))
+
+    tester:asserteq(cephes.beta(1, 1), 1)
+
+    -- Check against values from matlab
+    tester:assertalmosteq(cephes.beta(3, 5), 9.523809523809535e-03, 1e-14)
+    tester:assertalmosteq(cephes.beta(2, 4), 5.000000000000007e-02, 1e-14)
+    tester:assertalmosteq(cephes.beta(2, 13), 5.494505494505515e-03, 1e-14)
+    tester:assertalmosteq(cephes.beta(4.5, 1.1), 1.797749787942192e-01, 1e-14)
 end
 
 -- Test simple calls for lbeta
