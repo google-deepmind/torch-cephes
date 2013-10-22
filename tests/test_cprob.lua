@@ -117,6 +117,10 @@ end
 function callTests.test_lgam()
     local x = 0.5
     tester:assert(cephes.lgam(x))
+    tester:assert(cephes.isinf(cephes.lgam(-math.huge)))
+    tester:asserteq(cephes.lgam(math.huge), math.huge)
+    tester:assertErrorPattern(function() cephes.lgam(0) end, ".*singularity error.*")
+    tester:assertErrorPattern(function() cephes.lgam(-1) end, ".*singularity error.*")
 end
 
 -- Test simple calls for gdtr
