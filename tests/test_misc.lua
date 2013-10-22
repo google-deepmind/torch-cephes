@@ -130,5 +130,17 @@ function callTests.test_zetac()
     tester:assert(cephes.zetac(x))
 end
 
+function callTests.test_polygamma()
+    local m = 1
+    local x = 0.5
+    tester:assert(cephes.polygamma(m, x))
+
+    -- Check against values from matlab
+    tester:assertalmosteq(cephes.polygamma(1, 0.5), 4.934802200544679, 1e-14)
+    tester:assertalmosteq(cephes.polygamma(3, 0.7), 25.879149678427737, 1e-14)
+
+    tester:assertalmosteq(cephes.polygamma(0, 0.7), cephes.psi(0.7), 1e-14)
+end
+
 tester:add(callTests)
 tester:run()

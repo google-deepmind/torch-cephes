@@ -324,6 +324,7 @@ torch.include('cephes', 'error_handling.lua')
 torch.include('cephes', 'limits.lua')
 torch.include('cephes', 'cmath.lua')
 torch.include('cephes', 'bessel.lua')
+torch.include('cephes', 'misc.lua')
 
 -- Use metatable to pass all undefined indexing to cephes.ffi
 local mt = {}

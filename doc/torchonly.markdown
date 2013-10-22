@@ -37,6 +37,24 @@ a:apply(cephes.ndtr)
 print(a)
 ```
 
+##Extra functions
+
+###cephes.digamma(x)
+
+Alias for `cephes.psi(x)`
+
+###cephes.polygamma(m, x)
+
+The `(m+1)`-th derivative of the logarithm of the gamma function [(see MathWorld definition)](http://mathworld.wolfram.com/PolygammaFunction.html).
+
+><b>Input:</b> 
+>
+> * `m` : non-negative integer
+> * `x` : real number
+>
+><b>Returns:</b> `(m+1)`-th derivative of the logarithm of the gamma function, evaluated at `x`
+
+
 ##Limits
 
 Convenience functions to check for finiteness.
