@@ -155,6 +155,14 @@ function callTests.test_igam()
     local a = 0.5
     local x = 0.5
     tester:assert(cephes.igam(a, x))
+
+    tester:asserteq(cephes.igam(a, 0), 0)
+    tester:asserteq(cephes.igam(a, -1), 0)
+
+    -- Check against values from matlab
+    tester:assertalmosteq(cephes.igam(1.5, 0.5), 1.987480430987991e-01, 1e-14)
+    tester:assertalmosteq(cephes.igam(2.5, 0.3), 1.199675720590626e-02, 1e-14)
+    tester:assertalmosteq(cephes.igam(10, 1), 1.114254783387200e-07, 1e-14)
 end
 
 -- Test simple calls for igami
