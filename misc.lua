@@ -1,5 +1,6 @@
 
--- Formula taken from scipy
+-- Formula taken from scipy:
+-- https://github.com/scipy/scipy/blob/c79a9fee6b03cd196af203bad1063958cc3fe3a8/scipy/special/basic.py
 function cephes.polygamma(m, x)
     if m == 0 then
         return cephes.psi(x)
