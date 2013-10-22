@@ -178,6 +178,7 @@ ffi.cdef[[
    double fdtri(int ia, int ib, double y);
    // cephes/cprob/gamma.c
    double gamma(double x);
+   int sgngam;
    double lgam(double x);
    // cephes/cprob/gdtr.c
    double gdtr(double a, double b, double x);
@@ -322,6 +323,7 @@ ffi.cdef[[
 torch.include('cephes', 'error_handling.lua')
 torch.include('cephes', 'limits.lua')
 torch.include('cephes', 'cmath.lua')
+torch.include('cephes', 'bessel.lua')
 
 -- Use metatable to pass all undefined indexing to cephes.ffi
 local mt = {}
