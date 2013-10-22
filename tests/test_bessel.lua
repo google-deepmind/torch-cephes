@@ -167,6 +167,8 @@ end
 function callTests.test_psi()
     local x = 0.5
     tester:assert(cephes.psi(x))
+    tester:assert(cephes.isinf(cephes.psi(math.huge)))
+    tester:assertErrorPattern(function() cephes.psi(0) end, ".*singularity error.*")
 end
 
 -- Test simple calls for onef2
