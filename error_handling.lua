@@ -8,7 +8,7 @@ local reportError = 0
 function cephes.setErrorLevel(level)
     if level == 1 or level == true or level == 'true'  then
         reportError = 1
-    elseif level == 0 or level == false or level == 'off' then
+    elseif level == 0 or level == false or level == 'error' or level == 'off' then
         reportError = 0
     elseif level == 2 or level == 'warn' or level == 'warning' then
         reportError = 2
