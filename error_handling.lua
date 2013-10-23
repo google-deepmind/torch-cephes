@@ -1,5 +1,32 @@
 local ffi = require 'ffi'
 
+-- By default, no error reporting
+local reportError = 0
+
+-- Do we report error?
+-- can be 'off'/false/0, 'error'/true/1, 'warning'/'warn'/2
+function cephes.setErrorLevel(level)
+    if level == 1 or level == true or level == 'true'  then
+        reportError = 1
+    elseif level == 0 or level == false or level == 'error' or level == 'off' then
+        reportError = 0
+    elseif level == 2 or level == 'warn' or level == 'warning' then
+        reportError = 2
+    else
+        error("Unknown error level, please choose 'error'/true, 'warning', 'off'/false")
+    end
+end
+
+function cephes.getErrorLevel()
+    if reportError == 0  then
+        return 'off'
+    elseif repportError == 1 then
+        return 'error'
+    elseif reportError == 2 then
+        return 'warning'
+    end
+end
+
 -- List all functions, and wrap them automatically
 local functions_list = {
     'acos',
@@ -199,8 +226,13 @@ local function create_wrapper(name)
         -- Reset error status
         cephes.ffi.merror = 0
         local result = cephes.ffi[name](...)
-        if cephes.ffi.merror ~= 0 then
-            error("Cephes error '" .. ffi.string(cephes.ffi.errtxt) .. "'")
+        if reportError > 0 and cephes.ffi.merror ~= 0 then
+            local errString =  "Cephes error '" .. ffi.string(cephes.ffi.errtxt) .. "'"
+            if reportError == 1 then
+                error(errString)
+            else
+                print('CEPHES WARNING:', errString)
+            end
         end
         return result
     end
