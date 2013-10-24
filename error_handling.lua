@@ -6,14 +6,14 @@ local reportError = 0
 -- Do we report error?
 -- can be 'off'/false/0, 'error'/true/1, 'warning'/'warn'/2
 function cephes.setErrorLevel(level)
-    if level == 1 or level == true or level == 'true'  then
-        reportError = 1
-    elseif level == 0 or level == false or level == 'error' or level == 'off' then
+    if level == 0 or level == 'off'  then
         reportError = 0
+    elseif level == 1 or level == 'err' or level == 'error' then
+        reportError = 1
     elseif level == 2 or level == 'warn' or level == 'warning' then
         reportError = 2
     else
-        error("Unknown error level, please choose 'error'/true, 'warning', 'off'/false")
+        error("Unknown error level, please choose 'off'/0, 'err'/'error'/1, 'warning'/'warn'/2")
     end
 end
 

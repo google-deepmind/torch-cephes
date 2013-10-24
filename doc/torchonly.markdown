@@ -48,9 +48,9 @@ However, the user can ask Cephes to generate lua errors with the following funct
 Sets the level of error reporting.
 
 ><b>Input:</b>  `level` : can be any of
->   - 'off'/`false`/`0` to be entirely quiet
->   - 'error'/`true`/1 to issue Lua errors with stack trace
->   - 'warning'/'warn'/2 to print a warning on stdout
+>   - `'off'`/`0` to be entirely quiet
+>   - `'error'`/`1` to issue Lua errors with stack trace
+>   - `'warning'`/`2` to print a warning on stdout
 >
 ><b>Returns:</b> None
 
