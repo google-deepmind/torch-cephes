@@ -65,6 +65,30 @@ The partial-derivative of the beta function, with respect to the first variable.
 >
 ><b>Returns:</b> Partial-derivative of the beta function with respect to the first variable, evaluated at (`x`, `y`)
 
+##Error Handling
+
+By default, Torch-Cephes <b>does not signal any error</b> (domain, singularity, overflow, underflow, precision). It is as non-intrusive as possible and tries to return a value which is hopefully usable: it might be NaN, it might be inf.
+
+However, the user can ask Cephes to generate lua errors with the following functions.
+
+###cephes.setErrorLevel(level)
+
+Sets the level of error reporting.
+
+><b>Input:</b>  `level` : can be any of
+>   - `'off'`/`0` to be entirely quiet
+>   - `'error'`/`1` to issue Lua errors with stack trace
+>   - `'warning'`/`2` to print a warning on stdout
+>
+><b>Returns:</b> None
+
+###cephes.getErrorLevel()
+
+Returns the current level of error reporting, for example to save and restore later.
+
+><b>Input:</b>  None
+>
+><b>Returns:</b> integer 0, 1, or 2, representing the current error reporting level, see `setErrorLevel()`
 
 ##Limits
 

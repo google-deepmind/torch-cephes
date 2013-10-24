@@ -10,7 +10,12 @@ end
 
 function errTest.testError()
     local df = 4
+    local previousLevel = cephes.getErrorLevel()
+    cephes.setErrorLevel('off')
+    tester:assert(function() cephes.chdtr(-1,1) end)
+    cephes.setErrorLevel('error')
     tester:assertError(function() cephes.chdtr(-1,1) end)
+    cephes.setErrorLevel(previousLevel)
 end
 
 tester:add(errTest)
