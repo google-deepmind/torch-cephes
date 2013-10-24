@@ -114,8 +114,6 @@ ffi.cdef[[
    double ldexp(double x, int pw2);
    // cephes/cmath/isnan.c
    int signbit(double x);
-   int isnan(double x);
-   int isfinite(double x);
    // cephes/cmath/log.c
    double log(double x);
    // cephes/cmath/log10.c

@@ -298,20 +298,6 @@ function callTests.test_signbit()
     tester:assert(cephes.signbit(x))
 end
 
--- Test simple calls for isnan
--- Signature: int isnan(double x)
-function callTests.test_isnan()
-    local x = 0.5
-    tester:assert(cephes.isnan(x))
-end
-
--- Test simple calls for isfinite
--- Signature: int isfinite(double x)
-function callTests.test_isfinite()
-    local x = 0.5
-    tester:assert(cephes.isfinite(x))
-end
-
 -- Test simple calls for log
 -- Signature: double log(double x)
 function callTests.test_log()
