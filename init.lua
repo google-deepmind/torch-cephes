@@ -1,4 +1,5 @@
 local ffi = require("ffi")
+require 'torchffi'
 
 cephes = {}
 cephes.ffi = ffi.load(package.searchpath('libcephes', package.cpath))
