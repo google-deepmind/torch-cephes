@@ -157,7 +157,6 @@ function callTests.test_igam()
     tester:assert(cephes.igam(a, x))
 
     tester:asserteq(cephes.igam(a, 0), 0)
-    tester:asserteq(cephes.igam(a, -1), 0)
 
     -- Check against values from matlab
     tester:assertalmosteq(cephes.igam(1.5, 0.5), 1.987480430987991e-01, 1e-14)
