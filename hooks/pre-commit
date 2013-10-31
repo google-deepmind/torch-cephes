@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# An example hook script to verify if the doc has been changed
+# Called by "git commit" with no arguments.  The hook should
+# exit with non-zero status after issuing an appropriate message if
+# it wants to stop the commit.
+#
+
+if git rev-parse --verify HEAD >/dev/null 2>&1
+then
+	against=HEAD
+else
+	# Initial commit: diff against an empty tree object
+	against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+fi
+
+# Redirect output to stderr.
+exec 1>&2
+
+
+# Detect modification to markdown documentation
+if [ "`git diff-index HEAD --exit-code --cached -- doc/`" ]
+then
+	cat <<\EOF
+Error: Markdown documentation modified
+
+If this is really, really what you wanted to doc, 
+you can commit using 
+
+git commit --no-verify
+EOF
+	exit 1
+else
+    echo "Markdown unchanged, proceeding"
+fi
+# Apply Jekill to doc folder
