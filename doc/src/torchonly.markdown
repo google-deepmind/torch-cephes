@@ -1,6 +1,15 @@
+---
+title: Document Center
+layout: doc
+---
+
 #Torch-only functions
 
 Those functions are not part of the original Cephes library
+
+* Toc will go here
+{:toc}
+
 
 ##Using wrapped Cephes functions
 
@@ -9,10 +18,10 @@ Those functions are not part of the original Cephes library
 You can call any of the functions already wrapped.
 The C functions can be called from Lua with the same synopsis, for example:
 
-```lua
+{% highlight lua %}
 require 'cephes'
 x = cephes.ndtr(0)
-```
+{% endhighlight %}
 
 See the list of wrapped functions in [`init.lua`](init.lua). 
 
@@ -23,7 +32,7 @@ There is a (very) small subset already wrapped. Adding new wraps is very easy, f
 Cephes functions do not know of Torch tensors, and most only apply to a double and return a double. You can apply to a whole tensor using the  `apply` function from the [`torchffi` package](https://github.com/torch/ffi):
 
 
-```lua
+{% highlight lua %}
 require 'cephes'
 
 -- Without torchffi: need to wrap with extra function
@@ -35,7 +44,7 @@ print(a)
 require 'torchffi'
 a:apply(cephes.ndtr)
 print(a)
-```
+{% endhighlight %}
 
 ##Extra functions
 
@@ -131,6 +140,6 @@ Checks if a number is finite.
 
 ##Direct access to FFI
 
-###cephes.ffi.*
+###cephes.ffi.&ast;
 
 Functions directly accessible at the top of the `cephes` table are Lua wrappers to the actual C functions from Cephes, with extra error checking. If, for any reason, you want to get rid of this error checking and of a possible overhead, the FFI-wrapper functions can be called directly via `cephes.ffi.myfunction()` instead of `cephes.myfunction()`.
