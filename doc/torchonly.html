@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+</head>
+<body>
+<h1 id="torch-only-functions">Torch-only functions</h1>
+<p>Those functions are not part of the original Cephes library</p>
+<h2 id="using-wrapped-cephes-functions">Using wrapped Cephes functions</h2>
+<h3 id="direct-call">Direct call</h3>
+<p>You can call any of the functions already wrapped. The C functions can be called from Lua with the same synopsis, for example:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="fu">require</span> <span class="st">&#39;cephes&#39;</span>
+<span class="kw">x</span> <span class="ot">=</span> <span class="kw">cephes</span><span class="ot">.</span>ndtr<span class="ot">(</span><span class="dv">0</span><span class="ot">)</span></code></pre>
+<p>See the list of wrapped functions in <a href="init.lua"><code>init.lua</code></a>.</p>
+<p>There is a (very) small subset already wrapped. Adding new wraps is very easy, feel free to do it as described below, and submit pull-requests.</p>
+<h3 id="applying-to-a-whole-tensor">Applying to a whole tensor</h3>
+<p>Cephes functions do not know of Torch tensors, and most only apply to a double and return a double. You can apply to a whole tensor using the <code>apply</code> function from the <a href="https://github.com/torch/ffi"><code>torchffi</code> package</a>:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="fu">require</span> <span class="st">&#39;cephes&#39;</span>
+
+<span class="co">-- Without torchffi: need to wrap with extra function</span>
+<span class="kw">a</span><span class="ot">=</span><span class="kw">torch</span><span class="ot">.</span>randn<span class="ot">(</span><span class="dv">10</span><span class="ot">)</span>
+<span class="kw">a</span>:apply<span class="ot">(</span><span class="kw">function</span><span class="ot">(</span><span class="kw">x</span><span class="ot">)</span> <span class="kw">return</span> <span class="kw">cephes</span><span class="ot">.</span>ndtr<span class="ot">(</span><span class="kw">x</span><span class="ot">)</span> <span class="kw">end</span><span class="ot">)</span>
+<span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">)</span>
+
+<span class="co">-- With torchffi: much simpler!</span>
+<span class="fu">require</span> <span class="st">&#39;torchffi&#39;</span>
+<span class="kw">a</span>:apply<span class="ot">(</span><span class="kw">cephes</span><span class="ot">.</span><span class="kw">ndtr</span><span class="ot">)</span>
+<span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">)</span></code></pre>
+<h2 id="extra-functions">Extra functions</h2>
+<h3 id="cephes.digammax">cephes.digamma(x)</h3>
+<p>Alias for <code>cephes.psi(x)</code></p>
+<h3 id="cephes.polygammam-x">cephes.polygamma(m, x)</h3>
+<p>The <code>(m+1)</code>-th derivative of the logarithm of the gamma function <a href="http://mathworld.wolfram.com/PolygammaFunction.html">(see MathWorld definition)</a>.</p>
+<blockquote>
+<p><b>Input:</b></p>
+<ul>
+<li><code>m</code> : non-negative integer</li>
+<li><code>x</code> : real number</li>
+</ul>
+<p><b>Returns:</b> <code>(m+1)</code>-th derivative of the logarithm of the gamma function, evaluated at <code>x</code></p>
+</blockquote>
+<h3 id="cephes.betagradx-y">cephes.betagrad(x, y)</h3>
+<p>The partial-derivative of the beta function, with respect to the first variable.</p>
+<blockquote>
+<p><b>Input:</b></p>
+<ul>
+<li><code>x</code> : positive real number</li>
+<li><code>y</code> : positive real number</li>
+</ul>
+<p><b>Returns:</b> Partial-derivative of the beta function with respect to the first variable, evaluated at (<code>x</code>, <code>y</code>)</p>
+</blockquote>
+<h2 id="error-handling">Error Handling</h2>
+<p>By default, Torch-Cephes <b>does not signal any error</b> (domain, singularity, overflow, underflow, precision). It is as non-intrusive as possible and tries to return a value which is hopefully usable: it might be NaN, it might be inf.</p>
+<p>However, the user can ask Cephes to generate lua errors with the following functions.</p>
+<h3 id="cephes.seterrorlevellevel">cephes.setErrorLevel(level)</h3>
+<p>Sets the level of error reporting.</p>
+<blockquote>
+<p><b>Input:</b> <code>level</code> : can be any of - <code>'off'</code>/<code>0</code> to be entirely quiet - <code>'error'</code>/<code>1</code> to issue Lua errors with stack trace - <code>'warning'</code>/<code>2</code> to print a warning on stdout</p>
+<p><b>Returns:</b> None</p>
+</blockquote>
+<h3 id="cephes.geterrorlevel">cephes.getErrorLevel()</h3>
+<p>Returns the current level of error reporting, for example to save and restore later.</p>
+<blockquote>
+<p><b>Input:</b> None</p>
+<p><b>Returns:</b> integer 0, 1, or 2, representing the current error reporting level, see <code>setErrorLevel()</code></p>
+</blockquote>
+<h2 id="limits">Limits</h2>
+<p>Convenience functions to check for finiteness.</p>
+<h3 id="cephes.nan">cephes.nan</h3>
+<p>Stands for not a number, clearer alias for <code>0/0</code></p>
+<h3 id="cephes.isnanx">cephes.isnan(x)</h3>
+<p>Checks if <code>x</code> is not a number.</p>
+<blockquote>
+<p><b>Input:</b> <code>x</code> : any number</p>
+<p><b>Returns:</b> <code>true</code> if <code>x</code> is <code>cephes.nan</code>, <code>false</code> otherwise</p>
+</blockquote>
+<h3 id="cephes.isinfx">cephes.isinf(x)</h3>
+<p>Checks is a number is infinite.</p>
+<blockquote>
+<p><b>Input:</b> <code>x</code> : any number</p>
+<p><b>Returns:</b></b> <code>true</code> if <code>x</code> is <code>math.huge</code> or <code>-math.huge</code> or <code>cephes.nan</code>, <code>false</code> otherwise.</p>
+</blockquote>
+<h3 id="cephes.isfinitex">cephes.isfinite(x)</h3>
+<p>Checks if a number is finite.</p>
+<blockquote>
+<p><b>Input:</b> <code>x</code> : any number</p>
+<p><b>Returns:</b> <code>not cephes.isinf(x) and not cephes.isnan(x)</code></p>
+</blockquote>
+<h2 id="complex-numbers">Complex numbers</h2>
+<h3 id="cephes.new_cmplxre-im">cephes.new_cmplx(re, im)</h3>
+<blockquote>
+<p><b>Input:</b></p>
+<ul>
+<li><code>re</code> : any number, to initialize the real part</li>
+<li><code>im</code> : any number, to initalize the imaginary part</li>
+</ul>
+<p><b>Returns:</b> a pointer to a new Cephes FFI complex number with real part <code>r</code> and imaginary part <code>im</code>.</p>
+</blockquote>
+<h2 id="direct-access-to-ffi">Direct access to FFI</h2>
+<h3 id="cephes.ffi.">cephes.ffi.*</h3>
+<p>Functions directly accessible at the top of the <code>cephes</code> table are Lua wrappers to the actual C functions from Cephes, with extra error checking. If, for any reason, you want to get rid of this error checking and of a possible overhead, the FFI-wrapper functions can be called directly via <code>cephes.ffi.myfunction()</code> instead of <code>cephes.myfunction()</code>.</p>
+</body>
+</html>
