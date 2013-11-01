@@ -1,6 +1,0 @@
-FILE(GLOB testsrc *.lua)
-file(RELATIVE_PATH testPath ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
-INSTALL(
-   FILES ${testsrc}
-   DESTINATION ${Torch_INSTALL_LUA_PATH_SUBDIR}/${testPath}
-)

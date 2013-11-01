@@ -4,9 +4,4 @@ FIND_PACKAGE(Torch REQUIRED)
 
 # libcephes compilation and installation is in its own subdirectory
 ADD_SUBDIRECTORY(cephes)
-
-# install the lua code for the cephes package
-FILE(GLOB luasrc "*.lua")
-ADD_TORCH_PACKAGE(cephes "${src}" "${luasrc}")
-
-SUBDIRS(tests)
+ADD_SUBDIRECTORY(luasrc)
