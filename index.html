@@ -1,0 +1,166 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="stylesheets/styles.css">
+        <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css">
+    </head>
+    <body>
+
+<h1 id='cephes_mathematical_functions_library_wrapped_for_torch'>Cephes Mathematical Functions Library, wrapped for Torch</h1>
+<div class='maruku_toc'><ul style='list-style: none;'><li><a href='#example'>Example</a><ul style='list-style: none;'><li><a href='#elementary_call'>Elementary call</a></li><li><a href='#applying_to_a_whole_tensor'>Applying to a whole tensor</a></li></ul></li><li><a href='#list_of_cephes_functions'>List of Cephes functions</a></li><li><a href='#list_of_torchonly_functions'>List of Torch-only functions</a><ul style='list-style: none;'><li><a href='#cephesdigammax'>cephes.digamma(x)</a></li><li><a href='#cephespolygammam_x'>cephes.polygamma(m, x)</a></li><li><a href='#cephesbetagradx_y'>cephes.betagrad(x, y)</a></li></ul></li><li><a href='#error_handling'>Error Handling</a><ul style='list-style: none;'><li><a href='#cephesseterrorlevellevel'>cephes.setErrorLevel(level)</a></li><li><a href='#cephesgeterrorlevel'>cephes.getErrorLevel()</a></li></ul></li><li><a href='#limits'>Limits</a><ul style='list-style: none;'><li><a href='#cephesnan'>cephes.nan</a></li><li><a href='#cephesisnanx'>cephes.isnan(x)</a></li><li><a href='#cephesisinfx'>cephes.isinf(x)</a></li><li><a href='#cephesisfinitex'>cephes.isfinite(x)</a></li></ul></li><li><a href='#complex_numbers'>Complex numbers</a><ul style='list-style: none;'><li><a href='#cephesnew_cmplxre_im'>cephes.new_cmplx(re, im)</a></li></ul></li><li><a href='#direct_access_to_ffi'>Direct access to FFI</a><ul style='list-style: none;'><li><a href='#cephesffi'>cephes.ffi.&ast;</a></li></ul></li></ul></div>
+<p>Provides and wraps the mathematical functions from the <a href='http://www.netlib.org/cephes/'>Cephes mathematical library</a>, developed by <a href='http://www.moshier.net'>Stephen L. Moshier</a>. This C library provides a <b>lot</b> of mathematical functions. It is used, among many other places, <a href='https://github.com/scipy/scipy/tree/master/scipy/special/cephes'>at the heart of SciPy</a>.</p>
+
+<h2 id='example'>Example</h2>
+
+<h3 id='elementary_call'>Elementary call</h3>
+
+<p>You can call any of the functions already wrapped. The C functions can be called from Lua with the same synopsis, for example:</p>
+<div class='highlight'><pre><code class='lua'><span class='nb'>require</span> <span class='s1'>&#39;</span><span class='s'>cephes&#39;</span>
+<span class='n'>x</span> <span class='o'>=</span> <span class='n'>cephes</span><span class='p'>.</span><span class='n'>ndtr</span><span class='p'>(</span><span class='mi'>0</span><span class='p'>)</span>
+</code></pre></div>
+<h3 id='applying_to_a_whole_tensor'>Applying to a whole tensor</h3>
+
+<p>Cephes functions do not know of Torch tensors, and most only apply to a double and return a double. You can apply to a whole tensor using the <code>apply</code> function from the <a href='https://github.com/torch/ffi'><code>torchffi</code> package</a>:</p>
+<div class='highlight'><pre><code class='lua'><span class='nb'>require</span> <span class='s1'>&#39;</span><span class='s'>cephes&#39;</span>
+
+<span class='c1'>-- Without torchffi: need to wrap with extra function</span>
+<span class='n'>a</span><span class='o'>=</span><span class='n'>torch</span><span class='p'>.</span><span class='n'>randn</span><span class='p'>(</span><span class='mi'>10</span><span class='p'>)</span>
+<span class='n'>a</span><span class='p'>:</span><span class='n'>apply</span><span class='p'>(</span><span class='k'>function</span><span class='p'>(</span><span class='n'>x</span><span class='p'>)</span> <span class='k'>return</span> <span class='n'>cephes</span><span class='p'>.</span><span class='n'>ndtr</span><span class='p'>(</span><span class='n'>x</span><span class='p'>)</span> <span class='k'>end</span><span class='p'>)</span>
+<span class='nb'>print</span><span class='p'>(</span><span class='n'>a</span><span class='p'>)</span>
+
+<span class='c1'>-- With torchffi: much simpler!</span>
+<span class='nb'>require</span> <span class='s1'>&#39;</span><span class='s'>torchffi&#39;</span>
+<span class='n'>a</span><span class='p'>:</span><span class='n'>apply</span><span class='p'>(</span><span class='n'>cephes</span><span class='p'>.</span><span class='n'>ndtr</span><span class='p'>)</span>
+<span class='nb'>print</span><span class='p'>(</span><span class='n'>a</span><span class='p'>)</span>
+</code></pre></div>
+<h2 id='list_of_cephes_functions'>List of Cephes functions</h2>
+
+<p>See <a href='doubldoc.html'>the full list of Cephes double-precision functions</a>. The Torch wrappers respect the same prototypes.</p>
+
+<h2 id='list_of_torchonly_functions'>List of Torch-only functions</h2>
+
+<p>Those functions are not part of the original Cephes library</p>
+
+<h3 id='cephesdigammax'>cephes.digamma(x)</h3>
+
+<p>Alias for <code>cephes.psi(x)</code></p>
+
+<h3 id='cephespolygammam_x'>cephes.polygamma(m, x)</h3>
+
+<p>The <code>(m+1)</code>-th derivative of the logarithm of the gamma function <a href='http://mathworld.wolfram.com/PolygammaFunction.html'>(see MathWorld definition)</a>.</p>
+
+<blockquote>
+<p><strong>Input:</strong></p>
+
+<ul>
+<li><code>m</code> : non-negative integer</li>
+
+<li><code>x</code> : real number</li>
+</ul>
+
+<p><strong>Returns:</strong> <code>(m+1)</code>-th derivative of the logarithm of the gamma function, evaluated at <code>x</code></p>
+</blockquote>
+
+<h3 id='cephesbetagradx_y'>cephes.betagrad(x, y)</h3>
+
+<p>The partial-derivative of the beta function, with respect to the first variable.</p>
+
+<blockquote>
+<p><strong>Input:</strong></p>
+
+<ul>
+<li><code>x</code> : positive real number</li>
+
+<li><code>y</code> : positive real number</li>
+</ul>
+
+<p><strong>Returns:</strong> Partial-derivative of the beta function with respect to the first variable, evaluated at (<code>x</code>, <code>y</code>)</p>
+</blockquote>
+
+<h2 id='error_handling'>Error Handling</h2>
+
+<p>By default, Torch-Cephes <strong>does not signal any error</strong> (domain, singularity, overflow, underflow, precision). It is as non-intrusive as possible and tries to return a value which is hopefully usable: it might be NaN, it might be inf.</p>
+
+<p>However, the user can ask Cephes to generate lua errors with the following functions.</p>
+
+<h3 id='cephesseterrorlevellevel'>cephes.setErrorLevel(level)</h3>
+
+<p>Sets the level of error reporting.</p>
+
+<blockquote>
+<p><strong>Input:</strong> <code>level</code> : can be any of - <code>&#39;off&#39;</code>/<code>0</code> to be entirely quiet - <code>&#39;error&#39;</code>/<code>1</code> to issue Lua errors with stack trace - <code>&#39;warning&#39;</code>/<code>2</code> to print a warning on stdout</p>
+
+<p><strong>Returns:</strong> None</p>
+</blockquote>
+
+<h3 id='cephesgeterrorlevel'>cephes.getErrorLevel()</h3>
+
+<p>Returns the current level of error reporting, for example to save and restore later.</p>
+
+<blockquote>
+<p><strong>Input:</strong> None</p>
+
+<p><strong>Returns:</strong> integer 0, 1, or 2, representing the current error reporting level, see <code>setErrorLevel()</code></p>
+</blockquote>
+
+<h2 id='limits'>Limits</h2>
+
+<p>Convenience functions to check for finiteness.</p>
+
+<h3 id='cephesnan'>cephes.nan</h3>
+
+<p>Stands for not a number, clearer alias for <code>0/0</code></p>
+
+<h3 id='cephesisnanx'>cephes.isnan(x)</h3>
+
+<p>Checks if <code>x</code> is not a number.</p>
+
+<blockquote>
+<p><strong>Input:</strong> <code>x</code> : any number</p>
+
+<p><strong>Returns:</strong> <code>true</code> if <code>x</code> is <code>cephes.nan</code>, <code>false</code> otherwise</p>
+</blockquote>
+
+<h3 id='cephesisinfx'>cephes.isinf(x)</h3>
+
+<p>Checks is a number is infinite.</p>
+
+<blockquote>
+<p><strong>Input:</strong> <code>x</code> : any number</p>
+
+<p><strong>Returns:</strong>** <code>true</code> if <code>x</code> is <code>math.huge</code> or <code>-math.huge</code> or <code>cephes.nan</code>, <code>false</code> otherwise.</p>
+</blockquote>
+
+<h3 id='cephesisfinitex'>cephes.isfinite(x)</h3>
+
+<p>Checks if a number is finite.</p>
+
+<blockquote>
+<p><strong>Input:</strong> <code>x</code> : any number</p>
+
+<p><strong>Returns:</strong> <code>not cephes.isinf(x) and not cephes.isnan(x)</code></p>
+</blockquote>
+
+<h2 id='complex_numbers'>Complex numbers</h2>
+
+<h3 id='cephesnew_cmplxre_im'>cephes.new_cmplx(re, im)</h3>
+
+<blockquote>
+<p><strong>Input:</strong></p>
+
+<ul>
+<li><code>re</code> : any number, to initialize the real part</li>
+
+<li><code>im</code> : any number, to initalize the imaginary part</li>
+</ul>
+
+<p><strong>Returns:</strong> a pointer to a new Cephes FFI complex number with real part <code>r</code> and imaginary part <code>im</code>.</p>
+</blockquote>
+
+<h2 id='direct_access_to_ffi'>Direct access to FFI</h2>
+
+<h3 id='cephesffi'>cephes.ffi.&ast;</h3>
+
+<p>Functions directly accessible at the top of the <code>cephes</code> table are Lua wrappers to the actual C functions from Cephes, with extra error checking. If, for any reason, you want to get rid of this error checking and of a possible overhead, the FFI-wrapper functions can be called directly via <code>cephes.ffi.myfunction()</code> instead of <code>cephes.myfunction()</code>.</p>
+
+    </body>
+</html>
