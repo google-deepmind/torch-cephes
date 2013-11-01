@@ -6,6 +6,9 @@
 # it wants to stop the commit.
 #
 
+MARKDOWN="doc/src"
+HTML="doc/html"
+
 if git rev-parse --verify HEAD >/dev/null 2>&1
 then
 	against=HEAD
@@ -17,19 +20,51 @@ fi
 # Redirect output to stderr.
 exec 1>&2
 
-
-# Detect modification to markdown documentation
-if [ "`git diff-index HEAD --exit-code --cached -- doc/`" ]
+# Forbid modification to HTML documentation
+if [ "`git diff-index HEAD --exit-code --cached -- $HTML/`" ]
 then
 	cat <<\EOF
-Error: Markdown documentation modified
+Error: HTML documentation manually modified
 
-If this is really, really what you wanted to doc, 
-you can commit using 
+HTML documentation is generated automatically by Jekyll from
+the Markdown documentation in pre-commit hook, and should 
+not be modified manually.
+
+If that is really, really what you wanted to do nonetheless,
+you can by-pass the verification and Jekyll with:
 
 git commit --no-verify
 EOF
 	exit 1
+else
+    echo "HTML documentation unchanged, proceeding"
+fi
+
+# Detect modification to markdown documentation
+if [ "`git diff-index HEAD --exit-code --cached -- $MARKDOWN/`" ]
+then
+    echo Markdown documentation modified, trying to run Jekyll
+
+    if [ -x "`which jekyll`" ] 
+    then
+        echo Jekyll found, running it
+        cd doc/src 
+        bundle exec jekyll build --source ./ --destination ../html
+        cd ${GIT_DIR}
+    else
+        cat <<\EOF
+Could not find Jekyll binary, the HTML documentation
+cannot be updated, aborting commit.
+
+If that you really, really want to commit and loose the 
+synchronization between Markdown and HTML, you can by-pass
+this verification:
+
+git commit --no-verify
+EOF
+        exit 1
+    fi
+
 else
     echo "Markdown unchanged, proceeding"
 fi
