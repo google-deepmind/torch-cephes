@@ -48,9 +48,8 @@ then
     if [ -x "`which jekyll`" ] 
     then
         echo Jekyll found, running it
-        cd doc/src 
+        cd doc/src
         bundle exec jekyll build --source ./ --destination ../html
-        cd ${GIT_DIR}
     else
         cat <<\EOF
 Could not find Jekyll binary, the HTML documentation
