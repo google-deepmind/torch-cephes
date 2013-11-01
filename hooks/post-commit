@@ -1,10 +1,6 @@
 #!/bin/sh
-#
-# An example hook script to verify if the doc has been changed
-# Called by "git commit" with no arguments.  The hook should
-# exit with non-zero status after issuing an appropriate message if
-# it wants to stop the commit.
-#
+# Merge the doc from master to gh-pages
+
 
 MARKDOWN="doc/src"
 HTML="doc/html"
@@ -17,8 +13,13 @@ else
 	against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
 fi
 
-
 # Redirect output to stderr.
 exec 1>&2
 
-echo "Post commit !!!"
+BRANCH=`git rev-parse --symbolic --abbrev-ref HEAD`
+if [ "$BRANCH" = "master" ]
+then
+    echo "Update gh-pages with modified documentation"
+    git subtree split --prefix "$HTML" --branch gh-pages
+fi
+
