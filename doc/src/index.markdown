@@ -43,6 +43,13 @@ a:apply(cephes.ndtr)
 print(a)
 {% endhighlight %}
 
+##Installation
+
+From a terminal:
+{% highlight bash %}
+torch-rocks install cephes
+{% endhighlight %}
+
 ##List of Cephes functions
 
 See [the full list of Cephes double-precision functions](doubldoc.html). The Torch wrappers respect the same prototypes.

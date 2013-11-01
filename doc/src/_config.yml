@@ -2,3 +2,4 @@ markdown: maruku
 safe: true
 lsi: false
 pygments: true
+exclude: [CMakeLists.txt, Gemfile, Gemfile.lock, README.DOC.markdown, _config.yml, _layouts]
