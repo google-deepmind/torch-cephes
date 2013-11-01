@@ -41,30 +41,32 @@ else
 fi
 
 # Detect modification to markdown documentation
-if [ "`git diff-index HEAD --exit-code --cached -- $MARKDOWN/`" ]
+#if [ "`git diff-index HEAD --exit-code --cached -- $MARKDOWN/`" ]
+#then
+#    echo Markdown documentation modified, trying to run Jekyll
+
+# Apply Jekill to doc folder
+if [ -x "`which jekyll`" ] 
 then
-    echo Markdown documentation modified, trying to run Jekyll
-
-    if [ -x "`which jekyll`" ] 
+    echo Jekyll found, running it
+    OLDPWD="`pwd`"
+    cd doc/src
+    bundle exec jekyll build --destination ../html
+    cd "$OLDPWD"
+    if [ $? -ne 0 ]
     then
-        echo Jekyll found, running it
-        cd doc/src
-        bundle exec jekyll build --source ./ --destination ../html
-    else
         cat <<\EOF
-Could not find Jekyll binary, the HTML documentation
-cannot be updated, aborting commit.
-
-If that you really, really want to commit and loose the 
-synchronization between Markdown and HTML, you can by-pass
-this verification:
+Jekyll generated an error, the HTML documentation
+cannot be updated, aborting commit. Use
 
 git commit --no-verify
+
+to bypass this verification.
 EOF
         exit 1
+    else
+        # Add the new html folder, including removals
+        echo Adding generated site to commit
+        git add --all doc/html
     fi
-
-else
-    echo "Markdown unchanged, proceeding"
 fi
-# Apply Jekill to doc folder
