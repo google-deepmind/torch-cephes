@@ -3,17 +3,17 @@ title: Document Center
 layout: doc
 ---
 
-#Torch-only functions
-
-Those functions are not part of the original Cephes library
+#Cephes Mathematical Functions Library, wrapped for Torch
 
 * Toc will go here
 {:toc}
 
+Provides and wraps the mathematical functions from the [Cephes mathematical library](http://www.netlib.org/cephes/), developed by [Stephen L. Moshier](http://www.moshier.net). This C library provides a <b>lot</b> of mathematical functions. It is used, among many other places, [at the heart of SciPy](https://github.com/scipy/scipy/tree/master/scipy/special/cephes).
 
-##Using wrapped Cephes functions
 
-###Direct call
+##Example
+
+###Elementary call
 
 You can call any of the functions already wrapped.
 The C functions can be called from Lua with the same synopsis, for example:
@@ -23,9 +23,6 @@ require 'cephes'
 x = cephes.ndtr(0)
 {% endhighlight %}
 
-See the list of wrapped functions in [`init.lua`](init.lua). 
-
-There is a (very) small subset already wrapped. Adding new wraps is very easy, feel free to do it as described below, and submit pull-requests.
 
 ###Applying to a whole tensor
 
@@ -46,7 +43,13 @@ a:apply(cephes.ndtr)
 print(a)
 {% endhighlight %}
 
-##Extra functions
+##List of Cephes functions
+
+See [the full list of Cephes double-precision functions](doubldoc.html). The Torch wrappers respect the same prototypes.
+
+##List of Torch-only functions
+
+Those functions are not part of the original Cephes library
 
 ###cephes.digamma(x)
 
