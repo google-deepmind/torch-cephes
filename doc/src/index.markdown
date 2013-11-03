@@ -12,7 +12,7 @@ Provides and wraps the mathematical functions from the [Cephes mathematical libr
 
 ###Elementary call
 
-You can call any of the functions already wrapped.
+You can call any of the wrapped functions.
 The C functions can be called from Lua with the same synopsis, for example:
 
 ```lua
@@ -144,6 +144,18 @@ Checks if a number is finite.
 > * `im` : any number, to initalize the imaginary part
 >
 >**Returns:** a pointer to a new Cephes FFI complex number with real part `r` and imaginary part `im`.
+
+##Unit Tests
+
+Last but not least, the unit tests are in the folder
+[`luasrc/tests`](https://github.com/jucor/torch-cephes/tree/master/luasrc/tests). You can run them from your local clone of the repostiory with:
+
+```bash
+git clone https://www.github.com/jucor/torch-cephes
+find torch-randomkit/luasrc/tests -name "test*lua" -exec torch {} \;
+```
+
+Those tests will soone be automatically installed with the package, once I sort out a bit of CMake resistance.
 
 ##Direct access to FFI
 
