@@ -5,9 +5,6 @@ layout: doc
 
 #Cephes Mathematical Functions Library, wrapped for Torch
 
-* Toc will go here
-{:toc}
-
 Provides and wraps the mathematical functions from the [Cephes mathematical library](http://www.netlib.org/cephes/), developed by [Stephen L. Moshier](http://www.moshier.net). This C library provides a <b>lot</b> of mathematical functions. It is used, among many other places, [at the heart of SciPy](https://github.com/scipy/scipy/tree/master/scipy/special/cephes).
 
 
@@ -18,18 +15,17 @@ Provides and wraps the mathematical functions from the [Cephes mathematical libr
 You can call any of the functions already wrapped.
 The C functions can be called from Lua with the same synopsis, for example:
 
-{% highlight lua %}
+```lua
 require 'cephes'
 x = cephes.ndtr(0)
-{% endhighlight %}
+```
 
 
 ###Applying to a whole tensor
 
 Cephes functions do not know of Torch tensors, and most only apply to a double and return a double. You can apply to a whole tensor using the  `apply` function from the [`torchffi` package](https://github.com/torch/ffi):
 
-
-{% highlight lua %}
+```lua
 require 'cephes'
 
 -- Without torchffi: need to wrap with extra function
@@ -41,14 +37,15 @@ print(a)
 require 'torchffi'
 a:apply(cephes.ndtr)
 print(a)
-{% endhighlight %}
+```
 
 ##Installation
 
 From a terminal:
-{% highlight bash %}
+
+```bash
 torch-rocks install cephes
-{% endhighlight %}
+```
 
 ##List of Cephes functions
 
@@ -150,6 +147,6 @@ Checks if a number is finite.
 
 ##Direct access to FFI
 
-###cephes.ffi.&ast;
+###cephes.ffi.*
 
 Functions directly accessible at the top of the `cephes` table are Lua wrappers to the actual C functions from Cephes, with extra error checking. If, for any reason, you want to get rid of this error checking and of a possible overhead, the FFI-wrapper functions can be called directly via `cephes.ffi.myfunction()` instead of `cephes.myfunction()`.
