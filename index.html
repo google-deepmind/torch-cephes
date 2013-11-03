@@ -89,10 +89,13 @@
 </ul>
 </li>
 <li>
-<a href="#toc_20">Direct access to FFI</a>
+<a href="#toc_20">Unit Tests</a>
+</li>
+<li>
+<a href="#toc_21">Direct access to FFI</a>
 <ul>
 <li>
-<a href="#toc_21">cephes.ffi.*</a>
+<a href="#toc_22">cephes.ffi.*</a>
 </li>
 </ul>
 </li>
@@ -111,7 +114,7 @@
 
 <h3 id="toc_2">Elementary call</h3>
 
-<p>You can call any of the functions already wrapped.
+<p>You can call any of the wrapped functions.
 The C functions can be called from Lua with the same synopsis, for example:</p>
 <div class="highlight"><pre><code class="lua language-lua" data-lang="lua"><span class="nb">require</span> <span class="s1">&#39;</span><span class="s">cephes&#39;</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">ndtr</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -260,9 +263,18 @@ The C functions can be called from Lua with the same synopsis, for example:</p>
 <p><strong>Returns:</strong> a pointer to a new Cephes FFI complex number with real part <code>r</code> and imaginary part <code>im</code>.</p>
 </blockquote>
 
-<h2 id="toc_20">Direct access to FFI</h2>
+<h2 id="toc_20">Unit Tests</h2>
 
-<h3 id="toc_21">cephes.ffi.*</h3>
+<p>Last but not least, the unit tests are in the folder
+<a href="https://github.com/jucor/torch-cephes/tree/master/luasrc/tests"><code>luasrc/tests</code></a>. You can run them from your local clone of the repostiory with:</p>
+<div class="highlight"><pre><code class="bash language-bash" data-lang="bash">git clone https://www.github.com/jucor/torch-cephes
+find torch-randomkit/luasrc/tests -name <span class="s2">&quot;test*lua&quot;</span> -exec torch <span class="o">{}</span> <span class="se">\;</span>
+</code></pre></div>
+<p>Those tests will soone be automatically installed with the package, once I sort out a bit of CMake resistance.</p>
+
+<h2 id="toc_21">Direct access to FFI</h2>
+
+<h3 id="toc_22">cephes.ffi.*</h3>
 
 <p>Functions directly accessible at the top of the <code>cephes</code> table are Lua wrappers to the actual C functions from Cephes, with extra error checking. If, for any reason, you want to get rid of this error checking and of a possible overhead, the FFI-wrapper functions can be called directly via <code>cephes.ffi.myfunction()</code> instead of <code>cephes.myfunction()</code>.</p>
 
