@@ -1,5 +1,5 @@
 ---
-title: Document Center
+title: Cephes Mathematical Library wrapped for Torch
 layout: doc
 ---
 
@@ -49,7 +49,12 @@ torch-rocks install cephes
 
 ##List of Cephes functions
 
-See [the full list of Cephes double-precision functions](doubldoc.html). The Torch wrappers respect the same prototypes.
+See [the full list of Cephes double-precision functions](doubldoc.html). The Torch wrappers respect the same prototypes. 
+
+**Note**: a few features of the original library have not been wrapped:
+
+* single-precision functions: due to a few name clashes with their double counterparts, they require a slightly larger effort to wrap. Please [fill a feature request](https://github.com/jucor/torch-cephes/issues/new) if you need them.
+* polynomials with rational coefficients: their names clash with the polynomials with double coefficients. We wrapped the latter, which seem more generally useful, but please [raise an issue](ahttps://github.com/jucor/torch-cephes/issues/new).
 
 ##List of Torch-only functions
 

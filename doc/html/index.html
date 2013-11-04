@@ -2,7 +2,7 @@
     <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Document Center</title>
+    <title>Cephes Mathematical Library wrapped for Torch</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -141,7 +141,14 @@ The C functions can be called from Lua with the same synopsis, for example:</p>
 </code></pre></div>
 <h2 id="toc_5">List of Cephes functions</h2>
 
-<p>See <a href="doubldoc.html">the full list of Cephes double-precision functions</a>. The Torch wrappers respect the same prototypes.</p>
+<p>See <a href="doubldoc.html">the full list of Cephes double-precision functions</a>. The Torch wrappers respect the same prototypes. </p>
+
+<p><strong>Note</strong>: a few features of the original library have not been wrapped:</p>
+
+<ul>
+<li>single-precision functions: due to a few name clashes with their double counterparts, they require a slightly larger effort to wrap. Please <a href="https://github.com/jucor/torch-cephes/issues/new">fill a feature request</a> if you need them.</li>
+<li>polynomials with rational coefficients: their names clash with the polynomials with double coefficients. We wrapped the latter, which seem more generally useful, but please <a href="ahttps://github.com/jucor/torch-cephes/issues/new">raise an issue</a>.</li>
+</ul>
 
 <h2 id="toc_6">List of Torch-only functions</h2>
 

@@ -276,19 +276,7 @@ ffi.cdef[[
    int poldiv(double a[], int na, double b[], int nb, double c[]);
    void polsbt(double a[], int na, double b[], int nb, double c[]);
    double poleva(double a[], int na, double x);
-   // cephes/polyn/polyr.c
-   /* NB. Disabling to avoid naming clash with regular polynomials
-   void polini(int maxdeg);
-   void polprt(fract a[], int na, int d);
-   void polclr(fract a[], int n);
-   void polmov(fract a[], int na, fract b[]);
-   void polmul(fract a[], int na, fract b[], int nb, fract c[]);
-   void poladd(fract a[], int na, fract b[], int nb, fract c[]);
-   void polsub(fract a[], int na, fract b[], int nb, fract c[]);
-   int poldiv(fract a[], int na, fract b[], int nb, fract c[]);
-   void polsbt(fract a[], int na, fract b[], int nb, fract c[]);
-   void poleva(fract a[], int na, fract * x, fract * s);
-   */
+   // cephes/polyn/polyr.c: disabled to avoid naming clash with regular polynomials
    // cephes/polyn/revers.c
    void revers(double y[], double x[], int n);
 ]]
