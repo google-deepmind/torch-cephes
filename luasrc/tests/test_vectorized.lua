@@ -60,6 +60,36 @@ function vectorizeTests.testBeta()
     tester:asserteq(torch.typename(result), "torch.DoubleTensor")
     tester:asserteq(result:size(1), n, "should get " .. n .. " results")
 
+    local resultMatrix = torch.zeros(n/2, 2)
+    local xMatrix = x:clone():resize(n/2, 2)
+    local yMatrix = y:clone():resize(n/2, 2)
+
+    cephes.beta(resultMatrix, xMatrix, yMatrix)
+    tester:assert(resultMatrix, "call beta with both matrix tensors, and output provided")
+    tester:asserteq(torch.typename(resultMatrix), "torch.DoubleTensor")
+    tester:asserteq(resultMatrix:dim(), 2, "should get a matrix results")
+    tester:asserteq(resultMatrix:size(1), n/2, "should get " .. n/2 .. " rows results")
+    tester:asserteq(resultMatrix:size(2), 2, "should get " .. 2 .. " cols results")
+
+    cephes.beta(resultMatrix, x, yMatrix)
+    tester:assert(resultMatrix, "call beta with tensor and matrix, and output provided")
+    tester:asserteq(torch.typename(resultMatrix), "torch.DoubleTensor")
+    tester:asserteq(resultMatrix:size(1), n/2, "should get " .. n/2 .. " rows results")
+    tester:asserteq(resultMatrix:size(2), 2, "should get " .. 2 .. " cols results")
+
+    cephes.beta(resultMatrix, x, y)
+    tester:assert(resultMatrix, "call beta with both tensors, and output matrix provided")
+    tester:asserteq(torch.typename(resultMatrix), "torch.DoubleTensor")
+    tester:asserteq(resultMatrix:size(1), n/2, "should get " .. n/2 .. " rows results")
+    tester:asserteq(resultMatrix:size(2), 2, "should get " .. 2 .. " cols results")
+
+    resultMatrix = cephes.beta(xMatrix, yMatrix)
+    tester:assert(resultMatrix, "call beta with both matrix tensors, and no provided")
+    tester:asserteq(torch.typename(result), "torch.DoubleTensor")
+    tester:asserteq(resultMatrix:dim(), 1, "should get a vector results")
+    tester:asserteq(resultMatrix:size(1), n, "should get " .. n .. " results")
+
+    local result= torch.zeros(n)
     cephes.beta(result, x, 1)
     tester:assert(result, "call beta with first argument a tensor")
     tester:asserteq(torch.typename(result), "torch.DoubleTensor")
@@ -82,7 +112,6 @@ function vectorizeTests.testBeta()
 end
 
 function vectorizeTests.testNdtr()
-
     local n = 60
     local x = torch.linspace(-10, 10, n)
 
@@ -93,7 +122,6 @@ function vectorizeTests.testNdtr()
     tester:assert(result)
     tester:asserteq(torch.typename(result), "torch.DoubleTensor")
     tester:asserteq(result:size(1), n, "should get " .. n .. " results")
-
 end
 
 tester:add(vectorizeTests)

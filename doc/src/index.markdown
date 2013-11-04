@@ -20,25 +20,42 @@ x = cephes.igam(2, 3) -- returns a number
 ```
 
 
-###Applying to a whole tensor
+###Calling on tensors
 
-Our wrappers for cephes functions are vectorized, meaning they can take tensors as arguments, apply the function for each arguments, and return the result into a tensors. Like most torch functions, they also accept an optional Tensor as first argument to store the result into.
+Our wrappers for cephes functions are vectorized, meaning they can 
+
+* take tensors as arguments, evaluating the function for each element of the arguments, and return the result into a vector. 
+* mix tensors and numbers as arguments, numbers are automatically expanded
+* **shape does not matter**, only the number of elements.
+
+
+Like most torch functions, they also accept an optional Tensor as first argument to store the result into.
 
 ```lua
 require 'cephes'
 -- Call over a whole tensor of parameters
-result = cephes.ndtr(torch.randn(10)) -- returns a new tensor of same dimension as the input
+result = cephes.ndtr(torch.randn(10)) -- returns a new tensor 
+                                      -- of 10 elements
 
--- And it works with several tensor arguments, pairing them map-like
+-- Several tensor arguments, pairing them map-like
+-- Below returns a vector of 100 elements
 x = torch.rand(100)
 y = torch.rand(100)
-result = cephes.igam(x, y) -- returns a vector of same dimension as x and df
+result = cephes.igam(x, y)
 
--- You can mix number and tensors arguments: numbers are automatically expanded
-result = cephes.igam(4, y) -- returns a vector of same dimension as y
+-- Mix number and tensors: numbers are automatically expanded
+-- Below returns a vector of 100 elements
+result = cephes.igam(4, y)
 
--- And of course you can store the result into an existing tensor of the right size
-result:resize(x:size())
+-- Can also use matrices: only the number of elements matters
+-- Below with a 3D array and a vector, return a vector of 100 elts
+z = torch.rand(2,5,10)
+result = cephes.igam(z, y)
+
+-- And of course you can store the result into an 
+-- existing tensor of the right number of elements
+-- Below stores into an existing 3D tensors of 100 elements
+result = torch.Tensor(2,5,10)
 cephes.igam(result, x, y)
 ```
 

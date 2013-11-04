@@ -28,7 +28,7 @@
 <a href="#toc_2">Simple call on a number</a>
 </li>
 <li>
-<a href="#toc_3">Applying to a whole tensor</a>
+<a href="#toc_3">Calling on tensors</a>
 </li>
 </ul>
 </li>
@@ -118,23 +118,33 @@
 <div class="highlight"><pre><code class="lua language-lua" data-lang="lua"><span class="nb">require</span> <span class="s1">&#39;</span><span class="s">cephes&#39;</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">igam</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">-- returns a number</span>
 </code></pre></div>
-<h3 id="toc_3">Applying to a whole tensor</h3>
+<h3 id="toc_3">Calling on tensors</h3>
 
 <p>Our wrappers for cephes functions are vectorized, meaning they can take tensors as arguments, apply the function for each arguments, and return the result into a tensors. Like most torch functions, they also accept an optional Tensor as first argument to store the result into.</p>
 <div class="highlight"><pre><code class="lua language-lua" data-lang="lua"><span class="nb">require</span> <span class="s1">&#39;</span><span class="s">cephes&#39;</span>
 <span class="c1">-- Call over a whole tensor of parameters</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">ndtr</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="c1">-- returns a new tensor of same dimension as the input</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">ndtr</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="c1">-- returns a new tensor </span>
+                                      <span class="c1">-- of 10 elements</span>
 
-<span class="c1">-- And it works with several tensor arguments, pairing them map-like</span>
+<span class="c1">-- Several tensor arguments, pairing them map-like</span>
+<span class="c1">-- Below returns a vector of 100 elements</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">igam</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1">-- returns a vector of same dimension as x and df</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">igam</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-<span class="c1">-- You can mix number and tensors arguments: numbers are automatically expanded</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">igam</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1">-- returns a vector of same dimension as y</span>
+<span class="c1">-- Mix number and tensors: numbers are automatically expanded</span>
+<span class="c1">-- Below returns a vector of 100 elements</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">igam</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-<span class="c1">-- And of course you can store the result into an existing tensor of the right size</span>
-<span class="n">result</span><span class="p">:</span><span class="n">resize</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">size</span><span class="p">())</span>
+<span class="c1">-- Can also use matrices: only the number of elements matters</span>
+<span class="c1">-- Below with a 3D array and a vector, return a vector of 100 elts</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">igam</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1">-- And of course you can store the result into an </span>
+<span class="c1">-- existing tensor of the right number of elements</span>
+<span class="c1">-- Below stores into an existing 3D tensors of 100 elements</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">cephes</span><span class="p">.</span><span class="n">igam</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="toc_4">Installation</h2>

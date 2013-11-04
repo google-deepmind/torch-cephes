@@ -309,7 +309,7 @@ function cephes._check1DParams(K, defaultResultType, ...)
     for paramIndex, param in ipairs(params) do
         local size
         if isTensor(param) then
-            size = param:size(1)
+            size = param:nElement()
         elseif type(param) == 'number' or type(param) == 'cdata' then
             size = 1
             -- Use torch's default Tensor for parameters
@@ -319,7 +319,7 @@ function cephes._check1DParams(K, defaultResultType, ...)
         end
 
         if not (size == 1 or Nparams == 1 or Nparams == size) then
-            error("Incoherent sizes for parameters")
+            error("Incoherent number of elements for parameters")
         elseif size > 1 and Nparams == 1 then
             Nparams = size
         end
@@ -329,13 +329,13 @@ function cephes._check1DParams(K, defaultResultType, ...)
         -- If the result size was fixed by the caller (either via tensor or integer)
         if Nparams == 1 then
             if Nresult ~= 1 then
-                error("If you have constant arguments, don't provide a result tensor with size greater than one!")
+                error("If you have constant arguments, please do not provide a result tensor with size greater than one")
             end
             -- If only size-1 parameters, Nresult dictates the output size
             Nparams = Nresult
         else
             -- However, if the parameters dictate one size and the result another, error
-            assert(Nparams == Nresult,  "Parameter size (" .. Nparams ..") does not match result size (" .. Nresult ..")" )
+            assert(Nparams == Nresult,  "Parameter's number of elements (" .. Nparams ..") does not match result's number of elements (" .. Nresult ..")" )
         end
     else
         -- If the result size was not fixed by the caller, parameters dictate it
