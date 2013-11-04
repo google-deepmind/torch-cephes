@@ -114,25 +114,31 @@
 
 <h3 id="toc_2">Elementary call</h3>
 
-<p>You can call any of the wrapped functions.
-The C functions can be called from Lua with the same synopsis, for example:</p>
+<p>The C functions can be called from Lua with the same synopsis, and will then return a number, for example:</p>
 <div class="highlight"><pre><code class="lua language-lua" data-lang="lua"><span class="nb">require</span> <span class="s1">&#39;</span><span class="s">cephes&#39;</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">ndtr</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="toc_3">Applying to a whole tensor</h3>
 
-<p>Cephes functions do not know of Torch tensors, and most only apply to a double and return a double. You can apply to a whole tensor using the  <code>apply</code> function from the <a href="https://github.com/torch/ffi"><code>torchffi</code> package</a>:</p>
+<p>Our wrappers for cephes functions are vectorized, meaning they can take tensors as arguments, apply the function for each arguments, and return the result into a tensors. Like most torch functions, they also accept an optional Tensor as first argument to store the result into.</p>
 <div class="highlight"><pre><code class="lua language-lua" data-lang="lua"><span class="nb">require</span> <span class="s1">&#39;</span><span class="s">cephes&#39;</span>
+<span class="c1">-- Call over a whole tensor of parameters</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">ndtr</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="c1">-- returns a new tensor of same dimension as the input</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
-<span class="c1">-- Without torchffi: need to wrap with extra function</span>
-<span class="n">a</span><span class="o">=</span><span class="n">torch</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">a</span><span class="p">:</span><span class="n">apply</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">return</span> <span class="n">cephes</span><span class="p">.</span><span class="n">ndtr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">end</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="c1">-- And it works with several tensor arguments, pairing them map-like</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">igam</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1">-- returns a vector of same dimension as x and df</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
-<span class="c1">-- With torchffi: much simpler!</span>
-<span class="nb">require</span> <span class="s1">&#39;</span><span class="s">torchffi&#39;</span>
-<span class="n">a</span><span class="p">:</span><span class="n">apply</span><span class="p">(</span><span class="n">cephes</span><span class="p">.</span><span class="n">ndtr</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="c1">-- You can mix number and tensors arguments: numbers are automatically expanded</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">igam</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1">-- returns a vector of same dimension as y</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="c1">-- And of course you can store the result into an existing tensor of the right size</span>
+<span class="n">result</span><span class="p">:</span><span class="n">resize</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">size</span><span class="p">())</span>
+<span class="n">cephes</span><span class="p">.</span><span class="n">igam</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="toc_4">Installation</h2>
 
