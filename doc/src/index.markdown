@@ -10,33 +10,36 @@ Provides and wraps the mathematical functions from the [Cephes mathematical libr
 
 ##Example
 
-###Elementary call
+###Simple call on a number
 
-You can call any of the wrapped functions.
-The C functions can be called from Lua with the same synopsis, for example:
+The wrapped functions can be called from Lua with the same synopsis as their C coutnerpart, and will then return a number, for example:
 
 ```lua
 require 'cephes'
-x = cephes.ndtr(0)
+x = cephes.igam(2, 3) -- returns a number
 ```
 
 
 ###Applying to a whole tensor
 
-Cephes functions do not know of Torch tensors, and most only apply to a double and return a double. You can apply to a whole tensor using the  `apply` function from the [`torchffi` package](https://github.com/torch/ffi):
+Our wrappers for cephes functions are vectorized, meaning they can take tensors as arguments, apply the function for each arguments, and return the result into a tensors. Like most torch functions, they also accept an optional Tensor as first argument to store the result into.
 
 ```lua
 require 'cephes'
+-- Call over a whole tensor of parameters
+result = cephes.ndtr(torch.randn(10)) -- returns a new tensor of same dimension as the input
 
--- Without torchffi: need to wrap with extra function
-a=torch.randn(10)
-a:apply(function(x) return cephes.ndtr(x) end)
-print(a)
+-- And it works with several tensor arguments, pairing them map-like
+x = torch.rand(100)
+y = torch.rand(100)
+result = cephes.igam(x, y) -- returns a vector of same dimension as x and df
 
--- With torchffi: much simpler!
-require 'torchffi'
-a:apply(cephes.ndtr)
-print(a)
+-- You can mix number and tensors arguments: numbers are automatically expanded
+result = cephes.igam(4, y) -- returns a vector of same dimension as y
+
+-- And of course you can store the result into an existing tensor of the right size
+result:resize(x:size())
+cephes.igam(result, x, y)
 ```
 
 ##Installation
