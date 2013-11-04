@@ -36,30 +36,30 @@
 <a href="#toc_4">Installation</a>
 </li>
 <li>
-<a href="#toc_5">List of Cephes functions</a>
-</li>
-<li>
-<a href="#toc_6">List of Torch-only functions</a>
+<a href="#toc_5">Error Handling</a>
 <ul>
 <li>
-<a href="#toc_7">cephes.digamma(x)</a>
+<a href="#toc_6">cephes.setErrorLevel(level)</a>
 </li>
 <li>
-<a href="#toc_8">cephes.polygamma(m, x)</a>
-</li>
-<li>
-<a href="#toc_9">cephes.betagrad(x, y)</a>
+<a href="#toc_7">cephes.getErrorLevel()</a>
 </li>
 </ul>
 </li>
 <li>
-<a href="#toc_10">Error Handling</a>
-<ul>
-<li>
-<a href="#toc_11">cephes.setErrorLevel(level)</a>
+<a href="#toc_8">List of Cephes functions</a>
 </li>
 <li>
-<a href="#toc_12">cephes.getErrorLevel()</a>
+<a href="#toc_9">List of Torch-only functions</a>
+<ul>
+<li>
+<a href="#toc_10">cephes.digamma(x)</a>
+</li>
+<li>
+<a href="#toc_11">cephes.polygamma(m, x)</a>
+</li>
+<li>
+<a href="#toc_12">cephes.betagrad(x, y)</a>
 </li>
 </ul>
 </li>
@@ -120,7 +120,15 @@
 </code></pre></div>
 <h3 id="toc_3">Calling on tensors</h3>
 
-<p>Our wrappers for cephes functions are vectorized, meaning they can take tensors as arguments, apply the function for each arguments, and return the result into a tensors. Like most torch functions, they also accept an optional Tensor as first argument to store the result into.</p>
+<p>Our wrappers for cephes functions are vectorized, meaning they can </p>
+
+<ul>
+<li>take tensors as arguments, evaluating the function for each element of the arguments, and return the result into a vector. </li>
+<li>mix tensors and numbers as arguments, numbers are automatically expanded</li>
+<li><strong>shape does not matter</strong>, only the number of elements.</li>
+</ul>
+
+<p>Like most torch functions, they also accept an optional Tensor as first argument to store the result into.</p>
 <div class="highlight"><pre><code class="lua language-lua" data-lang="lua"><span class="nb">require</span> <span class="s1">&#39;</span><span class="s">cephes&#39;</span>
 <span class="c1">-- Call over a whole tensor of parameters</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">cephes</span><span class="p">.</span><span class="n">ndtr</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="c1">-- returns a new tensor </span>
@@ -152,7 +160,36 @@
 <p>From a terminal:</p>
 <div class="highlight"><pre><code class="bash language-bash" data-lang="bash">torch-rocks install cephes
 </code></pre></div>
-<h2 id="toc_5">List of Cephes functions</h2>
+<h2 id="toc_5">Error Handling</h2>
+
+<p>By default, Torch-Cephes <strong>does not signal any error</strong> (domain, singularity, overflow, underflow, precision). It is as non-intrusive as possible and tries to return a value which is hopefully usable: it might be NaN, it might be inf.</p>
+
+<p>However, the user can ask Cephes to generate lua errors with the following functions.</p>
+
+<h3 id="toc_6">cephes.setErrorLevel(level)</h3>
+
+<p>Sets the level of error reporting.</p>
+
+<blockquote>
+<p><strong>Input:</strong>  <code>level</code> : can be any of
+  - <code>&#39;off&#39;</code>/<code>0</code> to be entirely quiet
+  - <code>&#39;error&#39;</code>/<code>1</code> to issue Lua errors with stack trace
+  - <code>&#39;warning&#39;</code>/<code>2</code> to print a warning on stdout</p>
+
+<p><strong>Returns:</strong> None</p>
+</blockquote>
+
+<h3 id="toc_7">cephes.getErrorLevel()</h3>
+
+<p>Returns the current level of error reporting, for example to save and restore later.</p>
+
+<blockquote>
+<p><strong>Input:</strong>  None</p>
+
+<p><strong>Returns:</strong> integer 0, 1, or 2, representing the current error reporting level, see <code>setErrorLevel()</code></p>
+</blockquote>
+
+<h2 id="toc_8">List of Cephes functions</h2>
 
 <p>See <a href="doubldoc.html">the full list of Cephes double-precision functions</a>. The Torch wrappers respect the same prototypes. </p>
 
@@ -161,17 +198,179 @@
 <ul>
 <li>single-precision functions: due to a few name clashes with their double counterparts, they require a slightly larger effort to wrap. Please <a href="https://github.com/jucor/torch-cephes/issues/new">fill a feature request</a> if you need them.</li>
 <li>polynomials with rational coefficients: their names clash with the polynomials with double coefficients. We wrapped the latter, which seem more generally useful, but please <a href="ahttps://github.com/jucor/torch-cephes/issues/new">raise an issue</a>.</li>
+<li>linear algebra functions: torch already has those.</li>
 </ul>
 
-<h2 id="toc_6">List of Torch-only functions</h2>
+<p>So, here goes the whole list, click for details:</p>
+
+<ul>
+<li><strong>acosh</strong>, <a href="doubldoc.html#acosh">Inverse hyperbolic cosine</a></li>
+<li><strong>airy</strong>, <a href="doubldoc.html#airy">Airy functions</a></li>
+<li><strong>asin</strong>, <a href="doubldoc.html#asin">Inverse circular sine</a></li>
+<li><strong>acos</strong>, <a href="doubldoc.html#acos">Inverse circular cosine</a></li>
+<li><strong>asinh</strong>, <a href="doubldoc.html#asinh">Inverse hyperbolic sine</a></li>
+<li><strong>atan</strong>, <a href="doubldoc.html#atan">Inverse circular tangent</a></li>
+<li><strong>atan2</strong>, <a href="doubldoc.html#atan2">Quadrant correct inverse circular tangent</a></li>
+<li><strong>atanh</strong>, <a href="doubldoc.html#atanh">Inverse hyperbolic tangent</a></li>
+<li><strong>bdtr</strong>, <a href="doubldoc.html#bdtr">Binomial distribution</a></li>
+<li><strong>bdtrc</strong>, <a href="doubldoc.html#bdtrc">Complemented binomial distribution</a></li>
+<li><strong>bdtri</strong>, <a href="doubldoc.html#bdtri">Inverse binomial distribution</a></li>
+<li><strong>beta</strong>, <a href="doubldoc.html#beta">Beta function</a></li>
+<li><strong>btdtr</strong>, <a href="doubldoc.html#btdtr">Beta distribution</a></li>
+<li><strong>cbrt</strong>, <a href="doubldoc.html#cbrt">Cube root</a></li>
+<li><strong>chbevl</strong>, <a href="doubldoc.html#chbevl">Evaluate Chebyshev series</a></li>
+<li><strong>chdtr</strong>, <a href="doubldoc.html#chdtr">Chi-square distribution</a></li>
+<li><strong>chdtrc</strong>, <a href="doubldoc.html#chdtrc">Complemented Chi-square distribution</a></li>
+<li><strong>chdtri</strong>, <a href="doubldoc.html#chdtri">Inverse of complemented Chi-square distribution</a></li>
+<li><strong>cheby</strong>, <a href="doubldoc.html#cheby">Find Chebyshev coefficients</a></li>
+<li><strong>clog</strong>, <a href="doubldoc.html#clog">Complex natural logarithm</a></li>
+<li><strong>cexp</strong>, <a href="doubldoc.html#cexp">Complex exponential function</a></li>
+<li><strong>csin</strong>, <a href="doubldoc.html#csin">Complex circular sine</a></li>
+<li><strong>ccos</strong>, <a href="doubldoc.html#ccos">Complex circular cosine</a></li>
+<li><strong>ctan</strong>, <a href="doubldoc.html#ctan">Complex circular tangent</a></li>
+<li><strong>ccot</strong>, <a href="doubldoc.html#ccot">Complex circular cotangent</a></li>
+<li><strong>casin</strong>, <a href="doubldoc.html#casin">Complex circular arc sine</a></li>
+<li><strong>cacos</strong>, <a href="doubldoc.html#cacos">Complex circular arc cosine</a></li>
+<li><strong>catan</strong>, <a href="doubldoc.html#catan">Complex circular arc tangent</a></li>
+<li><strong>csinh</strong>, <a href="doubldoc.html#csinh">Complex hyperbolic sine</a></li>
+<li><strong>casinh</strong>, <a href="doubldoc.html#casinh">Complex inverse hyperbolic sine</a></li>
+<li><strong>ccosh</strong>, <a href="doubldoc.html#ccosh">Complex hyperbolic cosine</a></li>
+<li><strong>cacosh</strong>, <a href="doubldoc.html#cacosh">Complex inverse hyperbolic cosine</a></li>
+<li><strong>ctanh</strong>, <a href="doubldoc.html#ctanh">Complex hyperbolic tangent</a></li>
+<li><strong>catanh</strong>, <a href="doubldoc.html#catanh">Complex inverse hyperbolic tangent</a></li>
+<li><strong>cpow</strong>, <a href="doubldoc.html#cpow">Complex power function</a></li>
+<li><strong>cmplx</strong>, <a href="doubldoc.html#cmplx">Complex number arithmetic</a></li>
+<li><strong>cabs</strong>, <a href="doubldoc.html#cabs">Complex absolute value</a></li>
+<li><strong>csqrt</strong>, <a href="doubldoc.html#csqrt">Complex square root</a></li>
+<li><strong>const</strong>, <a href="doubldoc.html#const">Globally declared constants</a></li>
+<li><strong>cosh</strong>, <a href="doubldoc.html#cosh">Hyperbolic cosine</a></li>
+<li><strong>dawsn</strong>, <a href="doubldoc.html#dawsn">Dawson&#39;s Integral</a></li>
+<li><strong>drand</strong>, <a href="doubldoc.html#drand">Pseudorandom number generator</a></li>
+<li><strong>ei</strong>, <a href="doubldoc.html#ei">Exponential Integral</a></li>
+<li><strong>eigens</strong>, <a href="doubldoc.html#eigens">Eigenvalues and eigenvectors of a real symmetric matrix</a></li>
+<li><strong>ellie</strong>, <a href="doubldoc.html#ellie">Incomplete elliptic integral of the second kind</a></li>
+<li><strong>ellik</strong>, <a href="doubldoc.html#ellik">Incomplete elliptic integral of the first kind</a></li>
+<li><strong>ellpe</strong>, <a href="doubldoc.html#ellpe">Complete elliptic integral of the second kind</a></li>
+<li><strong>ellpj</strong>, <a href="doubldoc.html#ellpj">Jacobian elliptic functions</a></li>
+<li><strong>ellpk</strong>, <a href="doubldoc.html#ellpk">Complete elliptic integral of the first kind</a></li>
+<li><strong>euclid</strong>, <a href="doubldoc.html#euclid">Rational arithmetic routines</a></li>
+<li><strong>exp</strong>, <a href="doubldoc.html#exp">Exponential function</a></li>
+<li><strong>exp10</strong>, <a href="doubldoc.html#exp10">Base 10 exponential function</a></li>
+<li><strong>exp2</strong>, <a href="doubldoc.html#exp2">Base 2 exponential function</a></li>
+<li><strong>expn</strong>, <a href="doubldoc.html#expn">Exponential integral En</a></li>
+<li><strong>expx2</strong>, <a href="doubldoc.html#expx2">Exponential of squared argument</a></li>
+<li><strong>fabs</strong>, <a href="doubldoc.html#fabs">Absolute value</a></li>
+<li><strong>fac</strong>, <a href="doubldoc.html#fac">Factorial function</a></li>
+<li><strong>fdtr</strong>, <a href="doubldoc.html#fdtr">F distribution</a></li>
+<li><strong>fdtrc</strong>, <a href="doubldoc.html#fdtrc">Complemented F distribution</a></li>
+<li><strong>fdtri</strong>, <a href="doubldoc.html#fdtri">Inverse of complemented F distribution</a></li>
+<li><strong>fftr</strong>, <a href="doubldoc.html#fftr">Fast Fourier transform</a></li>
+<li><strong>floor</strong>, <a href="doubldoc.html#floor">Floor function</a></li>
+<li><strong>ceil</strong>, <a href="doubldoc.html#ceil">Ceil function</a></li>
+<li><strong>frexp</strong>, <a href="doubldoc.html#frexp">Extract exponent</a></li>
+<li><strong>ldexp</strong>, <a href="doubldoc.html#ldexp">Apply exponent</a></li>
+<li><strong>fresnl</strong>, <a href="doubldoc.html#fresnl">Fresnel integral</a></li>
+<li><strong>gamma</strong>, <a href="doubldoc.html#gamma">Gamma function</a></li>
+<li><strong>lgam</strong>, <a href="doubldoc.html#lgam">Natural logarithm of gamma function</a></li>
+<li><strong>gdtr</strong>, <a href="doubldoc.html#gdtr">Gamma distribution function</a></li>
+<li><strong>gdtrc</strong>, <a href="doubldoc.html#gdtrc">Complemented gamma distribution function</a></li>
+<li><strong>gels</strong>, <a href="doubldoc.html#gels">Linear system with symmetric coefficient matrix</a></li>
+<li><strong>hyp2f1</strong>, <a href="doubldoc.html#hyp2f1">Gauss hypergeometric function</a></li>
+<li><strong>hyperg</strong>, <a href="doubldoc.html#hyperg">Confluent hypergeometric function</a></li>
+<li><strong>i0</strong>, <a href="doubldoc.html#i0">Modified Bessel function of order zero</a></li>
+<li><strong>i0e</strong>, <a href="doubldoc.html#i0e">Exponentially scaled modified Bessel function of order zero</a></li>
+<li><strong>i1</strong>, <a href="doubldoc.html#i1">Modified Bessel function of order one</a></li>
+<li><strong>i1e</strong>, <a href="doubldoc.html#i1e">Exponentially scaled modified Bessel function of order one</a></li>
+<li><strong>igam</strong>, <a href="doubldoc.html#igam">Incomplete gamma integral</a></li>
+<li><strong>igamc</strong>, <a href="doubldoc.html#igamc">Complemented incomplete gamma integral</a></li>
+<li><strong>igami</strong>, <a href="doubldoc.html#igami">Inverse of complemented imcomplete gamma integral</a></li>
+<li><strong>incbet</strong>, <a href="doubldoc.html#incbet">Incomplete beta integral</a></li>
+<li><strong>incbi</strong>, <a href="doubldoc.html#incbi">Inverse of imcomplete beta integral</a></li>
+<li><strong>isnan</strong>, <a href="doubldoc.html#isnan">Test for not a number</a></li>
+<li><strong>isfinite</strong>, <a href="doubldoc.html#isfinite">Test for infinity</a></li>
+<li><strong>signbit</strong>, <a href="doubldoc.html#signbit">Extract sign</a></li>
+<li><strong>iv</strong>, <a href="doubldoc.html#iv">Modified Bessel function of noninteger order</a></li>
+<li><strong>j0</strong>, <a href="doubldoc.html#j0">Bessel function of order zero</a></li>
+<li><strong>y0</strong>, <a href="doubldoc.html#y0">Bessel function of the second kind, order zero</a></li>
+<li><strong>j1</strong>, <a href="doubldoc.html#j1">Bessel function of order one</a></li>
+<li><strong>y1</strong>, <a href="doubldoc.html#y1">Bessel function of the second kind, order one</a></li>
+<li><strong>jn</strong>, <a href="doubldoc.html#jn">Bessel function of integer order</a></li>
+<li><strong>jv</strong>, <a href="doubldoc.html#jv">Bessel function of noninteger order</a></li>
+<li><strong>k0</strong>, <a href="doubldoc.html#k0">Modified Bessel function, third kind, order zero</a></li>
+<li><strong>k0e</strong>, <a href="doubldoc.html#k0e">Modified Bessel function, third kind, order zero, exponentially scaled</a></li>
+<li><strong>k1</strong>, <a href="doubldoc.html#k1">Modified Bessel function, third kind, order one</a></li>
+<li><strong>k1e</strong>, <a href="doubldoc.html#k1e">Modified Bessel function, third kind, order one, exponentially scaled</a></li>
+<li><strong>kn</strong>, <a href="doubldoc.html#kn">Modified Bessel function, third kind, integer order</a></li>
+<li><strong>kolmogorov</strong>, <a href="doubldoc.html#kolmogorov">Kolmogorov, Smirnov distributions</a></li>
+<li><strong>levnsn</strong>, <a href="doubldoc.html#levnsn">Linear predictive coding</a></li>
+<li><strong>lmdif</strong>, <a href="doubldoc.html#lmdif">Levenberg-Marquardt algorithm</a></li>
+<li><strong>log</strong>, <a href="doubldoc.html#log">Natural logarithm</a></li>
+<li><strong>log10</strong>, <a href="doubldoc.html#log10">Common logarithm</a></li>
+<li><strong>log2</strong>, <a href="doubldoc.html#log2">Base 2 logarithm</a></li>
+<li><strong>lrand</strong>, <a href="doubldoc.html#lrand">Pseudorandom integer number generator</a></li>
+<li><strong>lsqrt</strong>, <a href="doubldoc.html#lsqrt">Integer square root</a></li>
+<li><strong>minv</strong>, <a href="doubldoc.html#minv">Matrix inversion</a></li>
+<li><strong>mtransp</strong>, <a href="doubldoc.html#mtransp">Matrix transpose</a></li>
+<li><strong>nbdtr</strong>, <a href="doubldoc.html#nbdtr">Negative binomial distribution</a></li>
+<li><strong>nbdtrc</strong>, <a href="doubldoc.html#nbdtrc">Complemented negative binomial distribution</a></li>
+<li><strong>nbdtri</strong>, <a href="doubldoc.html#nbdtri">Functional inverse of negative binomial distribution</a></li>
+<li><strong>ndtr</strong>, <a href="doubldoc.html#ndtr">Normal distribution function</a></li>
+<li><strong>erf</strong>, <a href="doubldoc.html#erf">Error function</a></li>
+<li><strong>erfc</strong>, <a href="doubldoc.html#erfc">Complementary error function</a></li>
+<li><strong>ndtri</strong>, <a href="doubldoc.html#ndtri">Inverse of normal distribution function</a></li>
+<li><strong>pdtr</strong>, <a href="doubldoc.html#pdtr">Poisson distribution function</a></li>
+<li><strong>pdtrc</strong>, <a href="doubldoc.html#pdtrc">Complemented Poisson distribution function</a></li>
+<li><strong>pdtri</strong>, <a href="doubldoc.html#pdtri">Inverse of Poisson distribution function</a></li>
+<li><strong>planck</strong>, <a href="doubldoc.html#planck">Integral of Planck&#39;s black body radiation formula</a></li>
+<li><strong>polevl</strong>, <a href="doubldoc.html#polevl">Evaluate polynomial</a></li>
+<li><strong>p1evl</strong>, <a href="doubldoc.html#p1evl">Evaluate polynomial</a></li>
+<li><strong>polmisc</strong>, <a href="doubldoc.html#polmisc">Functions of a polynomial</a></li>
+<li><strong>polrt</strong>, <a href="doubldoc.html#polrt">Roots of a polynomial</a></li>
+<li><strong>polylog</strong>, <a href="doubldoc.html#polylog">Polylogarithms</a></li>
+<li><strong>polyn</strong>, <a href="doubldoc.html#polyn">Arithmetic operations on polynomials</a></li>
+<li><strong>pow</strong>, <a href="doubldoc.html#pow">Power function</a></li>
+<li><strong>powi</strong>, <a href="doubldoc.html#powi">Integer power function</a></li>
+<li><strong>psi</strong>, <a href="doubldoc.html#psi">Psi (digamma) function</a></li>
+<li><strong>revers</strong>, <a href="doubldoc.html#revers">Reversion of power series</a></li>
+<li><strong>rgamma</strong>, <a href="doubldoc.html#rgamma">Reciprocal gamma function</a></li>
+<li><strong>round</strong>, <a href="doubldoc.html#round">Round to nearest or even integer</a></li>
+<li><strong>shichi</strong>, <a href="doubldoc.html#shichi">Hyperbolic sine and cosine integrals</a></li>
+<li><strong>sici</strong>, <a href="doubldoc.html#sici">Sine and cosine integrals</a></li>
+<li><strong>simpsn</strong>, <a href="doubldoc.html#simpsn">Numerical integration of tabulated function</a></li>
+<li><strong>simq</strong>, <a href="doubldoc.html#simq">Simultaneous linear equations</a></li>
+<li><strong>sin</strong>, <a href="doubldoc.html#sin">Circular sine</a></li>
+<li><strong>cos</strong>, <a href="doubldoc.html#cos">Circular cosine</a></li>
+<li><strong>sincos</strong>, <a href="doubldoc.html#sincos">Sine and cosine by interpolation</a></li>
+<li><strong>sindg</strong>, <a href="doubldoc.html#sindg">Circular sine of angle in degrees</a></li>
+<li><strong>cosdg</strong>, <a href="doubldoc.html#cosdg">Circular cosine of angle in degrees</a></li>
+<li><strong>sinh</strong>, <a href="doubldoc.html#sinh">Hyperbolic sine</a></li>
+<li><strong>spence</strong>, <a href="doubldoc.html#spence">Dilogarithm</a></li>
+<li><strong>sqrt</strong>, <a href="doubldoc.html#sqrt">Square root</a></li>
+<li><strong>stdtr</strong>, <a href="doubldoc.html#stdtr">Student&#39;s t distribution</a></li>
+<li><strong>stdtri</strong>, <a href="doubldoc.html#stdtri">Functional inverse of Student&#39;s t distribution</a></li>
+<li><strong>struve</strong>, <a href="doubldoc.html#struve">Struve function</a></li>
+<li><strong>tan</strong>, <a href="doubldoc.html#tan">Circular tangent</a></li>
+<li><strong>cot</strong>, <a href="doubldoc.html#cot">Circular cotangent</a></li>
+<li><strong>tandg</strong>, <a href="doubldoc.html#tandg">Circular tangent of argument in degrees</a></li>
+<li><strong>cotdg</strong>, <a href="doubldoc.html#cotdg">Circular cotangent of argument in degrees</a></li>
+<li><strong>tanh</strong>, <a href="doubldoc.html#tanh">Hyperbolic tangent</a></li>
+<li><strong>log1p</strong>, <a href="doubldoc.html#log1p">Relative error logarithm</a></li>
+<li><strong>expm1</strong>, <a href="doubldoc.html#expm1">Relative error exponential</a></li>
+<li><strong>cosm1</strong>, <a href="doubldoc.html#cosm1">Relative error cosine</a></li>
+<li><strong>yn</strong>, <a href="doubldoc.html#yn">Bessel function of second kind of integer order</a></li>
+<li><strong>zeta</strong>, <a href="doubldoc.html#zeta">Zeta function of two arguments</a></li>
+<li><strong>zetac</strong>, <a href="doubldoc.html#zetac">Riemann zeta function of two arguments</a></li>
+</ul>
+
+<h2 id="toc_9">List of Torch-only functions</h2>
 
 <p>Those functions are not part of the original Cephes library</p>
 
-<h3 id="toc_7">cephes.digamma(x)</h3>
+<h3 id="toc_10">cephes.digamma(x)</h3>
 
 <p>Alias for <code>cephes.psi(x)</code></p>
 
-<h3 id="toc_8">cephes.polygamma(m, x)</h3>
+<h3 id="toc_11">cephes.polygamma(m, x)</h3>
 
 <p>The <code>(m+1)</code>-th derivative of the logarithm of the gamma function <a href="http://mathworld.wolfram.com/PolygammaFunction.html">(see MathWorld definition)</a>.</p>
 
@@ -186,7 +385,7 @@
 <p><strong>Returns:</strong> <code>(m+1)</code>-th derivative of the logarithm of the gamma function, evaluated at <code>x</code></p>
 </blockquote>
 
-<h3 id="toc_9">cephes.betagrad(x, y)</h3>
+<h3 id="toc_12">cephes.betagrad(x, y)</h3>
 
 <p>The partial-derivative of the beta function, with respect to the first variable.</p>
 
@@ -199,35 +398,6 @@
 </ul>
 
 <p><strong>Returns:</strong> Partial-derivative of the beta function with respect to the first variable, evaluated at (<code>x</code>, <code>y</code>)</p>
-</blockquote>
-
-<h2 id="toc_10">Error Handling</h2>
-
-<p>By default, Torch-Cephes <strong>does not signal any error</strong> (domain, singularity, overflow, underflow, precision). It is as non-intrusive as possible and tries to return a value which is hopefully usable: it might be NaN, it might be inf.</p>
-
-<p>However, the user can ask Cephes to generate lua errors with the following functions.</p>
-
-<h3 id="toc_11">cephes.setErrorLevel(level)</h3>
-
-<p>Sets the level of error reporting.</p>
-
-<blockquote>
-<p><strong>Input:</strong>  <code>level</code> : can be any of
-  - <code>&#39;off&#39;</code>/<code>0</code> to be entirely quiet
-  - <code>&#39;error&#39;</code>/<code>1</code> to issue Lua errors with stack trace
-  - <code>&#39;warning&#39;</code>/<code>2</code> to print a warning on stdout</p>
-
-<p><strong>Returns:</strong> None</p>
-</blockquote>
-
-<h3 id="toc_12">cephes.getErrorLevel()</h3>
-
-<p>Returns the current level of error reporting, for example to save and restore later.</p>
-
-<blockquote>
-<p><strong>Input:</strong>  None</p>
-
-<p><strong>Returns:</strong> integer 0, 1, or 2, representing the current error reporting level, see <code>setErrorLevel()</code></p>
 </blockquote>
 
 <h2 id="toc_13">Limits</h2>
@@ -288,7 +458,7 @@
 <p>Last but not least, the unit tests are in the folder
 <a href="https://github.com/jucor/torch-cephes/tree/master/luasrc/tests"><code>luasrc/tests</code></a>. You can run them from your local clone of the repostiory with:</p>
 <div class="highlight"><pre><code class="bash language-bash" data-lang="bash">git clone https://www.github.com/jucor/torch-cephes
-find torch-randomkit/luasrc/tests -name <span class="s2">&quot;test*lua&quot;</span> -exec torch <span class="o">{}</span> <span class="se">\;</span>
+find torch-cephes/luasrc/tests -name <span class="s2">&quot;test*lua&quot;</span> -exec torch <span class="o">{}</span> <span class="se">\;</span>
 </code></pre></div>
 <p>Those tests will soone be automatically installed with the package, once I sort out a bit of CMake resistance.</p>
 
