@@ -105,9 +105,14 @@ end
 function callTests.test_gamma()
     local x = 0.5
     tester:assert(cephes.gamma(x))
+    local errorLevel = cephes.getErrorLevel()
+
+    cephes.setErrorLevel('error')
     tester:assertErrorPattern(function() cephes.gamma(-3) end, ".*domain error.*")
     tester:assertErrorPattern(function() cephes.gamma(-4) end, ".*domain error.*")
     tester:assertErrorPattern(function() cephes.gamma(0) end, ".*domain error.*")
+    cephes.setErrorLevel(errorLevel)
+
     tester:assert(cephes.isnan(cephes.gamma(-math.huge)))
     tester:asserteq(cephes.gamma(math.huge), math.huge)
 end
@@ -119,8 +124,11 @@ function callTests.test_lgam()
     tester:assert(cephes.lgam(x))
     tester:assert(cephes.isinf(cephes.lgam(-math.huge)))
     tester:asserteq(cephes.lgam(math.huge), math.huge)
+    local errorLevel = cephes.getErrorLevel()
+    cephes.setErrorLevel('error')
     tester:assertErrorPattern(function() cephes.lgam(0) end, ".*singularity error.*")
     tester:assertErrorPattern(function() cephes.lgam(-1) end, ".*singularity error.*")
+    cephes.setErrorLevel(errorLevel)
 end
 
 -- Test simple calls for gdtr
