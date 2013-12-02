@@ -174,7 +174,7 @@ else
 		}
     printf("f: %lf, x:%lf, z: %lf, rk:%lf\n", f, x, z, rk);
 	p = f * x/sqrt(z*rk);
-    printf("p: %lf\n", p);
+    printf("p: %lf\n", p)
 	}
 
 /*	common exit	*/

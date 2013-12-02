@@ -52,5 +52,4 @@ LIST(REMOVE_ITEM src
     "${CMAKE_CURRENT_SOURCE_DIR}/polyn/polyr.c"
     )
 
-
-set(cephes_src "${src}" PARENT_SCOPE)
+ADD_TORCH_PACKAGE(cephes "${src}" FALSE)

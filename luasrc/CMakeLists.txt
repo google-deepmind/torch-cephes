@@ -1,6 +1,5 @@
 # install the lua code for the cephes package
-FILE(GLOB src "*.lua")
+FILE(GLOB luasrc "*.lua")
 # TODO: install the tests, too
 # ADD_SUBDIRECTORY(tests)
-
-set(luasrc "${src}" PARENT_SCOPE)
+ADD_TORCH_PACKAGE(cephes FALSE "${luasrc}")
