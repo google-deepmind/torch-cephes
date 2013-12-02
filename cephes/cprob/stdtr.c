@@ -1,3 +1,4 @@
+#include <stdio.h>
 /*							stdtr.c
  *
  *	Student's t distribution
@@ -171,7 +172,9 @@ else
 		f += tz;
 		j += 2;
 		}
+    printf("f: %lf, x:%lf, z: %lf, rk:%lf\n", f, x, z, rk);
 	p = f * x/sqrt(z*rk);
+    printf("p: %lf\n", p)
 	}
 
 /*	common exit	*/
