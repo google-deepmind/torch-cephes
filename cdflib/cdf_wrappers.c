@@ -19,6 +19,9 @@
 #endif
 #endif
 
+/* Numpy has this super smart special NaN, but we have to make do without it */
+#define NPY_NAN (0.0/0.0)
+
 /* This must be linked with fortran
  */
 
