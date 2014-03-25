@@ -1,7 +1,8 @@
 require 'cephes'
+require 'totem'
 
 local vectorizeTests = {}
-local tester = torch.Tester()
+local tester = totem.Tester()
 
 local function eq(tensor1, tensor2, message)
    tester:assertTensorEq(tensor1, tensor2, 1e-300, message)
@@ -125,4 +126,4 @@ function vectorizeTests.testNdtr()
 end
 
 tester:add(vectorizeTests)
-tester:run()
+return tester:run()

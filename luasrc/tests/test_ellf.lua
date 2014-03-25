@@ -1,8 +1,9 @@
 
 require 'cephes'
+require 'totem'
 local ffi = require 'ffi'
 local callTests = {}
-local tester = torch.Tester()
+local tester = totem.Tester()
 
 
 -- Test simple calls for ellie
@@ -48,4 +49,4 @@ function callTests.test_ellpk()
 end
 
 tester:add(callTests)
-tester:run()
+return tester:run()

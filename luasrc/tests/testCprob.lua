@@ -1,8 +1,9 @@
 -- Test the wrappers to the cprob folder
 require 'cephes'
+require 'totem'
 
 myTest = {}
-tester = torch.Tester()
+tester = totem.Tester()
 
 function myTest.testChdtr()
     local df = 4
@@ -35,4 +36,4 @@ end
 -- Add here calling tests for newly imported functions
 
 tester:add(myTest)
-tester:run()
+return tester:run()

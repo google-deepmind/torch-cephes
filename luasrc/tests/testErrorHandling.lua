@@ -1,8 +1,9 @@
 -- Test the error handling done by error_handling.lua
 require 'cephes'
+require 'totem'
 
 errTest = {}
-tester = torch.Tester()
+tester = totem.Tester()
 
 function errTest.testNoError()
     tester:assert(cephes.chdtr(3, .5))
@@ -19,4 +20,4 @@ function errTest.testError()
 end
 
 tester:add(errTest)
-tester:run()
+return tester:run()

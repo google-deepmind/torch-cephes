@@ -1,8 +1,9 @@
 
 require 'cephes'
+require 'totem'
 local ffi = require 'ffi'
 local callTests = {}
-local tester = torch.Tester()
+local tester = totem.Tester()
 
 
 -- Test simple calls for beta
@@ -174,4 +175,4 @@ function callTests.test_betagrad()
 end
 
 tester:add(callTests)
-tester:run()
+return tester:run()

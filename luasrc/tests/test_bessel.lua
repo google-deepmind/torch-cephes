@@ -1,8 +1,9 @@
 
 require 'cephes'
+require 'totem'
 local ffi = require 'ffi'
 local callTests = {}
-local tester = torch.Tester()
+local tester = totem.Tester()
 
 
 -- Test simple calls for airy
@@ -214,4 +215,4 @@ function callTests.test_yn()
 end
 
 tester:add(callTests)
-tester:run()
+return tester:run()
