@@ -36,4 +36,4 @@ end
 -- Add here calling tests for newly imported functions
 
 tester:add(myTest)
-tester:run()
+return tester:run()

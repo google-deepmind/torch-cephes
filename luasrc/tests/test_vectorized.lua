@@ -126,4 +126,4 @@ function vectorizeTests.testNdtr()
 end
 
 tester:add(vectorizeTests)
-tester:run()
+return tester:run()

@@ -133,4 +133,4 @@ function callTests.test_revers()
 end
 
 tester:add(callTests)
-tester:run()
+return tester:run()

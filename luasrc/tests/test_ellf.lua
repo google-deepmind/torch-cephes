@@ -49,4 +49,4 @@ function callTests.test_ellpk()
 end
 
 tester:add(callTests)
-tester:run()
+return tester:run()

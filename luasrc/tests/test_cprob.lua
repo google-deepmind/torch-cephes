@@ -295,4 +295,4 @@ function callTests.test_stdtri()
 end
 
 tester:add(callTests)
-tester:run()
+return tester:run()

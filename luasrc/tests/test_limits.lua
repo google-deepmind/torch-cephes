@@ -38,4 +38,4 @@ function limitsTests.test_isfinite()
 end
 
 tester:add(limitsTests)
-tester:run()
+return tester:run()

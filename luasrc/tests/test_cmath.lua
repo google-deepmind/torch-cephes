@@ -479,4 +479,4 @@ function callTests.test_cosm1()
 end
 
 tester:add(callTests)
-tester:run()
+return tester:run()

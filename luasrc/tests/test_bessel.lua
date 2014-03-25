@@ -215,4 +215,4 @@ function callTests.test_yn()
 end
 
 tester:add(callTests)
-tester:run()
+return tester:run()

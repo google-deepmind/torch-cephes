@@ -20,4 +20,4 @@ function errTest.testError()
 end
 
 tester:add(errTest)
-tester:run()
+return tester:run()

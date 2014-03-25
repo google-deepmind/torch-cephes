@@ -175,4 +175,4 @@ function callTests.test_betagrad()
 end
 
 tester:add(callTests)
-tester:run()
+return tester:run()
