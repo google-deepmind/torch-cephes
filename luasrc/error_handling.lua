@@ -220,10 +220,6 @@ ffi.cdef[[
     char errtxt[100];
 ]]
 
-local function getDataArray(tensor)
-    local pointerDef = torch.typename(tensor):gfind('torch%.(.*Tensor)')().."*"
-    return ffi.cast(pointerDef, torch.pointer(tensor)).storage.data
-end
 local function applyNotInPlace(input, output, func)
     if not input:isContiguous() or not output:isContiguous() then
         error("applyNotInPlace only supports contiguous tensors")
@@ -233,8 +229,8 @@ local function applyNotInPlace(input, output, func)
         error("applyNotInPlace: tensor element counts are not consistent")
     end
 
-    local inputdata = getDataArray(input)
-    local outputdata = getDataArray(output)
+    local inputdata = torch.data(input)
+    local outputdata = torch.data(output)
     local offset = input:storageOffset()
     -- A zero-based index is used to access the data.
     -- The end index is (startIndex + nElements - 1).
@@ -252,9 +248,9 @@ local function mapNotInPlace(inputA, inputB, output, func)
         error("mapNotInPlace: tensor element counts are not consistent")
     end
 
-    local inputAdata = getDataArray(inputA)
-    local inputBdata = getDataArray(inputB)
-    local outputdata = getDataArray(output)
+    local inputAdata = torch.data(inputA)
+    local inputBdata = torch.data(inputB)
+    local outputdata = torch.data(output)
     local offset = inputA:storageOffset()
     -- A zero-based index is used to access the data.
     -- The end index is (startIndex + nElements - 1).
