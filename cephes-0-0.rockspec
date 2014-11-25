@@ -2,13 +2,13 @@ package = 'cephes'
 version = '0-0'
 
 source = {
-   url = 'git://github.com/jucor/torch-cephes.git',
+   url = 'git://github.com/deepmind/torch-cephes.git',
    branch = 'master'
 }
 
 description = {
   summary = "Cephes mathematical functions library, wrapped for Torch",
-  homepage = "http://jucor.github.io/torch-cephes",
+  homepage = "http://deepmind.github.io/torch-cephes",
   detailed = "Provides and wraps the 180+ special mathematical functions from the Cephes mathematical library, developed by Stephen L. Moshier. It is used, among many other places, at the heart of SciPy.",
   license = "BSD",
   maintainer = "Julien Cornebise <julien@cornebise.com>"
