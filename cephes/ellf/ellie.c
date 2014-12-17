@@ -52,24 +52,27 @@ Copyright 1984, 1987, 1993, 2000 by Stephen L. Moshier
 
 /*	Incomplete elliptic integral of second kind	*/
 #include "mconf.h"
-extern double PI, PIO2, MACHEP;
+extern double torch_cephes_PI, torch_cephes_PIO2, torch_cephes_MACHEP;
 #ifdef ANSIPROT
-extern double sqrt ( double );
-extern double fabs ( double );
-extern double log ( double );
-extern double sin ( double x );
-extern double tan ( double x );
-extern double atan ( double );
-extern double floor ( double );
-extern double ellpe ( double );
-extern double ellpk ( double );
-double ellie ( double, double );
+extern double torch_cephes_sqrt ( double );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_sin ( double x );
+extern double torch_cephes_tan ( double x );
+extern double torch_cephes_atan ( double );
+extern double torch_cephes_floor ( double );
+extern double torch_cephes_ellpe ( double );
+extern double torch_cephes_ellpk ( double );
+double torch_cephes_ellie ( double, double );
 #else
-double sqrt(), fabs(), log(), sin(), tan(), atan(), floor();
-double ellpe(), ellpk(), ellie();
+double torch_cephes_sqrt(), torch_cephes_fabs(), torch_cephes_log(),
+    torch_cephes_sin(), torch_cephes_tan(), torch_cephes_atan(),
+    torch_cephes_floor();
+double torch_cephes_ellpe(), torch_cephes_ellpk(),
+    torch_cephes_ellie();
 #endif
 
-double ellie( phi, m )
+double torch_cephes_ellie( phi, m )
 double phi, m;
 {
 double a, b, c, e, temp;
@@ -79,10 +82,10 @@ int d, mod, npio2, sign;
 if( m == 0.0 )
 	return( phi );
 lphi = phi;
-npio2 = floor( lphi/PIO2 );
+npio2 = torch_cephes_floor( lphi/torch_cephes_PIO2 );
 if( npio2 & 1 )
 	npio2 += 1;
-lphi = lphi - npio2 * PIO2;
+lphi = lphi - npio2 * torch_cephes_PIO2;
 if( lphi < 0.0 )
 	{
 	lphi = -lphi;
@@ -93,50 +96,51 @@ else
 	sign = 1;
 	}
 a = 1.0 - m;
-E = ellpe( a );
+E = torch_cephes_ellpe( a );
 if( a == 0.0 )
 	{
-	temp = sin( lphi );
+	temp = torch_cephes_sin( lphi );
 	goto done;
 	}
-t = tan( lphi );
-b = sqrt(a);
+t = torch_cephes_tan( lphi );
+b = torch_cephes_sqrt(a);
 /* Thanks to Brian Fitzgerald <fitzgb@mml0.meche.rpi.edu>
    for pointing out an instability near odd multiples of pi/2.  */
-if( fabs(t) > 10.0 )
+if( torch_cephes_fabs(t) > 10.0 )
 	{
 	/* Transform the amplitude */
 	e = 1.0/(b*t);
 	/* ... but avoid multiple recursions.  */
-	if( fabs(e) < 10.0 )
+	if( torch_cephes_fabs(e) < 10.0 )
 		{
-		e = atan(e);
-		temp = E + m * sin( lphi ) * sin( e ) - ellie( e, m );
+		e = torch_cephes_atan(e);
+		temp = E + m * torch_cephes_sin( lphi ) * torch_cephes_sin( e )
+                    - torch_cephes_ellie( e, m );
 		goto done;
 		}
 	}
-c = sqrt(m);
+c = torch_cephes_sqrt(m);
 a = 1.0;
 d = 1;
 e = 0.0;
 mod = 0;
 
-while( fabs(c/a) > MACHEP )
+while( torch_cephes_fabs(c/a) > torch_cephes_MACHEP )
 	{
 	temp = b/a;
-	lphi = lphi + atan(t*temp) + mod * PI;
-	mod = (lphi + PIO2)/PI;
+	lphi = lphi + torch_cephes_atan(t*temp) + mod * torch_cephes_PI;
+	mod = (lphi + torch_cephes_PIO2)/torch_cephes_PI;
 	t = t * ( 1.0 + temp )/( 1.0 - temp * t * t );
 	c = ( a - b )/2.0;
-	temp = sqrt( a * b );
+	temp = torch_cephes_sqrt( a * b );
 	a = ( a + b )/2.0;
 	b = temp;
 	d += d;
-	e += c * sin(lphi);
+	e += c * torch_cephes_sin(lphi);
 	}
 
-temp = E / ellpk( 1.0 - m );
-temp *= (atan(t) + mod * PI)/(d * a);
+temp = E / torch_cephes_ellpk( 1.0 - m );
+temp *= (torch_cephes_atan(t) + mod * torch_cephes_PI)/(d * a);
 temp += e;
 
 done:

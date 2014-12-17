@@ -63,17 +63,18 @@
 #include "mconf.h"
 #if ANSIPROT
 void exit (int);
-extern void * malloc ( long );
+extern void * malloc ( unsigned long );
 extern void free ( void * );
-void polclr ( double *, int );
-void polmov ( double *, int, double * );
-void polmul ( double *, int, double *, int, double * );
-int poldiv ( double *, int, double *, int, double * );
+void torch_cephes_polclr ( double *, int );
+void torch_cephes_polmov ( double *, int, double * );
+void torch_cephes_polmul ( double *, int, double *, int, double * );
+int torch_cephes_poldiv ( double *, int, double *, int, double * );
 #else
 void exit();
 void * malloc();
 void free ();
-void polclr(), polmov(), poldiv(), polmul();
+void torch_cephes_polclr(), torch_cephes_polmov(), torch_cephes_poldiv(),
+    torch_cephes_polmul();
 #endif
 #ifndef NULL
 #define NULL 0
@@ -93,8 +94,8 @@ static double *pt2 = 0;
 static double *pt3 = 0;
 
 /* Maximum degree of polynomial. */
-int MAXPOL = 0;
-extern int MAXPOL;
+int torch_cephes_MAXPOL = 0;
+extern int torch_cephes_MAXPOL;
 
 /* Number of bytes (chars) in maximum size polynomial. */
 static int psize = 0;
@@ -103,11 +104,11 @@ static int psize = 0;
 /* Initialize max degree of polynomials
  * and allocate temporary storage.
  */
-void polini( maxdeg )
+void torch_cephes_polini( maxdeg )
 int maxdeg;
 {
 
-MAXPOL = maxdeg;
+torch_cephes_MAXPOL = maxdeg;
 psize = (maxdeg + 1) * sizeof(double);
 
 /* Release previously allocated memory, if any. */
@@ -126,7 +127,7 @@ pt3 = (double * )malloc(psize); /* used by polmul */
 /* Report if failure */
 if( (pt1 == NULL) || (pt2 == NULL) || (pt3 == NULL) )
 	{
-	mtherr( "polini", ERANGE );
+	torch_cephes_mtherr( "polini", ERANGE );
 	exit(1);
 	}
 }
@@ -137,7 +138,7 @@ if( (pt1 == NULL) || (pt2 == NULL) || (pt3 == NULL) )
  */
 static char form[] = "abcdefghijk";
 
-void polprt( a, na, d )
+void torch_cephes_polprt( a, na, d )
 double a[];
 int na, d;
 {
@@ -187,14 +188,14 @@ printf( "\n" );
 
 /* Set a = 0.
  */
-void polclr( a, n )
+void torch_cephes_polclr( a, n )
 register double *a;
 int n;
 {
 int i;
 
-if( n > MAXPOL )
-	n = MAXPOL;
+if( n > torch_cephes_MAXPOL )
+	n = torch_cephes_MAXPOL;
 for( i=0; i<=n; i++ )
 	*a++ = 0.0;
 }
@@ -203,14 +204,14 @@ for( i=0; i<=n; i++ )
 
 /* Set b = a.
  */
-void polmov( a, na, b )
+void torch_cephes_polmov( a, na, b )
 register double *a, *b;
 int na;
 {
 int i;
 
-if( na > MAXPOL )
-	na = MAXPOL;
+if( na > torch_cephes_MAXPOL )
+	na = torch_cephes_MAXPOL;
 
 for( i=0; i<= na; i++ )
 	{
@@ -221,7 +222,7 @@ for( i=0; i<= na; i++ )
 
 /* c = b * a.
  */
-void polmul( a, na, b, nb, c )
+void torch_cephes_polmul( a, na, b, nb, c )
 double a[], b[], c[];
 int na, nb;
 {
@@ -229,7 +230,7 @@ int i, j, k, nc;
 double x;
 
 nc = na + nb;
-polclr( pt3, MAXPOL );
+torch_cephes_polclr( pt3, torch_cephes_MAXPOL );
 
 for( i=0; i<=na; i++ )
 	{
@@ -237,14 +238,14 @@ for( i=0; i<=na; i++ )
 	for( j=0; j<=nb; j++ )
 		{
 		k = i + j;
-		if( k > MAXPOL )
+		if( k > torch_cephes_MAXPOL )
 			break;
 		pt3[k] += x * b[j];
 		}
 	}
 
-if( nc > MAXPOL )
-	nc = MAXPOL;
+if( nc > torch_cephes_MAXPOL )
+	nc = torch_cephes_MAXPOL;
 for( i=0; i<=nc; i++ )
 	c[i] = pt3[i];
 }
@@ -254,7 +255,7 @@ for( i=0; i<=nc; i++ )
  
 /* c = b + a.
  */
-void poladd( a, na, b, nb, c )
+void torch_cephes_poladd( a, na, b, nb, c )
 double a[], b[], c[];
 int na, nb;
 {
@@ -266,8 +267,8 @@ if( na > nb )
 else
 	n = nb;
 
-if( n > MAXPOL )
-	n = MAXPOL;
+if( n > torch_cephes_MAXPOL )
+	n = torch_cephes_MAXPOL;
 
 for( i=0; i<=n; i++ )
 	{
@@ -282,7 +283,7 @@ for( i=0; i<=n; i++ )
 
 /* c = b - a.
  */
-void polsub( a, na, b, nb, c )
+void torch_cephes_polsub( a, na, b, nb, c )
 double a[], b[], c[];
 int na, nb;
 {
@@ -294,8 +295,8 @@ if( na > nb )
 else
 	n = nb;
 
-if( n > MAXPOL )
-	n = MAXPOL;
+if( n > torch_cephes_MAXPOL )
+	n = torch_cephes_MAXPOL;
 
 for( i=0; i<=n; i++ )
 	{
@@ -312,7 +313,7 @@ for( i=0; i<=n; i++ )
 
 /* c = b/a
  */
-int poldiv( a, na, b, nb, c )
+int torch_cephes_poldiv( a, na, b, nb, c )
 double a[], b[], c[];
 int na, nb;
 {
@@ -327,15 +328,15 @@ sing = 0;
  * may be hard to obtain on a small computer.
  */
 ta = (double * )malloc( psize );
-polclr( ta, MAXPOL );
-polmov( a, na, ta );
+torch_cephes_polclr( ta, torch_cephes_MAXPOL );
+torch_cephes_polmov( a, na, ta );
 
 tb = (double * )malloc( psize );
-polclr( tb, MAXPOL );
-polmov( b, nb, tb );
+torch_cephes_polclr( tb, torch_cephes_MAXPOL );
+torch_cephes_polmov( b, nb, tb );
 
 tq = (double * )malloc( psize );
-polclr( tq, MAXPOL );
+torch_cephes_polclr( tq, torch_cephes_MAXPOL );
 
 /* What to do if leading (constant) coefficient
  * of denominator is zero.
@@ -347,7 +348,7 @@ if( a[0] == 0.0 )
 		if( ta[i] != 0.0 )
 			goto nzero;
 		}
-	mtherr( "poldiv", SING );
+	torch_cephes_mtherr( "poldiv", SING );
 	goto done;
 
 nzero:
@@ -371,26 +372,26 @@ nzero:
 		tb[nb] = 0.0;
 		}
 /* Call self, using reduced polynomials. */
-	sing += poldiv( ta, na, tb, nb, c );
+	sing += torch_cephes_poldiv( ta, na, tb, nb, c );
 	goto done;
 	}
 
 /* Long division algorithm.  ta[0] is nonzero.
  */
-for( i=0; i<=MAXPOL; i++ )
+for( i=0; i <= torch_cephes_MAXPOL; i++ )
 	{
 	quot = tb[i]/ta[0];
-	for( j=0; j<=MAXPOL; j++ )
+	for( j=0; j <= torch_cephes_MAXPOL; j++ )
 		{
 		k = j + i;
-		if( k > MAXPOL )
+		if( k > torch_cephes_MAXPOL )
 			break;
 		tb[k] -= quot * ta[j];
 		}
 	tq[i] = quot;
 	}
 /* Send quotient to output array. */
-polmov( tq, MAXPOL, c );
+torch_cephes_polmov( tq, torch_cephes_MAXPOL, c );
 
 done:
 
@@ -410,7 +411,7 @@ return( sing );
  * c(x) = b(x) = b(a(y)).
  */
 
-void polsbt( a, na, b, nb, c )
+void torch_cephes_polsbt( a, na, b, nb, c )
 double a[], b[], c[];
 int na, nb;
 {
@@ -419,31 +420,31 @@ double x;
 
 /* 0th degree term:
  */
-polclr( pt1, MAXPOL );
+torch_cephes_polclr( pt1, torch_cephes_MAXPOL );
 pt1[0] = b[0];
 
-polclr( pt2, MAXPOL );
+torch_cephes_polclr( pt2, torch_cephes_MAXPOL );
 pt2[0] = 1.0;
 n2 = 0;
 
 for( i=1; i<=nb; i++ )
 	{
 /* Form ith power of a. */
-	polmul( a, na, pt2, n2, pt2 );
+	torch_cephes_polmul( a, na, pt2, n2, pt2 );
 	n2 += na;
 	x = b[i];
 /* Add the ith coefficient of b times the ith power of a. */
 	for( j=0; j<=n2; j++ )
 		{
-		if( j > MAXPOL )
+		if( j > torch_cephes_MAXPOL )
 			break;
 		pt1[j] += x * pt2[j];
 		}
 	}
 
 k = n2 + nb;
-if( k > MAXPOL )
-	k = MAXPOL;
+if( k > torch_cephes_MAXPOL )
+	k = torch_cephes_MAXPOL;
 for( i=0; i<=k; i++ )
 	c[i] = pt1[i];
 }
@@ -453,7 +454,7 @@ for( i=0; i<=k; i++ )
 
 /* Evaluate polynomial a(t) at t = x.
  */
-double poleva( a, na, x )
+double torch_cephes_poleva( a, na, x )
 double a[];
 int na;
 double x;
@@ -468,4 +469,3 @@ for( i=na-1; i>=0; i-- )
 	}
 return(s);
 }
-

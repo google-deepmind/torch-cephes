@@ -46,38 +46,38 @@ Copyright 1985, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double exp ( double );
-extern int isnan ( double );
-extern int isfinite ( double );
+extern double torch_cephes_exp ( double );
+extern int torch_cephes_isnan ( double );
+extern int torch_cephes_isfinite ( double );
 #else
-double exp();
-int isnan(), isfinite();
+double torch_cephes_exp();
+int torch_cephes_isnan(), torch_cephes_isfinite();
 #endif
-extern double MAXLOG, INFINITY, LOGE2;
+extern double torch_cephes_MAXLOG, torch_cephes_INFINITY, torch_cephes_LOGE2;
 
-double cosh(x)
+double torch_cephes_cosh(x)
 double x;
 {
 double y;
 
 #ifdef NANS
-if( isnan(x) )
+if( torch_cephes_isnan(x) )
 	return(x);
 #endif
 if( x < 0 )
 	x = -x;
-if( x > (MAXLOG + LOGE2) )
+if( x > (torch_cephes_MAXLOG + torch_cephes_LOGE2) )
 	{
-	mtherr( "cosh", OVERFLOW );
-	return( INFINITY );
+	torch_cephes_mtherr( "cosh", OVERFLOW );
+	return( torch_cephes_INFINITY );
 	}	
-if( x >= (MAXLOG - LOGE2) )
+if( x >= (torch_cephes_MAXLOG - torch_cephes_LOGE2) )
 	{
-	y = exp(0.5 * x);
+	y = torch_cephes_exp(0.5 * x);
 	y = (0.5 * y) * y;
 	return(y);
 	}
-y = exp(x);
+y = torch_cephes_exp(x);
 y = 0.5 * (y + 1.0 / y);
 return( y );
 }

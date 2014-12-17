@@ -146,8 +146,8 @@ Copyright 1984, 1987, 1988, 1992, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 
-extern double SQRTH;
-extern double MAXLOG;
+extern double torch_cephes_SQRTH;
+extern double torch_cephes_MAXLOG;
 
 /* Define this macro to suppress error propagation in exp(x^2)
    by using the expx2 function.  The tradeoff is that doing so
@@ -385,33 +385,35 @@ static unsigned short U[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern double exp ( double );
-extern double log ( double );
-extern double fabs ( double );
-extern double sqrt ( double );
-extern double expx2 ( double, int );
-double erf ( double );
-double erfc ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_sqrt ( double );
+extern double torch_cephes_expx2 ( double, int );
+double torch_cephes_erf ( double );
+double torch_cephes_erfc ( double );
 static double erfce ( double );
 #else
-double polevl(), p1evl(), exp(), log(), fabs();
-double erf(), erfc(), expx2(), sqrt();
+double torch_cephes_polevl(), torch_cephes_p1evl(), torch_cephes_exp(),
+    torch_cephes_log(), torch_cephes_fabs();
+double torch_cephes_erf(), torch_cephes_erfc(), torch_cephes_expx2(),
+    torch_cephes_sqrt();
 static double erfce();
 #endif
 
-double ndtr(a)
+double torch_cephes_ndtr(a)
 double a;
 {
 double x, y, z;
 
-x = a * SQRTH;
-z = fabs(x);
+x = a * torch_cephes_SQRTH;
+z = torch_cephes_fabs(x);
 
 /* if( z < SQRTH ) */
 if( z < 1.0 )
-	y = 0.5 + 0.5 * erf(x);
+	y = 0.5 + 0.5 * torch_cephes_erf(x);
 
 else
 	{
@@ -419,10 +421,10 @@ else
 	/* See below for erfce. */
 	y = 0.5 * erfce(z);
 	/* Multiply by exp(-x^2 / 2)  */
-	z = expx2(a, -1);
-	y = y * sqrt(z);
+	z = torch_cephes_expx2(a, -1);
+	y = y * torch_cephes_sqrt(z);
 #else
-	y = 0.5 * erfc(z);
+	y = 0.5 * torch_cephes_erfc(z);
 #endif
 	if( x > 0 )
 		y = 1.0 - y;
@@ -432,7 +434,7 @@ return(y);
 }
 
 
-double erfc(a)
+double torch_cephes_erfc(a)
 double a;
 {
 double p,q,x,y,z;
@@ -444,14 +446,14 @@ else
 	x = a;
 
 if( x < 1.0 )
-	return( 1.0 - erf(a) );
+	return( 1.0 - torch_cephes_erf(a) );
 
 z = -a * a;
 
-if( z < -MAXLOG )
+if( z < -torch_cephes_MAXLOG )
 	{
 under:
-	mtherr( "erfc", UNDERFLOW );
+	torch_cephes_mtherr( "erfc", UNDERFLOW );
 	if( a < 0 )
 		return( 2.0 );
 	else
@@ -460,19 +462,19 @@ under:
 
 #ifdef USE_EXPXSQ
 /* Compute z = exp(z).  */
-z = expx2(a, -1);
+z = torch_cephes_expx2(a, -1);
 #else
-z = exp(z);
+z = torch_cephes_exp(z);
 #endif
 if( x < 8.0 )
 	{
-	p = polevl( x, P, 8 );
-	q = p1evl( x, Q, 8 );
+	p = torch_cephes_polevl( x, P, 8 );
+	q = torch_cephes_p1evl( x, Q, 8 );
 	}
 else
 	{
-	p = polevl( x, R, 5 );
-	q = p1evl( x, S, 6 );
+	p = torch_cephes_polevl( x, R, 5 );
+	q = torch_cephes_p1evl( x, S, 6 );
 	}
 y = (z * p)/q;
 
@@ -497,28 +499,28 @@ double p,q;
 
 if( x < 8.0 )
 	{
-	p = polevl( x, P, 8 );
-	q = p1evl( x, Q, 8 );
+	p = torch_cephes_polevl( x, P, 8 );
+	q = torch_cephes_p1evl( x, Q, 8 );
 	}
 else
 	{
-	p = polevl( x, R, 5 );
-	q = p1evl( x, S, 6 );
+	p = torch_cephes_polevl( x, R, 5 );
+	q = torch_cephes_p1evl( x, S, 6 );
 	}
 return (p/q);
 }
 
 
 
-double erf(x)
+double torch_cephes_erf(x)
 double x;
 {
 double y, z;
 
-if( fabs(x) > 1.0 )
+if( torch_cephes_fabs(x) > 1.0 )
 	return( 1.0 - erfc(x) );
 z = x * x;
-y = x * polevl( z, T, 4 ) / p1evl( z, U, 5 );
+y = x * torch_cephes_polevl( z, T, 4 ) / torch_cephes_p1evl( z, U, 5 );
 return( y );
 
 }

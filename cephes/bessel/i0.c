@@ -352,14 +352,14 @@ static unsigned short B[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double chbevl ( double, void *, int );
-extern double exp ( double );
-extern double sqrt ( double );
+extern double torch_cephes_chbevl ( double, void *, int );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_sqrt ( double );
 #else
-double chbevl(), exp(), sqrt();
+double torch_cephes_chbevl(), torch_cephes_exp(), torch_cephes_sqrt();
 #endif
 
-double i0(x)
+double torch_cephes_i0(x)
 double x;
 {
 double y;
@@ -369,17 +369,18 @@ if( x < 0 )
 if( x <= 8.0 )
 	{
 	y = (x/2.0) - 2.0;
-	return( exp(x) * chbevl( y, A, 30 ) );
+	return( torch_cephes_exp(x) * torch_cephes_chbevl( y, A, 30 ) );
 	}
 
-return(  exp(x) * chbevl( 32.0/x - 2.0, B, 25 ) / sqrt(x) );
+return(  torch_cephes_exp(x) *
+         torch_cephes_chbevl( 32.0/x - 2.0, B, 25 ) / torch_cephes_sqrt(x) );
 
 }
 
 
 
 
-double i0e( x )
+double torch_cephes_i0e( x )
 double x;
 {
 double y;
@@ -389,9 +390,9 @@ if( x < 0 )
 if( x <= 8.0 )
 	{
 	y = (x/2.0) - 2.0;
-	return( chbevl( y, A, 30 ) );
+	return( torch_cephes_chbevl( y, A, 30 ) );
 	}
 
-return(  chbevl( 32.0/x - 2.0, B, 25 ) / sqrt(x) );
+return(  torch_cephes_chbevl( 32.0/x - 2.0, B, 25 ) / torch_cephes_sqrt(x) );
 
 }

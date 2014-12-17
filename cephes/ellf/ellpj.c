@@ -63,23 +63,25 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double sqrt ( double );
-extern double fabs ( double );
-extern double sin ( double );
-extern double cos ( double );
-extern double asin ( double );
-extern double tanh ( double );
-extern double sinh ( double );
-extern double cosh ( double );
-extern double atan ( double );
-extern double exp ( double );
+extern double torch_cephes_sqrt ( double );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_sin ( double );
+extern double torch_cephes_cos ( double );
+extern double torch_cephes_asin ( double );
+extern double torch_cephes_tanh ( double );
+extern double torch_cephes_sinh ( double );
+extern double torch_cephes_cosh ( double );
+extern double torch_cephes_atan ( double );
+extern double torch_cephes_exp ( double );
 #else
-double sqrt(), fabs(), sin(), cos(), asin(), tanh();
-double sinh(), cosh(), atan(), exp();
+double torch_cephes_sqrt(), torch_cephes_fabs(), torch_cephes_sin(),
+    torch_cephes_cos(), torch_cephes_asin(), torch_cephes_tanh();
+double torch_cephes_sinh(), torch_cephes_cosh(), torch_cephes_atan(),
+    torch_cephes_exp();
 #endif
-extern double PIO2, MACHEP;
+extern double torch_cephes_PIO2, torch_cephes_MACHEP;
 
-int ellpj( u, m, sn, cn, dn, ph )
+int torch_cephes_ellpj( u, m, sn, cn, dn, ph )
 double u, m;
 double *sn, *cn, *dn, *ph;
 {
@@ -92,7 +94,7 @@ int i;
 
 if( m < 0.0 || m > 1.0 )
 	{
-	mtherr( "ellpj", DOMAIN );
+	torch_cephes_mtherr( "ellpj", DOMAIN );
 	*sn = 0.0;
 	*cn = 0.0;
 	*ph = 0.0;
@@ -101,8 +103,8 @@ if( m < 0.0 || m > 1.0 )
 	}
 if( m < 1.0e-9 )
 	{
-	t = sin(u);
-	b = cos(u);
+	t = torch_cephes_sin(u);
+	b = torch_cephes_cos(u);
 	ai = 0.25 * m * (u - t*b);
 	*sn = t - ai*b;
 	*cn = b + ai*t;
@@ -114,12 +116,13 @@ if( m < 1.0e-9 )
 if( m >= 0.9999999999 )
 	{
 	ai = 0.25 * (1.0-m);
-	b = cosh(u);
-	t = tanh(u);
+	b = torch_cephes_cosh(u);
+	t = torch_cephes_tanh(u);
 	phi = 1.0/b;
-	twon = b * sinh(u);
+	twon = b * torch_cephes_sinh(u);
 	*sn = t + ai * (twon - u)/(b*b);
-	*ph = 2.0*atan(exp(u)) - PIO2 + ai*(twon - u)/b;
+	*ph = 2.0*torch_cephes_atan(torch_cephes_exp(u)) - torch_cephes_PIO2 +
+            ai*(twon - u)/b;
 	ai *= t * phi;
 	*cn = phi - ai * (twon - u);
 	*dn = phi + ai * (twon + u);
@@ -129,22 +132,22 @@ if( m >= 0.9999999999 )
 
 /*	A. G. M. scale		*/
 a[0] = 1.0;
-b = sqrt(1.0 - m);
-c[0] = sqrt(m);
+b = torch_cephes_sqrt(1.0 - m);
+c[0] = torch_cephes_sqrt(m);
 twon = 1.0;
 i = 0;
 
-while( fabs(c[i]/a[i]) > MACHEP )
+while( torch_cephes_fabs(c[i]/a[i]) > torch_cephes_MACHEP )
 	{
 	if( i > 7 )
 		{
-		mtherr( "ellpj", OVERFLOW );
+		torch_cephes_mtherr( "ellpj", OVERFLOW );
 		goto done;
 		}
 	ai = a[i];
 	++i;
 	c[i] = ( ai - b )/2.0;
-	t = sqrt( ai * b );
+	t = torch_cephes_sqrt( ai * b );
 	a[i] = ( ai + b )/2.0;
 	b = t;
 	twon *= 2.0;
@@ -156,16 +159,16 @@ done:
 phi = twon * a[i] * u;
 do
 	{
-	t = c[i] * sin(phi) / a[i];
+	t = c[i] * torch_cephes_sin(phi) / a[i];
 	b = phi;
-	phi = (asin(t) + phi)/2.0;
+	phi = (torch_cephes_asin(t) + phi)/2.0;
 	}
 while( --i );
 
-*sn = sin(phi);
-t = cos(phi);
+*sn = torch_cephes_sin(phi);
+t = torch_cephes_cos(phi);
 *cn = t;
-*dn = t/cos(phi-b);
+*dn = t/torch_cephes_cos(phi-b);
 *ph = phi;
 return(0);
 }

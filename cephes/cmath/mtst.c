@@ -45,16 +45,16 @@ Copyright 1984, 1987, 1988, 2000 by Stephen L. Moshier
 #define WTRIALS (NTRIALS/5)
 
 #if GLIBC2
-double PI = 3.141592653589793238462643;
-double PIO2 = 3.141592653589793238462643 * 0.5;
-double MAXLOG = 7.09782712893383996732224E2;
+double torch_cephes_PI = 3.141592653589793238462643;
+double torch_cephes_PIO2 = 3.141592653589793238462643 * 0.5;
+double torch_cephes_MAXLOG = 7.09782712893383996732224E2;
 #else
-extern double PI;
-extern double PIO2;
-extern double MAXLOG;
+extern double torch_cephes_PI;
+extern double torch_cephes_PIO2;
+extern double torch_cephes_MAXLOG;
 #endif
 
-extern double MINLOG;
+extern double torch_cephes_MINLOG;
 /*
 define MINLOG -170.0
 define MAXLOG +170.0
@@ -63,67 +63,73 @@ define PIO2 1.570796326794896619
 */
 
 #ifdef ANSIPROT
-extern double fabs ( double );
-extern double sqrt ( double );
-extern double cbrt ( double );
-extern double exp ( double );
-extern double log ( double );
-extern double exp10 ( double );
-extern double log10 ( double );
-extern double tan ( double );
-extern double atan ( double );
-extern double sin ( double );
-extern double asin ( double );
-extern double cos ( double );
-extern double acos ( double );
-extern double pow ( double, double );
-extern double tanh ( double );
-extern double atanh ( double );
-extern double sinh ( double );
-extern double asinh ( double x );
-extern double cosh ( double );
-extern double acosh ( double );
-extern double gamma ( double );
-extern double lgam ( double );
-extern double jn ( int, double );
-extern double yn ( int, double );
-extern double ndtr ( double );
-extern double ndtri ( double );
-extern double stdtr ( int, double );
-extern double stdtri ( int, double );
-extern double ellpe ( double );
-extern double ellpk ( double );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_sqrt ( double );
+extern double torch_cephes_cbrt ( double );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_exp10 ( double );
+extern double torch_cephes_log10 ( double );
+extern double torch_cephes_tan ( double );
+extern double torch_cephes_atan ( double );
+extern double torch_cephes_sin ( double );
+extern double torch_cephes_asin ( double );
+extern double torch_cephes_cos ( double );
+extern double torch_cephes_acos ( double );
+extern double torch_cephes_pow ( double, double );
+extern double torch_cephes_tanh ( double );
+extern double torch_cephes_atanh ( double );
+extern double torch_cephes_sinh ( double );
+extern double torch_cephes_asinh ( double x );
+extern double torch_cephes_cosh ( double );
+extern double torch_cephes_acosh ( double );
+extern double torch_cephes_gamma ( double );
+extern double torch_cephes_lgam ( double );
+extern double torch_cephes_jn ( int, double );
+extern double torch_cephes_yn ( int, double );
+extern double torch_cephes_ndtr ( double );
+extern double torch_cephes_ndtri ( double );
+extern double torch_cephes_stdtr ( int, double );
+extern double torch_cephes_stdtri ( int, double );
+extern double torch_cephes_ellpe ( double );
+extern double torch_cephes_ellpk ( double );
 #else
-double fabs(), sqrt(), cbrt(), exp(), log();
-double exp10(), log10(), tan(), atan();
-double sin(), asin(), cos(), acos(), pow();
-double tanh(), atanh(), sinh(), asinh(), cosh(), acosh();
-double gamma(), lgam(), jn(), yn(), ndtrl(), ndtril();
-double stdtrl(), stdtril(), ellpel(), ellpkl();
+double torch_cephes_fabs(), torch_cephes_sqrt(), torch_cephes_cbrt(),
+    torch_cephes_exp(), torch_cephes_log();
+double torch_cephes_exp10(), torch_cephes_log10(), torch_cephes_tan(),
+    torch_cephes_atan();
+double torch_cephes_sin(), torch_cephes_asin(), torch_cephes_cos(),
+    torch_cephes_acos(), torch_cephes_pow();
+double torch_cephes_tanh(), torch_cephes_atanh(), torch_cephes_sinh(),
+    torch_cephes_asinh(), torch_cephes_cosh(), torch_cephes_acosh();
+double torch_cephes_gamma(), torch_cephes_lgam(), torch_cephes_jn(),
+    torch_cephes_yn(), torch_cephes_ndtrl(), torch_cephes_ndtril();
+double torch_cephes_stdtrl(), torch_cephes_stdtril(), torch_cephes_ellpel(),
+    torch_cephes_ellpkl();
 #endif
 
 #if GLIBC2
-extern double lgamma (double);
-extern double tgamma ( double );
+extern double torch_cephes_lgamma (double);
+extern double torch_cephes_tgamma ( double );
 #endif
 
 #if SETPREC
-int dprec();
+int torch_cephes_dprec();
 #endif
 
-int drand();
+int torch_cephes_drand();
 /* void exit(); */
 /* int printf(); */
 
 
 /* Provide inverses for square root and cube root: */
-double square(x)
+double torch_cephes_square(x)
 double x;
 {
 return( x * x );
 }
 
-double cube(x)
+double torch_cephes_cube(x)
 double x;
 {
 return( x * x * x );
@@ -183,50 +189,50 @@ struct fundef
 #endif
 
 struct fundef defs[NTESTS] = {
-{"  cube",   cube,   "  cbrt",   cbrt, 1, 0, 1, 2002.0, -1001.0, 0,
-0.0, 0.0, 0},
-{"   tan",    tan,   "  atan",   atan, 1, 0, 1,    0.0,     0.0,  0,
-0.0, 0.0, 0},
-{"  asin",   asin,   "   sin",    sin, 1, 0, 1,   2.0,      -1.0,  0,
-0.0, 0.0, 0},
-{"square", square,   "  sqrt",   sqrt, 1, 0, 1, 170.0,    -85.0, EXPSCAL,
-0.0, 0.0, 0},
-{"   exp",    exp,   "   log",    log, 1, 0, 0, 340.0,    -170.0,  0,
-0.0, 0.0, 0},
-{" atanh",  atanh,   "  tanh",   tanh, 1, 0, 1,    2.0,    -1.0,  0,
-0.0, 0.0, 0},
-{"  sinh",   sinh,   " asinh",  asinh, 1, 0, 1, 340.0,   0.0,  0,
-0.0, 0.0, 0},
-{"  cosh",   cosh,   " acosh",  acosh, 1, 0, 0, 340.0,      0.0,  0,
-0.0, 0.0, 0},
+{"  cube",   torch_cephes_cube,   "  cbrt",   torch_cephes_cbrt,
+     1, 0, 1, 2002.0, -1001.0, 0, 0.0, 0.0, 0},
+{"   tan",    torch_cephes_tan,   "  atan",   torch_cephes_atan,
+     1, 0, 1,    0.0,     0.0,  0, 0.0, 0.0, 0},
+{"  asin",   torch_cephes_asin,   "   sin",   torch_cephes_sin,
+     1, 0, 1,   2.0,      -1.0,  0, 0.0, 0.0, 0},
+{"square", torch_cephes_square,   "  sqrt",   torch_cephes_sqrt,
+   1, 0, 1, 170.0,    -85.0, EXPSCAL, 0.0, 0.0, 0},
+{"   exp",    torch_cephes_exp,   "   log",    torch_cephes_log,
+   1, 0, 0, 340.0,    -170.0,  0, 0.0, 0.0, 0},
+{" atanh",  torch_cephes_atanh,   "  tanh",   torch_cephes_tanh,
+   1, 0, 1,    2.0,    -1.0,  0, 0.0, 0.0, 0},
+{"  sinh",   torch_cephes_sinh,   " asinh",  torch_cephes_asinh,
+   1, 0, 1, 340.0,   0.0,  0, 0.0, 0.0, 0},
+{"  cosh",   torch_cephes_cosh,   " acosh",  torch_cephes_acosh,
+   1, 0, 0, 340.0,      0.0,  0, 0.0, 0.0, 0},
 #if !GLIBC2r1
-{" exp10",  exp10,   " log10",  log10, 1, 0, 0, 340.0,    -170.0,  0,
-0.0, 0.0, 0},
+{" exp10",  torch_cephes_exp10,   " log10",  torch_cephes_log10,
+   1, 0, 0, 340.0,    -170.0,  0, 0.0, 0.0, 0},
 #endif
-{"pow",       pow,      "pow",    pow, 2, POWER, 1, 21.0, 0.0,   0,
-42.0, -21.0, 0},
-{"  acos",   acos,   "   cos",    cos, 1, 0, 0,   2.0,      -1.0,  0,
-0.0, 0.0, 0},
+{"pow",     torch_cephes_pow,      "pow",    torch_cephes_pow,
+   2, POWER, 1, 21.0, 0.0,   0, 42.0, -21.0, 0},
+{"  acos",   torch_cephes_acos,   "   cos",    torch_cephes_cos,
+   1, 0, 0,   2.0,      -1.0,  0, 0.0, 0.0, 0},
 #if GLIBC2
 #if !GLIBC2r1
-{ "tgamma",  tgamma,  "lgamma", lgamma, 1, GAMMA, 0, 34.0, 0.0,   0,
-0.0, 0.0, 0},
+{ "tgamma",  torch_cephes_tgamma,  "lgamma", torch_cephes_lgamma,
+    1, GAMMA, 0, 34.0, 0.0,   0, 0.0, 0.0, 0},
 #endif
 #else
-{ "gamma",  gamma,     "lgam",   lgam, 1, GAMMA, 0, 34.0, 0.0,   0,
-0.0, 0.0, 0},
+{ "gamma",  torch_cephes_gamma,     "lgam",   torch_cephes_lgam,
+    1, GAMMA, 0, 34.0, 0.0,   0, 0.0, 0.0, 0},
 #endif
-{ "  Jn",     jn,   "  Yn",     yn, 2, WRONK1, 0, 30.0,  0.1,  0,
-40.0, -20.0, INT},
+{ "  Jn",     torch_cephes_jn,   "  Yn",     torch_cephes_yn,
+    2, WRONK1, 0, 30.0,  0.1,  0, 40.0, -20.0, INT},
 #if !GLIBC2
-{ "  ndtr",   ndtr,  " ndtri",  ndtri, 1, 0, 1,  10.0L,  -10.0L,  0,
-0.0, 0.0, 0},
-{ " ndtri",  ndtri,  "  ndtr",   ndtr, 1, 0, 1,  1.0L,  0.0L,  0,
-0.0, 0.0, 0},
-{" ellpe",  ellpe,   " ellpk",  ellpk, 1, ELLIP, 0,   1.0L, 0.0L,  0,
-0.0, 0.0, 0},
-{ "stdtr",  stdtr,   "stdtri", stdtri, 2, STDTR, 1, 4.0L, -2.0L,   0,
-30.0, 1.0, INT},
+{ "  ndtr",   torch_cephes_ndtr,  " ndtri",  torch_cephes_ndtri,
+    1, 0, 1,  10.0L,  -10.0L,  0, 0.0, 0.0, 0},
+{ " ndtri",  torch_cephes_ndtri,  "  ndtr",   torch_cephes_ndtr,
+    1, 0, 1,  1.0L,  0.0L,  0, 0.0, 0.0, 0},
+{" ellpe",  torch_cephes_ellpe,   " ellpk",  torch_cephes_ellpk,
+    1, ELLIP, 0,   1.0L, 0.0L,  0, 0.0, 0.0, 0},
+{ "stdtr",  torch_cephes_stdtr,   "stdtri", torch_cephes_stdtri,
+    2, STDTR, 1, 4.0L, -2.0L,   0, 30.0, 1.0, INT},
 #endif
 };
 

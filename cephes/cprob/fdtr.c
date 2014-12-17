@@ -162,13 +162,13 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double incbet ( double, double, double );
-extern double incbi ( double, double, double );
+extern double torch_cephes_incbet ( double, double, double );
+extern double torch_cephes_incbi ( double, double, double );
 #else
-double incbet(), incbi();
+double torch_cephes_incbet(), torch_cephes_incbi();
 #endif
 
-double fdtrc( ia, ib, x )
+double torch_cephes_fdtrc( ia, ib, x )
 int ia, ib;
 double x;
 {
@@ -176,18 +176,18 @@ double a, b, w;
 
 if( (ia < 1) || (ib < 1) || (x < 0.0) )
 	{
-	mtherr( "fdtrc", DOMAIN );
+	torch_cephes_mtherr( "fdtrc", DOMAIN );
 	return( 0.0 );
 	}
 a = ia;
 b = ib;
 w = b / (b + a * x);
-return( incbet( 0.5*b, 0.5*a, w ) );
+return( torch_cephes_incbet( 0.5*b, 0.5*a, w ) );
 }
 
 
 
-double fdtr( ia, ib, x )
+double torch_cephes_fdtr( ia, ib, x )
 int ia, ib;
 double x;
 {
@@ -195,18 +195,18 @@ double a, b, w;
 
 if( (ia < 1) || (ib < 1) || (x < 0.0) )
 	{
-	mtherr( "fdtr", DOMAIN );
+	torch_cephes_mtherr( "fdtr", DOMAIN );
 	return( 0.0 );
 	}
 a = ia;
 b = ib;
 w = a * x;
 w = w / (b + w);
-return( incbet(0.5*a, 0.5*b, w) );
+return( torch_cephes_incbet(0.5*a, 0.5*b, w) );
 }
 
 
-double fdtri( ia, ib, y )
+double torch_cephes_fdtri( ia, ib, y )
 int ia, ib;
 double y;
 {
@@ -214,23 +214,23 @@ double a, b, w, x;
 
 if( (ia < 1) || (ib < 1) || (y <= 0.0) || (y > 1.0) )
 	{
-	mtherr( "fdtri", DOMAIN );
+	torch_cephes_mtherr( "fdtri", DOMAIN );
 	return( 0.0 );
 	}
 a = ia;
 b = ib;
 /* Compute probability for x = 0.5.  */
-w = incbet( 0.5*b, 0.5*a, 0.5 );
+w = torch_cephes_incbet( 0.5*b, 0.5*a, 0.5 );
 /* If that is greater than y, then the solution w < .5.
    Otherwise, solve at 1-y to remove cancellation in (b - b*w).  */
 if( w > y || y < 0.001)
 	{
-	w = incbi( 0.5*b, 0.5*a, y );
+	w = torch_cephes_incbi( 0.5*b, 0.5*a, y );
 	x = (b - b*w)/(a*w);
 	}
 else
 	{
-	w = incbi( 0.5*a, 0.5*b, 1.0-y );
+	w = torch_cephes_incbi( 0.5*a, 0.5*b, 1.0-y );
 	x = b*w/(a*(1.0-w));
 	}
 return(x);

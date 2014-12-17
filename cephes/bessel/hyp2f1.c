@@ -90,25 +90,27 @@ Copyright 1984, 1987, 1992, 2000 by Stephen L. Moshier
 #define ETHRESH 1.0e-12
 
 #ifdef ANSIPROT
-extern double fabs ( double );
-extern double pow ( double, double );
-extern double round ( double );
-extern double gamma ( double );
-extern double log ( double );
-extern double exp ( double );
-extern double psi ( double );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_pow ( double, double );
+extern double torch_cephes_round ( double );
+extern double torch_cephes_gamma ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_psi ( double );
 static double hyt2f1(double, double, double, double, double *);
 static double hys2f1(double, double, double, double, double *);
-double hyp2f1(double, double, double, double);
+double torch_cephes_hyp2f1(double, double, double, double);
 #else
-double fabs(), pow(), round(), gamma(), log(), exp(), psi();
+double torch_cephes_fabs(), torch_cephes_pow(),
+    torch_cephes_round(), torch_cephes_gamma(), torch_cephes_log(),
+    torch_cephes_exp(), torch_cephes_psi();
 static double hyt2f1();
 static double hys2f1();
-double hyp2f1();
+double torch_cephes_hyp2f1();
 #endif
-extern double MAXNUM, MACHEP;
+extern double torch_cephes_MAXNUM, torch_cephes_MACHEP;
 
-double hyp2f1( a, b, c, x )
+double torch_cephes_hyp2f1( a, b, c, x )
 double a, b, c, x;
 {
 double d, d1, d2, e;
@@ -117,34 +119,34 @@ double ia, ib, ic, id, err;
 int flag, i, aid;
 
 err = 0.0;
-ax = fabs(x);
+ax = torch_cephes_fabs(x);
 s = 1.0 - x;
 flag = 0;
-ia = round(a); /* nearest integer to a */
-ib = round(b);
+ia = torch_cephes_round(a); /* nearest integer to a */
+ib = torch_cephes_round(b);
 
 if( a <= 0 )
 	{
-	if( fabs(a-ia) < EPS )		/* a is a negative integer */
+	if( torch_cephes_fabs(a-ia) < EPS ) /* a is a negative integer */
 		flag |= 1;
 	}
 
 if( b <= 0 )
 	{
-	if( fabs(b-ib) < EPS )		/* b is a negative integer */
+	if( torch_cephes_fabs(b-ib) < EPS ) /* b is a negative integer */
 		flag |= 2;
 	}
 
 if( ax < 1.0 )
 	{
-	if( fabs(b-c) < EPS )		/* b = c */
+	if( torch_cephes_fabs(b-c) < EPS )		/* b = c */
 		{
-		y = pow( s, -a );	/* s to the -a power */
+		y = torch_cephes_pow( s, -a );	/* s to the -a power */
 		goto hypdon;
 		}
-	if( fabs(a-c) < EPS )		/* a = c */
+	if( torch_cephes_fabs(a-c) < EPS )		/* a = c */
 		{
-		y = pow( s, -b );	/* s to the -b power */
+		y = torch_cephes_pow( s, -b );	/* s to the -b power */
 		goto hypdon;
 		}
 	}
@@ -153,8 +155,8 @@ if( ax < 1.0 )
 
 if( c <= 0.0 )
 	{
-	ic = round(c); 	/* nearest integer to c */
-	if( fabs(c-ic) < EPS )		/* c is a negative integer */
+	ic = torch_cephes_round(c); 	/* nearest integer to c */
+	if( torch_cephes_fabs(c-ic) < EPS ) /* c is a negative integer */
 		{
 		/* check if termination before explosion */
 		if( (flag & 1) && (ia > ic) )
@@ -172,22 +174,22 @@ if( ax > 1.0 )			/* series diverges	*/
 	goto hypdiv;
 
 p = c - a;
-ia = round(p); /* nearest integer to c-a */
-if( (ia <= 0.0) && (fabs(p-ia) < EPS) )	/* negative int c - a */
+ia = torch_cephes_round(p); /* nearest integer to c-a */
+if( (ia <= 0.0) && (torch_cephes_fabs(p-ia) < EPS) )	/* negative int c - a */
 	flag |= 4;
 
 r = c - b;
-ib = round(r); /* nearest integer to c-b */
-if( (ib <= 0.0) && (fabs(r-ib) < EPS) )	/* negative int c - b */
+ib = torch_cephes_round(r); /* nearest integer to c-b */
+if( (ib <= 0.0) && (torch_cephes_fabs(r-ib) < EPS) )	/* negative int c - b */
 	flag |= 8;
 
 d = c - a - b;
-id = round(d); /* nearest integer to d */
-q = fabs(d-id);
+id = torch_cephes_round(d); /* nearest integer to d */
+q = torch_cephes_fabs(d-id);
 
 /* Thanks to Christian Burger <BURGER@DMRHRZ11.HRZ.Uni-Marburg.DE>
  * for reporting a bug here.  */
-if( fabs(ax-1.0) < EPS )			/* |x| == 1.0	*/
+if( torch_cephes_fabs(ax-1.0) < EPS )			/* |x| == 1.0	*/
 	{
 	if( x > 0.0 )
 		{
@@ -200,7 +202,8 @@ if( fabs(ax-1.0) < EPS )			/* |x| == 1.0	*/
 			}
 		if( d <= 0.0 )
 			goto hypdiv;
-		y = gamma(c)*gamma(d)/(gamma(p)*gamma(r));
+		y = torch_cephes_gamma(c)*torch_cephes_gamma(d)/
+                    (torch_cephes_gamma(p)*torch_cephes_gamma(r));
 		goto hypdon;
 		}
 
@@ -222,8 +225,8 @@ if( d < 0.0 )
 	err = 0.0;
 	aid = 2 - id;
 	e = c + aid;
-	d2 = hyp2f1(a,b,e,x);
-	d1 = hyp2f1(a,b,e+1.0,x);
+	d2 = torch_cephes_hyp2f1(a,b,e,x);
+	d1 = torch_cephes_hyp2f1(a,b,e+1.0,x);
 	q = a + b + 1.0;
 	for( i=0; i<aid; i++ )
 		{
@@ -247,7 +250,7 @@ y = hyt2f1( a, b, c, x, &err );
 hypdon:
 if( err > ETHRESH )
 	{
-	mtherr( "hyp2f1", PLOSS );
+	torch_cephes_mtherr( "hyp2f1", PLOSS );
 /*	printf( "Estimated err = %.2e\n", err ); */
 	}
 return(y);
@@ -256,13 +259,13 @@ return(y);
  * AMS55 #15.3.3
  */
 hypf:
-y = pow( s, d ) * hys2f1( c-a, c-b, c, x, &err );
+y = torch_cephes_pow( s, d ) * hys2f1( c-a, c-b, c, x, &err );
 goto hypdon;
 
 /* The alarm exit */
 hypdiv:
-mtherr( "hyp2f1", OVERFLOW );
-return( MAXNUM );
+torch_cephes_mtherr( "hyp2f1", OVERFLOW );
+return( torch_cephes_MAXNUM );
 }
 
 
@@ -286,39 +289,44 @@ s = 1.0 - x;
 if( x < -0.5 )
 	{
 	if( b > a )
-		y = pow( s, -a ) * hys2f1( a, c-b, c, -x/s, &err );
+		y = torch_cephes_pow( s, -a ) *
+                    hys2f1( a, c-b, c, -x/s, &err );
 
 	else
-		y = pow( s, -b ) * hys2f1( c-a, b, c, -x/s, &err );
+		y = torch_cephes_pow( s, -b ) *
+                    hys2f1( c-a, b, c, -x/s, &err );
 
 	goto done;
 	}
 
 d = c - a - b;
-id = round(d);	/* nearest integer to d */
+id = torch_cephes_round(d);	/* nearest integer to d */
 
 if( x > 0.9 )
 {
-if( fabs(d-id) > EPS ) /* test for integer c-a-b */
+if( torch_cephes_fabs(d-id) > EPS ) /* test for integer c-a-b */
 	{
 /* Try the power series first */
 	y = hys2f1( a, b, c, x, &err );
 	if( err < ETHRESH )
 		goto done;
 /* If power series fails, then apply AMS55 #15.3.6 */
-	q = hys2f1( a, b, 1.0-d, s, &err );	
-	q *= gamma(d) /(gamma(c-a) * gamma(c-b));
-	r = pow(s,d) * hys2f1( c-a, c-b, d+1.0, s, &err1 );
-	r *= gamma(-d)/(gamma(a) * gamma(b));
+	q = hys2f1( a, b, 1.0-d, s, &err );
+	q *= torch_cephes_gamma(d) /(torch_cephes_gamma(c-a) *
+                                     torch_cephes_gamma(c-b));
+	r = torch_cephes_pow(s,d) * hys2f1(
+            c-a, c-b, d+1.0, s, &err1 );
+	r *= torch_cephes_gamma(-d)/(torch_cephes_gamma(a) *
+                                     torch_cephes_gamma(b));
 	y = q + r;
 
-	q = fabs(q); /* estimate cancellation error */
-	r = fabs(r);
+	q = torch_cephes_fabs(q); /* estimate cancellation error */
+	r = torch_cephes_fabs(r);
 	if( q > r )
 		r = q;
-	err += err1 + (MACHEP*r)/y;
+	err += err1 + (torch_cephes_MACHEP*r)/y;
 
-	y *= gamma(c);
+	y *= torch_cephes_gamma(c);
 	goto done;
 	}
 else
@@ -339,30 +347,33 @@ else
 		aid = -id;
 		}
 
-	ax = log(s);
+	ax = torch_cephes_log(s);
 
 	/* sum for t = 0 */
-	y = psi(1.0) + psi(1.0+e) - psi(a+d1) - psi(b+d1) - ax;
-	y /= gamma(e+1.0);
+	y = torch_cephes_psi(1.0) + torch_cephes_psi(1.0+e) -
+            torch_cephes_psi(a+d1) - torch_cephes_psi(b+d1) - ax;
+	y /= torch_cephes_gamma(e+1.0);
 
-	p = (a+d1) * (b+d1) * s / gamma(e+2.0);	/* Poch for t=1 */
+	p = (a+d1) * (b+d1) * s / torch_cephes_gamma(e+2.0); /* Poch for t=1 */
 	t = 1.0;
 	do
 		{
-		r = psi(1.0+t) + psi(1.0+t+e) - psi(a+t+d1)
-			- psi(b+t+d1) - ax;
+		r = torch_cephes_psi(1.0+t) + torch_cephes_psi(1.0+t+e)
+                    - torch_cephes_psi(a+t+d1)
+			- torch_cephes_psi(b+t+d1) - ax;
 		q = p * r;
 		y += q;
 		p *= s * (a+t+d1) / (t+1.0);
 		p *= (b+t+d1) / (t+1.0+e);
 		t += 1.0;
 		}
-	while( fabs(q/y) > EPS );
+	while( torch_cephes_fabs(q/y) > EPS );
 
 
 	if( id == 0.0 )
 		{
-		y *= gamma(c)/(gamma(a)*gamma(b));
+		y *= torch_cephes_gamma(c)/(torch_cephes_gamma(a)*
+                                            torch_cephes_gamma(b));
 		goto psidon;
 		}
 
@@ -382,14 +393,15 @@ else
 		y1 += p;
 		}
 nosum:
-	p = gamma(c);
-	y1 *= gamma(e) * p / (gamma(a+d1) * gamma(b+d1));
+	p = torch_cephes_gamma(c);
+	y1 *= torch_cephes_gamma(e) * p / (torch_cephes_gamma(a+d1) *
+                                           torch_cephes_gamma(b+d1));
 
-	y *= p / (gamma(a+d2) * gamma(b+d2));
+	y *= p / (torch_cephes_gamma(a+d2) * torch_cephes_gamma(b+d2));
 	if( (aid & 1) != 0 )
 		y = -y;
 
-	q = pow( s, id );	/* s to the id power */
+	q = torch_cephes_pow( s, id );	/* s to the id power */
 	if( id > 0.0 )
 		y *= q;
 	else
@@ -436,7 +448,7 @@ do
 	if( fabs(h) < EPS )
 		{
 		*loss = 1.0;
-		return( MAXNUM );
+		return( torch_cephes_MAXNUM );
 		}
 	m = k + 1.0;
 	u = u * ((f+k) * (g+k) * x / ((h+k) * m));
@@ -451,10 +463,11 @@ do
 		return(s);
 		}
 	}
-while( fabs(u/s) > MACHEP );
+while( torch_cephes_fabs(u/s) > torch_cephes_MACHEP );
 
 /* return estimated relative error */
-*loss = (MACHEP*umax)/fabs(s) + (MACHEP*i);
+*loss = (torch_cephes_MACHEP*umax)/torch_cephes_fabs(s) +
+    (torch_cephes_MACHEP*i);
 
 return(s);
 }

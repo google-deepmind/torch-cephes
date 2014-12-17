@@ -446,29 +446,31 @@ static unsigned short gd[44] = {
 #endif
 
 #ifdef ANSIPROT
-extern double fabs ( double );
-extern double cos ( double );
-extern double sin ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_cos ( double );
+extern double torch_cephes_sin ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
 #else
-double fabs(), cos(), sin(), polevl(), p1evl();
+double torch_cephes_fabs(), torch_cephes_cos(), torch_cephes_sin(),
+    torch_cephes_polevl(), torch_cephes_p1evl();
 #endif
-extern double PI, PIO2, MACHEP;
+extern double torch_cephes_PI, torch_cephes_PIO2, torch_cephes_MACHEP;
 
-int fresnl( xxa, ssa, cca )
+int torch_cephes_fresnl( xxa, ssa, cca )
 double xxa, *ssa, *cca;
 {
 double f, g, cc, ss, c, s, t, u;
 double x, x2;
 
-x = fabs(xxa);
+x = torch_cephes_fabs(xxa);
 x2 = x * x;
 if( x2 < 2.5625 )
 	{
 	t = x2 * x2;
-	ss = x * x2 * polevl( t, sn, 5)/p1evl( t, sd, 6 );
-	cc = x * polevl( t, cn, 5)/polevl(t, cd, 6 );
+	ss = x * x2 * torch_cephes_polevl( t, sn, 5)/
+            torch_cephes_p1evl( t, sd, 6 );
+	cc = x * torch_cephes_polevl( t, cn, 5)/torch_cephes_polevl(t, cd, 6 );
 	goto done;
 	}
 
@@ -489,16 +491,17 @@ if( x > 36974.0 )
  *		for large argument
  */
 	x2 = x * x;
-	t = PI * x2;
+	t = torch_cephes_PI * x2;
 	u = 1.0/(t * t);
 	t = 1.0/t;
-	f = 1.0 - u * polevl( u, fn, 9)/p1evl(u, fd, 10);
-	g = t * polevl( u, gn, 10)/p1evl(u, gd, 11);
+	f = 1.0 - u * torch_cephes_polevl( u, fn, 9)/
+            torch_cephes_p1evl(u, fd, 10);
+	g = t * torch_cephes_polevl( u, gn, 10)/torch_cephes_p1evl(u, gd, 11);
 
-	t = PIO2 * x2;
-	c = cos(t);
-	s = sin(t);
-	t = PI * x;
+	t = torch_cephes_PIO2 * x2;
+	c = torch_cephes_cos(t);
+	s = torch_cephes_sin(t);
+	t = torch_cephes_PI * x;
 	cc = 0.5  +  (f * s  -  g * c)/t;
 	ss = 0.5  -  (f * c  +  g * s)/t;
 

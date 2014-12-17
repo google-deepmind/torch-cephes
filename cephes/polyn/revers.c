@@ -67,23 +67,24 @@ Copyright 1984, 1987, 1989, 1992, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 
-extern int MAXPOL; /* initialized by polini() */
+extern int torch_cephes_MAXPOL; /* initialized by polini() */
 
 #ifdef ANSIPROT
 /* See polyn.c.  */
-void polmov ( double *, int, double * );
-void polclr ( double *, int );
-void poladd ( double *, int, double *, int, double * );
-void polmul ( double *, int, double *, int, double * );
-void * malloc ( long );
+void torch_cephes_polmov ( double *, int, double * );
+void torch_cephes_polclr ( double *, int );
+void torch_cephes_poladd ( double *, int, double *, int, double * );
+void torch_cephes_polmul ( double *, int, double *, int, double * );
+void * malloc ( unsigned long );
 void free ( void * );
 #else
-void polmov(), polclr(), poladd(), polmul();
-void * malloc();
+void torch_cephes_polmov(), torch_cephes_polclr(), torch_cephes_poladd(),
+    torch_cephes_polmul();
+void * malloc( unsigned long);
 void free ();
 #endif
 
-void revers( y, x, n)
+void torch_cephes_revers( y, x, n)
 double y[], x[];
 int n;
 {
@@ -91,25 +92,25 @@ double *yn, *yp, *ysum;
 int j;
 
 if( y[1] == 0.0 )
-	mtherr( "revers", DOMAIN );
+	torch_cephes_mtherr( "revers", DOMAIN );
 /*	printf( "revers: y[1] = 0\n" );*/
-j = (MAXPOL + 1) * sizeof(double);
+j = (torch_cephes_MAXPOL + 1) * sizeof(double);
 yn = (double *)malloc(j);
 yp = (double *)malloc(j);
 ysum = (double *)malloc(j);
 
-polmov( y, n, yn );
-polclr( ysum, n );
+torch_cephes_polmov( y, n, yn );
+torch_cephes_polclr( ysum, n );
 x[0] = 0.0;
 x[1] = 1.0/y[1];
 for( j=2; j<=n; j++ )
 	{
 /* A_(j-1) times the expansion of y^(j-1)  */
-	polmul( &x[j-1], 0, yn, n, yp );
+	torch_cephes_polmul( &x[j-1], 0, yn, n, yp );
 /* The expansion of the sum of A_k y^k up to k=j-1 */
-	poladd( yp, n, ysum, n, ysum );
+	torch_cephes_poladd( yp, n, ysum, n, ysum );
 /* The expansion of y^j */
-	polmul( yn, n, y, n, yn );
+	torch_cephes_polmul( yn, n, y, n, yn );
 /* The coefficient A_j to make the sum up to k=j equal to zero */
 	x[j] = -ysum[j]/yn[j];
 	}

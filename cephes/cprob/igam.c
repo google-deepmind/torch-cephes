@@ -84,21 +84,22 @@ Copyright 1985, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double lgam ( double );
-extern double exp ( double );
-extern double log ( double );
-extern double fabs ( double );
-extern double igam ( double, double );
-extern double igamc ( double, double );
+extern double torch_cephes_lgam ( double );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_igam ( double, double );
+extern double torch_cephes_igamc ( double, double );
 #else
-double lgam(), exp(), log(), fabs(), igam(), igamc();
+double torch_cephes_lgam(), torch_cephes_exp(), torch_cephes_log(),
+    torch_cephes_fabs(), torch_cephes_igam(), torch_cephes_igamc();
 #endif
 
-extern double MACHEP, MAXLOG, NAN;
+extern double torch_cephes_MACHEP, torch_cephes_MAXLOG, torch_cephes_NAN;
 static double big = 4.503599627370496e15;
 static double biginv =  2.22044604925031308085e-16;
 
-double igamc( a, x )
+double torch_cephes_igamc( a, x )
 double a, x;
 {
 double ans, ax, c, yc, r, t, y, z;
@@ -106,20 +107,20 @@ double pk, pkm1, pkm2, qk, qkm1, qkm2;
 
 if( (x < 0) || ( a <= 0) )
     {
-    mtherr("igamc", DOMAIN);
-	return( NAN );
+    torch_cephes_mtherr("igamc", DOMAIN);
+	return( torch_cephes_NAN );
     }
 
 if( (x < 1.0) || (x < a) )
-	return( 1.0 - igam(a,x) );
+	return( 1.0 - torch_cephes_igam(a,x) );
 
-ax = a * log(x) - x - lgam(a);
-if( ax < -MAXLOG )
+ax = a * torch_cephes_log(x) - x - torch_cephes_lgam(a);
+if( ax < -torch_cephes_MAXLOG )
 	{
-	mtherr( "igamc", UNDERFLOW );
+	torch_cephes_mtherr( "igamc", UNDERFLOW );
 	return( 0.0 );
 	}
-ax = exp(ax);
+ax = torch_cephes_exp(ax);
 
 /* continued fraction */
 y = 1.0 - a;
@@ -142,7 +143,7 @@ do
 	if( qk != 0 )
 		{
 		r = pk/qk;
-		t = fabs( (ans - r)/r );
+		t = torch_cephes_fabs( (ans - r)/r );
 		ans = r;
 		}
 	else
@@ -151,7 +152,7 @@ do
 	pkm1 = pk;
 	qkm2 = qkm1;
 	qkm1 = qk;
-	if( fabs(pk) > big )
+	if( torch_cephes_fabs(pk) > big )
 		{
 		pkm2 *= biginv;
 		pkm1 *= biginv;
@@ -159,7 +160,7 @@ do
 		qkm1 *= biginv;
 		}
 	}
-while( t > MACHEP );
+while( t > torch_cephes_MACHEP );
 
 return( ans * ax );
 }
@@ -176,7 +177,7 @@ return( ans * ax );
  *
  */
 
-double igam( a, x )
+double torch_cephes_igam( a, x )
 double a, x;
 {
 double ans, ax, c, r;
@@ -187,21 +188,21 @@ if( x == 0 )
 
 if( (x < 0) || ( a <= 0) )
     {
-    mtherr("igam", DOMAIN);
-	return( NAN );
+    torch_cephes_mtherr("igam", DOMAIN);
+	return( torch_cephes_NAN );
     }
 
 if( (x > 1.0) && (x > a ) )
-	return( 1.0 - igamc(a,x) );
+	return( 1.0 - torch_cephes_igamc(a,x) );
 
 /* Compute  x**a * exp(-x) / gamma(a)  */
-ax = a * log(x) - x - lgam(a);
-if( ax < -MAXLOG )
+ax = a * torch_cephes_log(x) - x - torch_cephes_lgam(a);
+if( ax < -torch_cephes_MAXLOG )
 	{
-	mtherr( "igam", UNDERFLOW );
+	torch_cephes_mtherr( "igam", UNDERFLOW );
 	return( 0.0 );
 	}
-ax = exp(ax);
+ax = torch_cephes_exp(ax);
 
 /* power series */
 r = a;
@@ -214,7 +215,7 @@ do
 	c *= x/r;
 	ans += c;
 	}
-while( c/ans > MACHEP );
+while( c/ans > torch_cephes_MACHEP );
 
 return( ans * ax/a );
 }

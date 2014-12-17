@@ -47,54 +47,58 @@ static void cchsh ( double x, double *c, double *s );
 static double redupi ( double x );
 static double ctans ( cmplx *z );
 /* These are supposed to be in some standard place. */
-double fabs (double);
-double sqrt (double);
-double pow (double, double);
-double log (double);
-double exp (double);
-double atan2 (double, double);
-double cosh (double);
-double sinh (double);
-double asin (double);
-double sin (double);
-double cos (double);
-double cabs (cmplx *);
-void cadd ( cmplx *, cmplx *, cmplx * );
-void cmul ( cmplx *, cmplx *, cmplx * );
-void csqrt ( cmplx *, cmplx * );
+double torch_cephes_fabs (double);
+double torch_cephes_sqrt (double);
+double torch_cephes_pow (double, double);
+double torch_cephes_log (double);
+double torch_cephes_exp (double);
+double torch_cephes_atan2 (double, double);
+double torch_cephes_cosh (double);
+double torch_cephes_sinh (double);
+double torch_cephes_asin (double);
+double torch_cephes_sin (double);
+double torch_cephes_cos (double);
+double torch_cephes_cabs (cmplx *);
+void torch_cephes_cadd ( cmplx *, cmplx *, cmplx * );
+void torch_cephes_cmul ( cmplx *, cmplx *, cmplx * );
+void torch_cephes_csqrt ( cmplx *, cmplx * );
 static void cchsh ( double, double *, double * );
 static double redupi ( double );
 static double ctans ( cmplx * );
-void clog ( cmplx *, cmplx * );
-void casin ( cmplx *, cmplx * );
-void cacos ( cmplx *, cmplx * );
-void catan ( cmplx *, cmplx * );
+void torch_cephes_clog ( cmplx *, cmplx * );
+void torch_cephes_casin ( cmplx *, cmplx * );
+void torch_cephes_cacos ( cmplx *, cmplx * );
+void torch_cephes_catan ( cmplx *, cmplx * );
 #else
 static void cchsh();
 static double redupi();
 static double ctans();
-double cabs(), fabs(), sqrt(), pow();
-double log(), exp(), atan2(), cosh(), sinh();
-double asin(), sin(), cos();
-void cadd(), cmul(), csqrt();
-void clog(), casin(), cacos(), catan();
+double torch_cephes_cabs(), torch_cephes_fabs(), torch_cephes_sqrt(),
+    torch_cephes_pow();
+double torch_cephes_log(), torch_cephes_exp(), torch_cephes_atan2(),
+    torch_cephes_cosh(), torch_cephes_sinh();
+double torch_cephes_asin(), torch_cephes_sin(), torch_cephes_cos();
+void torch_cephes_cadd(), torch_cephes_cmul(), torch_cephes_csqrt();
+void torch_cephes_clog(), torch_cephes_casin(), torch_cephes_cacos(),
+    torch_cephes_catan();
 #endif
 
 
-extern double MAXNUM, MACHEP, PI, PIO2;
+extern double torch_cephes_MAXNUM, torch_cephes_MACHEP,
+    torch_cephes_PI, torch_cephes_PIO2;
 
-void clog( z, w )
+void torch_cephes_clog( z, w )
 register cmplx *z, *w;
 {
 double p, rr;
 
 /*rr = sqrt( z->r * z->r  +  z->i * z->i );*/
-rr = cabs(z);
-p = log(rr);
+rr = torch_cephes_cabs(z);
+p = torch_cephes_log(rr);
 #if ANSIC
-rr = atan2( z->i, z->r );
+rr = torch_cephes_atan2( z->i, z->r );
 #else
-rr = atan2( z->r, z->i );
+rr = torch_cephes_atan2( z->r, z->i );
 if( rr > PI )
 	rr -= PI + PI;
 #endif
@@ -139,14 +143,14 @@ w->r = p;
  *
  */
 
-void cexp( z, w )
+void torch_cephes_cexp( z, w )
 register cmplx *z, *w;
 {
 double r;
 
-r = exp( z->r );
-w->r = r * cos( z->i );
-w->i = r * sin( z->i );
+r = torch_cephes_exp( z->r );
+w->r = r * torch_cephes_cos( z->i );
+w->i = r * torch_cephes_sin( z->i );
 }
 /*							csin()
  *
@@ -184,14 +188,14 @@ w->i = r * sin( z->i );
  *
  */
 
-void csin( z, w )
+void torch_cephes_csin( z, w )
 register cmplx *z, *w;
 {
 double ch, sh;
 
 cchsh( z->i, &ch, &sh );
-w->r = sin( z->r ) * ch;
-w->i = cos( z->r ) * sh;
+w->r = torch_cephes_sin( z->r ) * ch;
+w->i = torch_cephes_cos( z->r ) * sh;
 }
 
 
@@ -203,14 +207,14 @@ double x, *c, *s;
 {
 double e, ei;
 
-if( fabs(x) <= 0.5 )
+if( torch_cephes_fabs(x) <= 0.5 )
 	{
-	*c = cosh(x);
-	*s = sinh(x);
+	*c = torch_cephes_cosh(x);
+	*s = torch_cephes_sinh(x);
 	}
 else
 	{
-	e = exp(x);
+	e = torch_cephes_exp(x);
 	ei = 0.5/e;
 	e = 0.5 * e;
 	*s = e - ei;
@@ -252,14 +256,14 @@ else
  *    IEEE      -10,+10     30000       3.8e-16     1.0e-16
  */
 
-void ccos( z, w )
+void torch_cephes_ccos( z, w )
 register cmplx *z, *w;
 {
 double ch, sh;
 
 cchsh( z->i, &ch, &sh );
-w->r = cos( z->r ) * ch;
-w->i = -sin( z->r ) * sh;
+w->r = torch_cephes_cos( z->r ) * ch;
+w->i = -torch_cephes_sin( z->r ) * sh;
 }
 /*							ctan()
  *
@@ -301,26 +305,26 @@ w->i = -sin( z->r ) * sh;
  * Also tested by ctan * ccot = 1 and catan(ctan(z))  =  z.
  */
 
-void ctan( z, w )
+void torch_cephes_ctan( z, w )
 register cmplx *z, *w;
 {
 double d;
 
-d = cos( 2.0 * z->r ) + cosh( 2.0 * z->i );
+d = torch_cephes_cos( 2.0 * z->r ) + torch_cephes_cosh( 2.0 * z->i );
 
-if( fabs(d) < 0.25 )
+if( torch_cephes_fabs(d) < 0.25 )
 	d = ctans(z);
 
 if( d == 0.0 )
 	{
-	mtherr( "ctan", OVERFLOW );
-	w->r = MAXNUM;
-	w->i = MAXNUM;
+	torch_cephes_mtherr( "ctan", OVERFLOW );
+	w->r = torch_cephes_MAXNUM;
+	w->i = torch_cephes_MAXNUM;
 	return;
 	}
 
-w->r = sin( 2.0 * z->r ) / d;
-w->i = sinh( 2.0 * z->i ) / d;
+w->r = torch_cephes_sin( 2.0 * z->r ) / d;
+w->i = torch_cephes_sinh( 2.0 * z->i ) / d;
 }
 /*							ccot()
  *
@@ -362,26 +366,26 @@ w->i = sinh( 2.0 * z->i ) / d;
  * Also tested by ctan * ccot = 1 + i0.
  */
 
-void ccot( z, w )
+void torch_cephes_ccot( z, w )
 register cmplx *z, *w;
 {
 double d;
 
-d = cosh(2.0 * z->i) - cos(2.0 * z->r);
+d = torch_cephes_cosh(2.0 * z->i) - torch_cephes_cos(2.0 * z->r);
 
-if( fabs(d) < 0.25 )
+if( torch_cephes_fabs(d) < 0.25 )
 	d = ctans(z);
 
 if( d == 0.0 )
 	{
-	mtherr( "ccot", OVERFLOW );
-	w->r = MAXNUM;
-	w->i = MAXNUM;
+	torch_cephes_mtherr( "ccot", OVERFLOW );
+	w->r = torch_cephes_MAXNUM;
+	w->i = torch_cephes_MAXNUM;
 	return;
 	}
 
-w->r = sin( 2.0 * z->r ) / d;
-w->i = -sinh( 2.0 * z->i ) / d;
+w->r = torch_cephes_sin( 2.0 * z->r ) / d;
+w->i = -torch_cephes_sinh( 2.0 * z->i ) / d;
 }
 
 /* Program to subtract nearest integer multiple of PI */
@@ -431,7 +435,7 @@ double x;
 double t;
 long i;
 
-t = x/PI;
+t = x/torch_cephes_PI;
 if( t >= 0.0 )
 	t += 0.5;
 else
@@ -451,8 +455,8 @@ cmplx *z;
 double f, x, x2, y, y2, rn, t;
 double d;
 
-x = fabs( 2.0 * z->r );
-y = fabs( 2.0 * z->i );
+x = torch_cephes_fabs( 2.0 * z->r );
+y = torch_cephes_fabs( 2.0 * z->i );
 
 x = redupi(x);
 
@@ -485,10 +489,10 @@ do
 	t /= f;
 	d += t;
 	}
-while( fabs(t/d) > MACHEP );
+while( torch_cephes_fabs(t/d) > torch_cephes_MACHEP );
 return(d);
 }
-/*							casin()
+/*							casin()
  *
  *	Complex circular arc sine
  *
@@ -521,7 +525,7 @@ return(d);
  * Also tested by csin(casin(z)) = z.
  */
 
-void casin( z, w )
+void torch_cephes_casin( z, w )
 cmplx *z, *w;
 {
 static cmplx ca, ct, zz, z2;
@@ -532,15 +536,15 @@ y = z->i;
 
 if( y == 0.0 )
 	{
-	if( fabs(x) > 1.0 )
+	if( torch_cephes_fabs(x) > 1.0 )
 		{
-		w->r = PIO2;
+		w->r = torch_cephes_PIO2;
 		w->i = 0.0;
-		mtherr( "casin", DOMAIN );
+		torch_cephes_mtherr( "casin", DOMAIN );
 		}
 	else
 		{
-		w->r = asin(x);
+		w->r = torch_cephes_asin(x);
 		w->i = 0.0;
 		}
 	return;
@@ -579,7 +583,7 @@ do
 	sum.i += ct.i;
 	b = fabs(ct.r) + fabs(ct.i);
 	}
-while( b > MACHEP );
+while( b > torch_cephes_MACHEP );
 w->r = sum.r;
 w->i = sum.i;
 return;
@@ -600,10 +604,10 @@ zz.i = 2.0 * ca.r * ca.i;
 
 zz.r = 1.0 - zz.r;
 zz.i = -zz.i;
-csqrt( &zz, &z2 );
+torch_cephes_csqrt( &zz, &z2 );
 
-cadd( &z2, &ct, &zz );
-clog( &zz, &zz );
+torch_cephes_cadd( &z2, &ct, &zz );
+torch_cephes_clog( &zz, &zz );
 w->r = zz.i;	/* mult by 1/i = -i */
 w->i = -zz.r;
 return;
@@ -639,12 +643,12 @@ return;
  *    IEEE      -10,+10     30000      1.8e-14      2.2e-15
  */
 
-void cacos( z, w )
+void torch_cephes_cacos( z, w )
 cmplx *z, *w;
 {
 
-casin( z, w );
-w->r = PIO2  -  w->r;
+torch_cephes_casin( z, w );
+w->r = torch_cephes_PIO2  -  w->r;
 w->i = -w->i;
 }
 /*							catan()
@@ -694,7 +698,7 @@ w->i = -w->i;
  * 2.9e-17.  See also clog().
  */
 
-void catan( z, w )
+void torch_cephes_catan( z, w )
 cmplx *z, *w;
 {
 double a, t, x, x2, y;
@@ -711,9 +715,9 @@ if( a == 0.0 )
 	goto ovrf;
 
 #if ANSIC
-t = atan2( 2.0 * x, a )/2.0;
+t = torch_cephes_atan2( 2.0 * x, a )/2.0;
 #else
-t = atan2( a, 2.0 * x )/2.0;
+t = torch_cephes_atan2( a, 2.0 * x )/2.0;
 #endif
 w->r = redupi( t );
 
@@ -724,13 +728,13 @@ if( a == 0.0 )
 
 t = y + 1.0;
 a = (x2 + (t * t))/a;
-w->i = log(a)/4.0;
+w->i = torch_cephes_log(a)/4.0;
 return;
 
 ovrf:
-mtherr( "catan", OVERFLOW );
-w->r = MAXNUM;
-w->i = MAXNUM;
+torch_cephes_mtherr( "catan", OVERFLOW );
+w->r = torch_cephes_MAXNUM;
+w->i = torch_cephes_MAXNUM;
 }
 
 
@@ -762,15 +766,15 @@ w->i = MAXNUM;
  */
 
 void
-csinh (z, w)
+torch_cephes_csinh (z, w)
      cmplx *z, *w;
 {
   double x, y;
 
   x = z->r;
   y = z->i;
-  w->r = sinh (x) * cos (y);
-  w->i = cosh (x) * sin (y);
+  w->r = torch_cephes_sinh (x) * torch_cephes_cos (y);
+  w->i = torch_cephes_cosh (x) * torch_cephes_sin (y);
 }
 
 
@@ -802,18 +806,18 @@ csinh (z, w)
  */
 
 void
-casinh (z, w)
+torch_cephes_casinh (z, w)
      cmplx *z, *w;
 {
   cmplx u;
 
   u.r = 0.0;
   u.i = 1.0;
-  cmul( z, &u, &u );
-  casin( &u, w );
+  torch_cephes_cmul( z, &u, &u );
+  torch_cephes_casin( &u, w );
   u.r = 0.0;
   u.i = -1.0;
-  cmul( &u, w, w );
+  torch_cephes_cmul( &u, w, w );
 }
 
 /*							ccosh
@@ -844,7 +848,7 @@ casinh (z, w)
  */
 
 void
-ccosh (z, w)
+torch_cephes_ccosh (z, w)
      cmplx *z, *w;
 {
   double x, y;
@@ -884,15 +888,15 @@ ccosh (z, w)
  */
 
 void
-cacosh (z, w)
+torch_cephes_cacosh (z, w)
      cmplx *z, *w;
 {
   cmplx u;
 
-  cacos( z, w );
+  torch_cephes_cacos( z, w );
   u.r = 0.0;
   u.i = 1.0;
-  cmul( &u, w, w );
+  torch_cephes_cmul( &u, w, w );
 }
 
 
@@ -926,16 +930,16 @@ cacosh (z, w)
 /* 5.253E-02,1.550E+00 1.643E+01,6.553E+00 1.729E-14  21355  */
 
 void
-ctanh (z, w)
+torch_cephes_ctanh (z, w)
      cmplx *z, *w;
 {
   double x, y, d;
 
   x = z->r;
   y = z->i;
-  d = cosh (2.0 * x) + cos (2.0 * y);
-  w->r = sinh (2.0 * x) / d;
-  w->i = sin (2.0 * y) / d;
+  d = torch_cephes_cosh (2.0 * x) + torch_cephes_cos (2.0 * y);
+  w->r = torch_cephes_sinh (2.0 * x) / d;
+  w->i = torch_cephes_sin (2.0 * y) / d;
   return;
 }
 
@@ -968,18 +972,18 @@ ctanh (z, w)
  */
 
 void
-catanh (z, w)
+torch_cephes_catanh (z, w)
      cmplx *z, *w;
 {
   cmplx u;
 
   u.r = 0.0;
   u.i = 1.0;
-  cmul (z, &u, &u);  /* i z */
-  catan (&u, w);
+  torch_cephes_cmul (z, &u, &u);  /* i z */
+  torch_cephes_catan (&u, w);
   u.r = 0.0;
   u.i = -1.0;
-  cmul (&u, w, w);  /* -i catan iz */
+  torch_cephes_cmul (&u, w, w);  /* -i catan iz */
   return;
 }
 
@@ -1015,29 +1019,29 @@ catanh (z, w)
 
 
 void
-cpow (a, z, w)
+torch_cephes_cpow (a, z, w)
      cmplx *a, *z, *w;
 {
   double x, y, r, theta, absa, arga;
 
   x = z->r;
   y = z->i;
-  absa = cabs (a);
+  absa = torch_cephes_cabs (a);
   if (absa == 0.0)
     {
       w->r = 0.0;
       w->i = 0.0;
       return;
     }
-  arga = atan2 (a->i, a->r);
-  r = pow (absa, x);
+  arga = torch_cephes_atan2 (a->i, a->r);
+  r = torch_cephes_pow (absa, x);
   theta = x * arga;
   if (y != 0.0)
     {
-      r = r * exp (-y * arga);
-      theta = theta + y * log (absa);
+      r = r * torch_cephes_exp (-y * arga);
+      theta = theta + y * torch_cephes_log (absa);
     }
-  w->r = r * cos (theta);
-  w->i = r * sin (theta);
+  w->r = r * torch_cephes_cos (theta);
+  w->i = r * torch_cephes_sin (theta);
   return;
 }

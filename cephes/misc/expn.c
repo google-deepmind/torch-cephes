@@ -50,19 +50,20 @@
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double pow ( double, double );
-extern double gamma ( double );
-extern double log ( double );
-extern double exp ( double );
-extern double fabs ( double );
+extern double torch_cephes_pow ( double, double );
+extern double torch_cephes_gamma ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_fabs ( double );
 #else
-double pow(), gamma(), log(), exp(), fabs();
+double torch_cephes_pow(), torch_cephes_gamma(), torch_cephes_log(),
+    torch_cephes_exp(), torch_cephes_fabs();
 #endif
 #define EUL 0.57721566490153286060
 #define BIG  1.44115188075855872E+17
-extern double MAXNUM, MACHEP, MAXLOG;
+extern double torch_cephes_MAXNUM, torch_cephes_MACHEP, torch_cephes_MAXLOG;
 
-double expn( n, x )
+double torch_cephes_expn( n, x )
 int n;
 double x;
 {
@@ -77,26 +78,26 @@ if( n < 0 )
 
 if( x < 0 )
 	{
-domerr:	mtherr( "expn", DOMAIN );
-	return( MAXNUM );
+domerr:	torch_cephes_mtherr( "expn", DOMAIN );
+	return( torch_cephes_MAXNUM );
 	}
 
-if( x > MAXLOG )
+if( x > torch_cephes_MAXLOG )
 	return( 0.0 );
 
 if( x == 0.0 )
 	{
 	if( n < 2 )
 		{
-		mtherr( "expn", SING );
-		return( MAXNUM );
+		torch_cephes_mtherr( "expn", SING );
+		return( torch_cephes_MAXNUM );
 		}
 	else
 		return( 1.0/(n-1.0) );
 	}
 
 if( n == 0 )
-	return( exp(-x)/x );
+	return( torch_cephes_exp(-x)/x );
 
 /*							expn.c	*/
 /*		Expansion for large n		*/
@@ -109,7 +110,7 @@ if( n > 5000 )
 	ans = yk * t * (6.0 * x * x  -  8.0 * t * x  +  t * t);
 	ans = yk * (ans + t * (t  -  2.0 * x));
 	ans = yk * (ans + t);
-	ans = (ans + 1.0) * exp( -x ) / xk;
+	ans = (ans + 1.0) * torch_cephes_exp( -x ) / xk;
 	goto done;
 	}
 
@@ -146,11 +147,11 @@ do
 	else
 		t = 1.0;
 	}
-while( t > MACHEP );
+while( t > torch_cephes_MACHEP );
 k = xk;
 t = n;
 r = n - 1;
-ans = (pow(z, r) * psi / gamma(t)) - ans;
+ans = (torch_cephes_pow(z, r) * psi / gamma(t)) - ans;
 goto done;
 
 /*							expn.c	*/
@@ -181,7 +182,7 @@ do
 	if( qk != 0 )
 		{
 		r = pk/qk;
-		t = fabs( (ans - r)/r );
+		t = torch_cephes_fabs( (ans - r)/r );
 		ans = r;
 		}
 	else
@@ -198,11 +199,10 @@ if( fabs(pk) > big )
 		qkm1 /= big;
 		}
 	}
-while( t > MACHEP );
+while( t > torch_cephes_MACHEP );
 
-ans *= exp( -x );
+ans *= torch_cephes_exp( -x );
 
 done:
 return( ans );
 }
-

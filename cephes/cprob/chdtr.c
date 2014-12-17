@@ -149,52 +149,52 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double igamc ( double, double );
-extern double igam ( double, double );
-extern double igami ( double, double );
+extern double torch_cephes_igamc ( double, double );
+extern double torch_cephes_igam ( double, double );
+extern double torch_cephes_igami ( double, double );
 #else
-double igamc(), igam(), igami();
+double torch_cephes_igamc(), torch_cephes_igam(), torch_cephes_igami();
 #endif
 
-double chdtrc(df,x)
+double torch_cephes_chdtrc(df,x)
 double df, x;
 {
 
 if( (x < 0.0) || (df < 1.0) )
 	{
-	mtherr( "chdtrc", DOMAIN );
+	torch_cephes_mtherr( "chdtrc", DOMAIN );
 	return(0.0);
 	}
-return( igamc( df/2.0, x/2.0 ) );
+return( torch_cephes_igamc( df/2.0, x/2.0 ) );
 }
 
 
 
-double chdtr(df,x)
+double torch_cephes_chdtr(df,x)
 double df, x;
 {
 
 if( (x < 0.0) || (df < 1.0) )
 	{
-	mtherr( "chdtr", DOMAIN );
+	torch_cephes_mtherr( "chdtr", DOMAIN );
 	return(0.0);
 	}
-return( igam( df/2.0, x/2.0 ) );
+return( torch_cephes_igam( df/2.0, x/2.0 ) );
 }
 
 
 
-double chdtri( df, y )
+double torch_cephes_chdtri( df, y )
 double df, y;
 {
 double x;
 
 if( (y < 0.0) || (y > 1.0) || (df < 1.0) )
 	{
-	mtherr( "chdtri", DOMAIN );
+	torch_cephes_mtherr( "chdtri", DOMAIN );
 	return(0.0);
 	}
 
-x = igami( 0.5 * df, y );
+x = torch_cephes_igami( 0.5 * df, y );
 return( 2.0 * x );
 }

@@ -103,7 +103,7 @@ return 0;
  *	drand( &x );
  */
 
-int drand( a )
+int torch_cephes_drand( a )
 double *a;
 {
 unsigned short r;

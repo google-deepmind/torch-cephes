@@ -57,39 +57,44 @@ Copyright 1984, 1987, 1989, 1992, 2000 by Stephen L. Moshier
 #endif
 
 #ifdef ANSIPROT
-extern int airy ( double, double *, double *, double *, double * );
-extern double fabs ( double );
-extern double floor ( double );
-extern double frexp ( double, int * );
-extern double polevl ( double, void *, int );
-extern double j0 ( double );
-extern double j1 ( double );
-extern double sqrt ( double );
-extern double cbrt ( double );
-extern double exp ( double );
-extern double log ( double );
-extern double sin ( double );
-extern double cos ( double );
-extern double acos ( double );
-extern double pow ( double, double );
-extern double gamma ( double );
-extern double lgam ( double );
+extern int torch_cephes_airy ( double, double *, double *, double *, double * );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_floor ( double );
+extern double torch_cephes_frexp ( double, int * );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_j0 ( double );
+extern double torch_cephes_j1 ( double );
+extern double torch_cephes_sqrt ( double );
+extern double torch_cephes_cbrt ( double );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_sin ( double );
+extern double torch_cephes_cos ( double );
+extern double torch_cephes_acos ( double );
+extern double torch_cephes_pow ( double, double );
+extern double torch_cephes_gamma ( double );
+extern double torch_cephes_lgam ( double );
 static double recur(double *, double, double *, int);
 static double jvs(double, double);
 static double hankel(double, double);
 static double jnx(double, double);
 static double jnt(double, double);
 #else
-int airy();
-double fabs(), floor(), frexp(), polevl(), j0(), j1(), sqrt(), cbrt();
-double exp(), log(), sin(), cos(), acos(), pow(), gamma(), lgam();
+int torch_cephes_airy();
+double torch_cephes_fabs(), torch_cephes_floor(), torch_cephes_frexp(),
+    torch_cephes_polevl(), torch_cephes_j0(), torch_cephes_j1(),
+    torch_cephes_sqrt(), torch_cephes_cbrt();
+double torch_cephes_exp(), torch_cephes_log(),
+    torch_cephes_sin(), torch_cephes_cos(), torch_cephes_acos(),
+    torch_cephes_pow(), torch_cephes_gamma(), torch_cephes_lgam();
 static double recur(), jvs(), hankel(), jnx(), jnt();
 #endif
 
-extern double MAXNUM, MACHEP, MINLOG, MAXLOG;
+extern double torch_cephes_MAXNUM, torch_cephes_MACHEP, torch_cephes_MINLOG,
+    torch_cephes_MAXLOG;
 #define BIG  1.44115188075855872E+17
 
-double jv( n, x )
+double torch_cephes_jv( n, x )
 double n, x;
 {
 double k, q, t, y, an;
@@ -97,12 +102,12 @@ int i, sign, nint;
 
 nint = 0;	/* Flag for integer n */
 sign = 1;	/* Flag for sign inversion */
-an = fabs( n );
-y = floor( an );
+an = torch_cephes_fabs( n );
+y = torch_cephes_floor( an );
 if( y == an )
 	{
 	nint = 1;
-	i = an - 16384.0 * floor( an/16384.0 );
+	i = an - 16384.0 * torch_cephes_floor( an/16384.0 );
 	if( n < 0.0 )
 		{
 		if( i & 1 )
@@ -116,25 +121,25 @@ if( y == an )
 		x = -x;
 		}
 	if( n == 0.0 )
-		return( j0(x) );
+		return( torch_cephes_j0(x) );
 	if( n == 1.0 )
-		return( sign * j1(x) );
+		return( sign * torch_cephes_j1(x) );
 	}
 
 if( (x < 0.0) && (y != an) )
 	{
-	mtherr( "Jv", DOMAIN );
+	torch_cephes_mtherr( "Jv", DOMAIN );
 	y = 0.0;
 	goto done;
  	}
 
-y = fabs(x);
+y = torch_cephes_fabs(x);
 
-if( y < MACHEP )
+if( y < torch_cephes_MACHEP )
 	goto underf;
 
-k = 3.6 * sqrt(y);
-t = 3.6 * sqrt(an);
+k = 3.6 * torch_cephes_sqrt(y);
+t = 3.6 * torch_cephes_sqrt(an);
 if( (y < t) && (an > 21.0) )
 	return( sign * jvs(n,x) );
 if( (an < k) && (y > 21.0) )
@@ -152,12 +157,12 @@ if( an < 500.0 )
 		q = recur( &n, x, &k, 1 );
 		if( k == 0.0 )
 			{
-			y = j0(x)/q;
+			y = torch_cephes_j0(x)/q;
 			goto done;
 			}
 		if( k == 1.0 )
 			{
-			y = j1(x)/q;
+			y = torch_cephes_j1(x)/q;
 			goto done;
 			}
 		}
@@ -176,7 +181,7 @@ rlarger:
 		y = y + an + 1.0;
 		if( y < 30.0 )
 			y = 30.0;
-		y = n + floor(y-n);
+		y = n + torch_cephes_floor(y-n);
 		q = recur( &y, x, &k, 0 );
 		y = jvs(y,x) * q;
 		goto done;
@@ -194,8 +199,8 @@ rlarger:
 		{
 		if( n < 0.0 )
 			k = -k;
-		q = n - floor(n);
-		k = floor(k) + q;
+		q = n - torch_cephes_floor(n);
+		k = torch_cephes_floor(k) + q;
 		if( n > 0.0 )
 			q = recur( &n, x, &k, 1 );
 		else
@@ -221,7 +226,7 @@ underf:
 /* boundary between convergence of
  * power series and Hankel expansion
  */
-	y = fabs(k);
+	y = torch_cephes_fabs(k);
 	if( y < 26.0 )
 		t = (0.0083*y + 0.09)*y + 12.9;
 	else
@@ -250,7 +255,7 @@ else
  */
 	if( n < 0.0 )
 		{
-		mtherr( "Jv", TLOSS );
+		torch_cephes_mtherr( "Jv", TLOSS );
 		y = 0.0;
 		goto done;
 		}
@@ -324,10 +329,10 @@ do
 
 	if( ++ctr > 1000 )
 		{
-		mtherr( "jv", UNDERFLOW );
+		torch_cephes_mtherr( "jv", UNDERFLOW );
 		goto done;
 		}
-	if( t < MACHEP )
+	if( t < torch_cephes_MACHEP )
 		goto done;
 
 	if( fabs(pk) > big )
@@ -338,7 +343,7 @@ do
 		qkm1 /= big;
 		}
 	}
-while( t > MACHEP );
+while( t > torch_cephes_MACHEP );
 
 done:
 
@@ -350,7 +355,7 @@ printf( "%.6e\n", ans );
  */
 if( nflag > 0 )
 	{
-	if( fabs(ans) < 0.125 )
+	if( torch_cephes_fabs(ans) < 0.125 )
 		{
 		nflag = -1;
 		*n = *n - 1.0;
@@ -420,8 +425,8 @@ return( pkm2 );
  * AMS55 #9.1.10.
  */
 
-extern double PI;
-extern int sgngam;
+extern double torch_cephes_PI;
+extern int torch_cephes_sgngam;
 
 static double jvs( n, x )
 double n, x;
@@ -435,25 +440,25 @@ y = u;
 k = 1.0;
 t = 1.0;
 
-while( t > MACHEP )
+while( t > torch_cephes_MACHEP )
 	{
 	u *= z / (k * (n+k));
 	y += u;
 	k += 1.0;
 	if( y != 0 )
-		t = fabs( u/y );
+		t = torch_cephes_fabs( u/y );
 	}
 #if DEBUG
 printf( "power series=%.5e ", y );
 #endif
-t = frexp( 0.5*x, &ex );
+t = torch_cephes_frexp( 0.5*x, &ex );
 ex = ex * n;
 if(  (ex > -1023)
   && (ex < 1023) 
   && (n > 0.0)
   && (n < (MAXGAM-1.0)) )
 	{
-	t = pow( 0.5*x, n ) / gamma( n + 1.0 );
+	t = torch_cephes_pow( 0.5*x, n ) / torch_cephes_gamma( n + 1.0 );
 #if DEBUG
 printf( "pow(.5*x, %.4e)/gamma(n+1)=%.5e\n", n, t );
 #endif
@@ -462,32 +467,32 @@ printf( "pow(.5*x, %.4e)/gamma(n+1)=%.5e\n", n, t );
 else
 	{
 #if DEBUG
-	z = n * log(0.5*x);
-	k = lgam( n+1.0 );
+	z = n * torch_cephes_log(0.5*x);
+	k = torch_cephes_lgam( n+1.0 );
 	t = z - k;
 	printf( "log pow=%.5e, lgam(%.4e)=%.5e\n", z, n+1.0, k );
 #else
-	t = n * log(0.5*x) - lgam(n + 1.0);
+	t = n * torch_cephes_log(0.5*x) - torch_cephes_lgam(n + 1.0);
 #endif
 	if( y < 0 )
 		{
-		sgngam = -sgngam;
+		torch_cephes_sgngam = -torch_cephes_sgngam;
 		y = -y;
 		}
-	t += log(y);
+	t += torch_cephes_log(y);
 #if DEBUG
-printf( "log y=%.5e\n", log(y) );
+printf( "log y=%.5e\n", torch_cephes_log(y) );
 #endif
-	if( t < -MAXLOG )
+	if( t < -torch_cephes_MAXLOG )
 		{
 		return( 0.0 );
 		}
-	if( t > MAXLOG )
+	if( t > torch_cephes_MAXLOG )
 		{
-		mtherr( "Jv", OVERFLOW );
-		return( MAXNUM );
+		torch_cephes_mtherr( "Jv", OVERFLOW );
+		return( torch_cephes_MAXNUM );
 		}
-	y = sgngam * exp( t );
+	y = torch_cephes_sgngam * torch_cephes_exp( t );
 	}
 return(y);
 }
@@ -518,7 +523,7 @@ t = 1.0;
 pp = 1.0e38;
 qq = 1.0e38;
 
-while( t > MACHEP )
+while( t > torch_cephes_MACHEP )
 	{
 	k += 2.0;
 	j += 1.0;
@@ -529,7 +534,7 @@ while( t > MACHEP )
 	j += 1.0;
 	u *= (m - k * k)/(j * z);
 	q += sign * u;
-	t = fabs(u/p);
+	t = torch_cephes_fabs(u/p);
 	if( t < conv )
 		{
 		conv = t;
@@ -548,8 +553,9 @@ while( t > MACHEP )
 	}	
 
 hank1:
-u = x - (0.5*n + 0.25) * PI;
-t = sqrt( 2.0/(PI*x) ) * ( pp * cos(u) - qq * sin(u) );
+u = x - (0.5*n + 0.25) * torch_cephes_PI;
+t = torch_cephes_sqrt( 2.0/(torch_cephes_PI*x) ) *
+    ( pp * torch_cephes_cos(u) - qq * torch_cephes_sin(u) );
 #if DEBUG
 printf( "hank: %.6e\n", t );
 #endif
@@ -652,9 +658,9 @@ static double ai, aip, bi, bip;
 /* Test for x very close to n.
  * Use expansion for transition region if so.
  */
-cbn = cbrt(n);
+cbn = torch_cephes_cbrt(n);
 z = (x - n)/cbn;
-if( fabs(z) <= 0.7 )
+if( torch_cephes_fabs(z) <= 0.7 )
 	return( jnt(n,x) );
 
 z = x/n;
@@ -664,42 +670,43 @@ if( zz == 0.0 )
 
 if( zz > 0.0 )
 	{
-	sz = sqrt( zz );
-	t = 1.5 * (log( (1.0+sz)/z ) - sz );	/* zeta ** 3/2		*/
-	zeta = cbrt( t * t );
+	sz = torch_cephes_sqrt( zz );
+	t = 1.5 * (torch_cephes_log( (1.0+sz)/z ) - sz );
+        /* zeta ** 3/2		*/
+	zeta = torch_cephes_cbrt( t * t );
 	nflg = 1;
 	}
 else
 	{
-	sz = sqrt(-zz);
-	t = 1.5 * (sz - acos(1.0/z));
-	zeta = -cbrt( t * t );
+	sz = torch_cephes_sqrt(-zz);
+	t = 1.5 * (sz - torch_cephes_acos(1.0/z));
+	zeta = -torch_cephes_cbrt( t * t );
 	nflg = -1;
 	}
-z32i = fabs(1.0/t);
-sqz = cbrt(t);
+z32i = torch_cephes_fabs(1.0/t);
+sqz = torch_cephes_cbrt(t);
 
 /* Airy function */
-n23 = cbrt( n * n );
+n23 = torch_cephes_cbrt( n * n );
 t = n23 * zeta;
 
 #if DEBUG
 printf("zeta %.5E, Airy(%.5E)\n", zeta, t );
 #endif
-airy( t, &ai, &aip, &bi, &bip );
+torch_cephes_airy( t, &ai, &aip, &bi, &bip );
 
 /* polynomials in expansion */
 u[0] = 1.0;
 zzi = 1.0/zz;
-u[1] = polevl( zzi, P1, 1 )/sz;
-u[2] = polevl( zzi, P2, 2 )/zz;
-u[3] = polevl( zzi, P3, 3 )/(sz*zz);
+u[1] = torch_cephes_polevl( zzi, P1, 1 )/sz;
+u[2] = torch_cephes_polevl( zzi, P2, 2 )/zz;
+u[3] = torch_cephes_polevl( zzi, P3, 3 )/(sz*zz);
 pp = zz*zz;
-u[4] = polevl( zzi, P4, 4 )/pp;
-u[5] = polevl( zzi, P5, 5 )/(pp*sz);
+u[4] = torch_cephes_polevl( zzi, P4, 4 )/pp;
+u[5] = torch_cephes_polevl( zzi, P5, 5 )/(pp*sz);
 pp *= zz;
-u[6] = polevl( zzi, P6, 6 )/pp;
-u[7] = polevl( zzi, P7, 7 )/(pp*sz);
+u[6] = torch_cephes_polevl( zzi, P6, 6 )/pp;
+u[7] = torch_cephes_polevl( zzi, P7, 7 )/(pp*sz);
 
 #if DEBUG
 for( k=0; k<=7; k++ )
@@ -712,8 +719,8 @@ np = 1.0;
 /* flags to stop when terms get larger */
 doa = 1;
 dob = 1;
-akl = MAXNUM;
-bkl = MAXNUM;
+akl = torch_cephes_MAXNUM;
+bkl = torch_cephes_MAXNUM;
 
 for( k=0; k<=3; k++ )
 	{
@@ -748,7 +755,7 @@ for( k=0; k<=3; k++ )
 	if( doa )
 		{
 		ak *= np;
-		t = fabs(ak);
+		t = torch_cephes_fabs(ak);
 		if( t < akl )
 			{
 			akl = t;
@@ -762,7 +769,7 @@ for( k=0; k<=3; k++ )
 		{
 		bk += lambda[tkp1] * zp * u[0];
 		bk *= -np/sqz;
-		t = fabs(bk);
+		t = torch_cephes_fabs(bk);
 		if( t < bkl )
 			{
 			bkl = t;
@@ -774,7 +781,7 @@ for( k=0; k<=3; k++ )
 #if DEBUG
 	printf("a[%d] %.5E, b[%d] %.5E\n", k, ak, k, bk );
 #endif
-	if( np < MACHEP )
+	if( np < torch_cephes_MACHEP )
 		break;
 	np /= n*n;
 	}
@@ -783,7 +790,7 @@ for( k=0; k<=3; k++ )
 t = 4.0 * zeta/zz;
 t = sqrt( sqrt(t) );
 
-t *= ai*pp/cbrt(n)  +  aip*qq/(n23*n);
+t *= ai*pp/torch_cephes_cbrt(n)  +  aip*qq/(n23*n);
 return(t);
 }
 
@@ -839,20 +846,20 @@ cbtwo = cbrt( 2.0 );
 
 /* Airy function */
 zz = -cbtwo * z;
-airy( zz, &ai, &aip, &bi, &bip );
+torch_cephes_airy( zz, &ai, &aip, &bi, &bip );
 
 /* polynomials in expansion */
 zz = z * z;
 z3 = zz * z;
 F[0] = 1.0;
 F[1] = -z/5.0;
-F[2] = polevl( z3, PF2, 1 ) * zz;
-F[3] = polevl( z3, PF3, 2 );
-F[4] = polevl( z3, PF4, 3 ) * z;
+F[2] = torch_cephes_polevl( z3, PF2, 1 ) * zz;
+F[3] = torch_cephes_polevl( z3, PF3, 2 );
+F[4] = torch_cephes_polevl( z3, PF4, 3 ) * z;
 G[0] = 0.3 * zz;
-G[1] = polevl( z3, PG1, 1 );
-G[2] = polevl( z3, PG2, 2 ) * z;
-G[3] = polevl( z3, PG3, 2 ) * zz;
+G[1] = torch_cephes_polevl( z3, PG1, 1 );
+G[2] = torch_cephes_polevl( z3, PG2, 2 ) * z;
+G[3] = torch_cephes_polevl( z3, PG3, 2 ) * zz;
 #if DEBUG
 for( k=0; k<=4; k++ )
 	printf( "F[%d] = %.5E\n", k, F[k] );

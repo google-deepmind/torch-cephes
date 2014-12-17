@@ -136,45 +136,47 @@ static unsigned short sc2[] = {0x3eb7,0xf7d1,0xcf79,0xabca};
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern double floor ( double );
-extern double ldexp ( double, int );
-extern int isnan ( double );
-extern int isfinite ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
+extern double torch_cephes_floor ( double );
+extern double torch_cephes_ldexp ( double, int );
+extern int torch_cephes_isnan ( double );
+extern int torch_cephes_isfinite ( double );
 #else
-double polevl(), p1evl(), floor(), ldexp();
-int isnan(), isfinite();
+double torch_cephes_polevl(), torch_cephes_p1evl(), torch_cephes_floor(),
+    torch_cephes_ldexp();
+int torch_cephes_isnan(), torch_cephes_isfinite();
 #endif
-extern double LOGE2, LOG2E, MAXLOG, MINLOG, MAXNUM;
+extern double torch_cephes_LOGE2, torch_cephes_LOG2E, torch_cephes_MAXLOG,
+    torch_cephes_MINLOG, torch_cephes_MAXNUM;
 #ifdef INFINITIES
-extern double INFINITY;
+extern double torch_cephes_INFINITY;
 #endif
 
-double exp(x)
+double torch_cephes_exp(x)
 double x;
 {
 double px, xx;
 int n;
 
 #ifdef NANS
-if( isnan(x) )
+if( torch_cephes_isnan(x) )
 	return(x);
 #endif
-if( x > MAXLOG)
+if( x > torch_cephes_MAXLOG)
 	{
 #ifdef INFINITIES
-	return( INFINITY );
+	return( torch_cephes_INFINITY );
 #else
-	mtherr( "exp", OVERFLOW );
-	return( MAXNUM );
+	torch_cephes_mtherr( "exp", OVERFLOW );
+	return( torch_cephes_MAXNUM );
 #endif
 	}
 
-if( x < MINLOG )
+if( x < torch_cephes_MINLOG )
 	{
 #ifndef INFINITIES
-	mtherr( "exp", UNDERFLOW );
+	torch_cephes_mtherr( "exp", UNDERFLOW );
 #endif
 	return(0.0);
 	}
@@ -183,7 +185,8 @@ if( x < MINLOG )
  *   = e**g e**( n loge(2) )
  *   = e**( g + n loge(2) )
  */
-px = floor( LOG2E * x + 0.5 ); /* floor() truncates toward -infinity. */
+px = torch_cephes_floor(
+    torch_cephes_LOG2E * x + 0.5 ); /* floor() truncates toward -infinity. */
 n = px;
 x -= px * C1;
 x -= px * C2;
@@ -193,11 +196,11 @@ x -= px * C2;
  * e**x = 1 + 2x P(x**2)/( Q(x**2) - P(x**2) )
  */
 xx = x * x;
-px = x * polevl( xx, P, 2 );
-x =  px/( polevl( xx, Q, 3 ) - px );
+px = x * torch_cephes_polevl( xx, P, 2 );
+x =  px/( torch_cephes_polevl( xx, Q, 3 ) - px );
 x = 1.0 + 2.0 * x;
 
 /* multiply by power of 2 */
-x = ldexp( x, n );
+x = torch_cephes_ldexp( x, n );
 return(x);
 }

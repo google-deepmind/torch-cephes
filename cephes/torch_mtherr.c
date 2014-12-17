@@ -57,10 +57,10 @@
 #include <stdio.h>
 #include "cmath/mconf.h"
 
-int merror = 0;
+int torch_cephes_merror = 0;
 
 #define MAXERRLEN 100
-char errtxt[MAXERRLEN];
+char torch_cephes_errtxt[MAXERRLEN];
 
 /* Notice: the order of appearance of the following
  * messages is bound to the error codes defined
@@ -77,12 +77,12 @@ static char *ermsg[7] = {
 };
 
 
-int mtherr( name, code )
+int torch_cephes_mtherr( name, code )
     char *name;
     int code;
 {
 
-    merror = code;
+    torch_cephes_merror = code;
 
     /* Display error message defined
      * by the code argument.
@@ -95,7 +95,8 @@ int mtherr( name, code )
      * function in which the error occurred:
      */
     /* Set global error message word */
-    snprintf( errtxt, MAXERRLEN, "%s: %s error", name, ermsg[code] );
+    snprintf( torch_cephes_errtxt, MAXERRLEN,
+              "%s: %s error", name, ermsg[code] );
 
     /* Return to calling
      * program

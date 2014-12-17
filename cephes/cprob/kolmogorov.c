@@ -21,24 +21,26 @@
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double pow ( double, double );
-extern double floor ( double );
-extern double lgam ( double );
-extern double exp ( double );
-extern double sqrt ( double );
-extern double log ( double );
-extern double fabs ( double );
-double smirnov ( int, double );
-double kolmogorov ( double );
+extern double torch_cephes_pow ( double, double );
+extern double torch_cephes_floor ( double );
+extern double torch_cephes_lgam ( double );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_sqrt ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_fabs ( double );
+double torch_cephes_smirnov ( int, double );
+double torch_cephes_kolmogorov ( double );
 #else
-double pow (), floor (), lgam (), exp (), sqrt (), log (), fabs ();
-double smirnov (), kolmogorov ();
+double torch_cephes_pow (), torch_cephes_floor (), torch_cephes_lgam (),
+    torch_cephes_exp (), torch_cephes_sqrt (), torch_cephes_log (),
+    torch_cephes_fabs ();
+double torch_cephes_smirnov (), torch_cephes_kolmogorov ();
 #endif
-extern double MAXLOG;
+extern double torch_cephes_MAXLOG;
 
 /* Exact Smirnov statistic, for one-sided test.  */
 double
-smirnov (n, e)
+torch_cephes_smirnov (n, e)
      int n;
      double e;
 {
@@ -47,7 +49,7 @@ smirnov (n, e)
 
   if (n <= 0 || e < 0.0 || e > 1.0)
     return (-1.0);
-  nn = floor ((double) n * (1.0 - e));
+  nn = torch_cephes_floor ((double) n * (1.0 - e));
   p = 0.0;
   if (n < 1013)
     {
@@ -55,28 +57,28 @@ smirnov (n, e)
       for (v = 0; v <= nn; v++)
 	{
 	  evn = e + ((double) v) / n;
-	  p += c * pow (evn, (double) (v - 1))
-	    * pow (1.0 - evn, (double) (n - v));
+	  p += c * torch_cephes_pow (evn, (double) (v - 1))
+	    * torch_cephes_pow (1.0 - evn, (double) (n - v));
 	  /* Next combinatorial term; worst case error = 4e-15.  */
 	  c *= ((double) (n - v)) / (v + 1);
 	}
     }
   else
     {
-      lgamnp1 = lgam ((double) (n + 1));
+      lgamnp1 = torch_cephes_lgam ((double) (n + 1));
       for (v = 0; v <= nn; v++)
 	{
 	  evn = e + ((double) v) / n;
 	  omevn = 1.0 - evn;
-	  if (fabs (omevn) > 0.0)
+	  if (torch_cephes_fabs (omevn) > 0.0)
 	    {
 	      t = lgamnp1
-		- lgam ((double) (v + 1))
-		- lgam ((double) (n - v + 1))
-		+ (v - 1) * log (evn)
-		+ (n - v) * log (omevn);
-	      if (t > -MAXLOG)
-		p += exp (t);
+		- torch_cephes_lgam ((double) (v + 1))
+		- torch_cephes_lgam ((double) (n - v + 1))
+		+ (v - 1) * torch_cephes_log (evn)
+		+ (n - v) * torch_cephes_log (omevn);
+	      if (t > -torch_cephes_MAXLOG)
+		p += torch_cephes_exp (t);
 	    }
 	}
     }
@@ -90,7 +92,7 @@ smirnov (n, e)
    The approximation is useful for the tail of the distribution
    when n is large.  */
 double
-kolmogorov (y)
+torch_cephes_kolmogorov (y)
      double y;
 {
   double p, t, r, sign, x;
@@ -101,7 +103,7 @@ kolmogorov (y)
   r = 1.0;
   do
     {
-      t = exp (x * r * r);
+      t = torch_cephes_exp (x * r * r);
       p += sign * t;
       if (t == 0.0)
 	break;
@@ -115,7 +117,7 @@ kolmogorov (y)
 /* Functional inverse of Smirnov distribution
    finds e such that smirnov(n,e) = p.  */
 double
-smirnovi (n, p)
+torch_cephes_smirnovi (n, p)
      int n;
      double p;
 {
@@ -123,31 +125,31 @@ smirnovi (n, p)
 
   if (p <= 0.0 || p > 1.0)
     {
-      mtherr ("smirnovi", DOMAIN);
+      torch_cephes_mtherr ("smirnovi", DOMAIN);
       return 0.0;
     }
   /* Start with approximation p = exp(-2 n e^2).  */
-  e = sqrt (-log (p) / (2.0 * n));
+  e = torch_cephes_sqrt (-torch_cephes_log (p) / (2.0 * n));
   do
     {
       /* Use approximate derivative in Newton iteration. */
       t = -2.0 * n * e;
-      dpde = 2.0 * t * exp (t * e);
-      if (fabs (dpde) > 0.0)
-	t = (p - smirnov (n, e)) / dpde;
+      dpde = 2.0 * t * torch_cephes_exp (t * e);
+      if (torch_cephes_fabs (dpde) > 0.0)
+	t = (p - torch_cephes_smirnov (n, e)) / dpde;
       else
 	{
-	  mtherr ("smirnovi", UNDERFLOW);
+	  torch_cephes_mtherr ("smirnovi", UNDERFLOW);
 	  return 0.0;
 	}
       e = e + t;
       if (e >= 1.0 || e <= 0.0)
 	{
-	  mtherr ("smirnovi", OVERFLOW);
+	  torch_cephes_mtherr ("smirnovi", OVERFLOW);
 	  return 0.0;
 	}
     }
-  while (fabs (t / e) > 1e-10);
+  while (torch_cephes_fabs (t / e) > 1e-10);
   return (e);
 }
 
@@ -157,33 +159,33 @@ smirnovi (n, p)
    If e = smirnovi (n,p), then kolmogi(2 * p) / sqrt(n) should
    be close to e.  */
 double
-kolmogi (p)
+torch_cephes_kolmogi (p)
      double p;
 {
   double y, t, dpdy;
 
   if (p <= 0.0 || p > 1.0)
     {
-      mtherr ("kolmogi", DOMAIN);
+      torch_cephes_mtherr ("kolmogi", DOMAIN);
       return 0.0;
     }
   /* Start with approximation p = 2 exp(-2 y^2).  */
-  y = sqrt (-0.5 * log (0.5 * p));
+  y = torch_cephes_sqrt (-0.5 * torch_cephes_log (0.5 * p));
   do
     {
       /* Use approximate derivative in Newton iteration. */
       t = -2.0 * y;
       dpdy = 4.0 * t * exp (t * y);
-      if (fabs (dpdy) > 0.0)
-	t = (p - kolmogorov (y)) / dpdy;
+      if (torch_cephes_fabs (dpdy) > 0.0)
+	t = (p - torch_cephes_kolmogorov (y)) / dpdy;
       else
 	{
-	  mtherr ("kolmogi", UNDERFLOW);
+	  torch_cephes_mtherr ("kolmogi", UNDERFLOW);
 	  return 0.0;
 	}
       y = y + t;
     }
-  while (fabs (t / y) > 1e-10);
+  while (torch_cephes_fabs (t / y) > 1e-10);
   return (y);
 }
 

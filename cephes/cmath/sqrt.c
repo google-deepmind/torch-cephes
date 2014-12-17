@@ -47,14 +47,14 @@ Copyright 1984, 1987, 1988, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double frexp ( double, int * );
-extern double ldexp ( double, int );
+extern double torch_cephes_frexp ( double, int * );
+extern double torch_cephes_ldexp ( double, int );
 #else
-double frexp(), ldexp();
+double torch_cephes_frexp(), torch_cephes_ldexp();
 #endif
-extern double SQRT2;  /*  SQRT2 = 1.41421356237309504880 */
+extern double torch_cephes_SQRT2;  /*  SQRT2 = 1.41421356237309504880 */
 
-double sqrt(x)
+double torch_cephes_sqrt(x)
 double x;
 {
 int e;
@@ -66,13 +66,13 @@ double z, w;
 if( x <= 0.0 )
 	{
 	if( x < 0.0 )
-		mtherr( "sqrt", DOMAIN );
+		torch_cephes_mtherr( "sqrt", DOMAIN );
 	return( 0.0 );
 	}
 w = x;
 /* separate exponent and significand */
 #ifdef UNK
-z = frexp( x, &e );
+z = torch_cephes_frexp( x, &e );
 #endif
 #ifdef DEC
 q = (short *)&x;
@@ -86,7 +86,7 @@ z = x;
  * handle denormal numbers properly.
  */
 #ifdef IBMPC
-z = frexp( x, &e );
+z = torch_cephes_frexp( x, &e );
 q = (short *)&x;
 q += 3;
 /*
@@ -97,7 +97,7 @@ z = x;
 */
 #endif
 #ifdef MIEEE
-z = frexp( x, &e );
+z = torch_cephes_frexp( x, &e );
 q = (short *)&x;
 /*
 e = ((*q >> 4) & 0x0fff) - 0x3fe;
@@ -114,25 +114,25 @@ x = 4.173075996388649989089E-1 + 5.9016206709064458299663E-1 * z;
 
 /* adjust for odd powers of 2 */
 if( (e & 1) != 0 )
-	x *= SQRT2;
+	x *= torch_cephes_SQRT2;
 
 /* re-insert exponent */
 #ifdef UNK
-x = ldexp( x, (e >> 1) );
+x = torch_cephes_ldexp( x, (e >> 1) );
 #endif
 #ifdef DEC
 *q += ((e >> 1) & 0377) << 7;
 *q &= 077777;
 #endif
 #ifdef IBMPC
-x = ldexp( x, (e >> 1) );
+x = torch_cephes_ldexp( x, (e >> 1) );
 /*
 *q += ((e >>1) & 0x7ff) << 4;
 *q &= 077777;
 */
 #endif
 #ifdef MIEEE
-x = ldexp( x, (e >> 1) );
+x = torch_cephes_ldexp( x, (e >> 1) );
 /*
 *q += ((e >>1) & 0x7ff) << 4;
 *q &= 077777;

@@ -49,27 +49,27 @@ static double CBRT2I = 0.79370052598409973737585;
 static double CBRT4I = 0.62996052494743658238361;
 
 #ifdef ANSIPROT
-extern double frexp ( double, int * );
-extern double ldexp ( double, int );
-extern int isnan ( double );
-extern int isfinite ( double );
+extern double torch_cephes_frexp ( double, int * );
+extern double torch_cephes_ldexp ( double, int );
+extern int torch_cephes_isnan ( double );
+extern int torch_cephes_isfinite ( double );
 #else
-double frexp(), ldexp();
-int isnan(), isfinite();
+double torch_cephes_frexp(), torch_cephes_ldexp();
+int torch_cephes_isnan(), torch_cephes_isfinite();
 #endif
 
-double cbrt(x)
+double torch_cephes_cbrt(x)
 double x;
 {
 int e, rem, sign;
 double z;
 
 #ifdef NANS
-if( isnan(x) )
+if( torch_cephes_isnan(x) )
   return x;
 #endif
 #ifdef INFINITIES
-if( !isfinite(x) )
+if( !torch_cephes_isfinite(x) )
   return x;
 #endif
 if( x == 0 )
@@ -86,7 +86,7 @@ z = x;
 /* extract power of 2, leaving
  * mantissa between 0.5 and 1
  */
-x = frexp( x, &e );
+x = torch_cephes_frexp( x, &e );
 
 /* Approximate cube root of number between .5 and 1,
  * peak relative error = 9.2e-6
@@ -126,7 +126,7 @@ else
 	}
 
 /* multiply by power of 2 */
-x = ldexp( x, e );
+x = torch_cephes_ldexp( x, e );
 
 /* Newton iteration */
 x -= ( x - (z/(x*x)) )*0.33333333333333333333;

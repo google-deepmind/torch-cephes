@@ -5,11 +5,11 @@
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double floor ( double );
-extern double ldexp ( double, int );
-extern double sin ( double );
+extern double torch_cephes_floor ( double );
+extern double torch_cephes_ldexp ( double, int );
+extern double torch_cephes_sin ( double );
 #else
-double floor(), ldexp(), sin();
+double torch_cephes_floor(), torch_cephes_ldexp(), torch_cephes_sin();
 #endif
 
 #define TPI 6.283185307179586476925
@@ -51,7 +51,7 @@ inlup:
  * x will be limited to the largest value that will fit into a
  * long integer.
  */
-n = floor( z/TPI );
+n = torch_cephes_floor( z/TPI );
 
 /* Carefully subtract 2 pi n from x.
  * This is done by subtracting n * 2**k in such a way that there
@@ -71,25 +71,25 @@ n = floor( z/TPI );
  * This will only work if division by a power of 2 is exact.
  */
 
-a = z - ldexp(n, 2);	/* 4n */
-a -= ldexp( n, 1);	/* 2n */
-a -= ldexp( n, -2 );	/* n/4 */
-a -= ldexp( n, -5 );	/* n/32 */
-a -= ldexp( n, -9 );	/* n/512 */
-a += ldexp( n, -15 );	/* add n/32768 */
-a -= ldexp( n, -17 );	/* n/131072 */
-a -= ldexp( n, -18 );
-a -= ldexp( n, -20 );
-a -= ldexp( n, -22 );
-a -= ldexp( n, -24 );
-a -= ldexp( n, -28 );
-a -= ldexp( n, -32 );
-a -= ldexp( n, -37 );
-a -= ldexp( n, -39 );
-a -= ldexp( n, -40 );
-a -= ldexp( n, -42 );
-a -= ldexp( n, -46 );
-a -= ldexp( n, -47 );
+a = z - torch_cephes_ldexp(n, 2);	/* 4n */
+a -= torch_cephes_ldexp( n, 1);	/* 2n */
+a -= torch_cephes_ldexp( n, -2 );	/* n/4 */
+a -= torch_cephes_ldexp( n, -5 );	/* n/32 */
+a -= torch_cephes_ldexp( n, -9 );	/* n/512 */
+a += torch_cephes_ldexp( n, -15 );	/* add n/32768 */
+a -= torch_cephes_ldexp( n, -17 );	/* n/131072 */
+a -= torch_cephes_ldexp( n, -18 );
+a -= torch_cephes_ldexp( n, -20 );
+a -= torch_cephes_ldexp( n, -22 );
+a -= torch_cephes_ldexp( n, -24 );
+a -= torch_cephes_ldexp( n, -28 );
+a -= torch_cephes_ldexp( n, -32 );
+a -= torch_cephes_ldexp( n, -37 );
+a -= torch_cephes_ldexp( n, -39 );
+a -= torch_cephes_ldexp( n, -40 );
+a -= torch_cephes_ldexp( n, -42 );
+a -= torch_cephes_ldexp( n, -46 );
+a -= torch_cephes_ldexp( n, -47 );
 
 /* Subtract what is left of 2 pi n after all the above reductions.
  */
@@ -114,9 +114,8 @@ if( a < 0.0 )
 
 /* Compute the test function at x and at a = x mod 2 pi.
  */
-y = sin(x);
-z = sin(a);
+y = torch_cephes_sin(x);
+z = torch_cephes_sin(a);
 printf( "sin(%.15e) error = %.3e\n", x, y-z );
 goto loop;
 }
-

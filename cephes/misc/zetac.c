@@ -51,7 +51,7 @@ Copyright 1984, 1987, 1989, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 
-extern double MAXNUM, PI;
+extern double torch_cephes_MAXNUM, torch_cephes_PI;
 
 /* Riemann zeta(x) - 1
  * for integer arguments between 0 and 30.
@@ -494,21 +494,22 @@ static unsigned short S[20] = {
  * Riemann zeta function, minus one
  */
 #ifdef ANSIPROT
-extern double sin ( double );
-extern double floor ( double );
-extern double gamma ( double );
-extern double pow ( double, double );
-extern double exp ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-double zetac ( double );
+extern double torch_cephes_sin ( double );
+extern double torch_cephes_floor ( double );
+extern double torch_cephes_gamma ( double );
+extern double torch_cephes_pow ( double, double );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
+double torch_cephes_zetac ( double );
 #else
-double sin(), floor(), gamma(), pow(), exp();
-double polevl(), p1evl(), zetac();
+double torch_cephes_sin(), torch_cephes_floor(), torch_cephes_gamma(),
+    torch_cephes_pow(), torch_cephes_exp();
+double torch_cephes_polevl(), torch_cephes_p1evl(), torch_cephes_zetac();
 #endif
-extern double MACHEP;
+extern double torch_cephes_MACHEP;
 
-double zetac(x)
+double torch_cephes_zetac(x)
 double x;
 {
 int i;
@@ -522,12 +523,15 @@ if( x < 0.0 )
 	if( x < -170.6243 )
 #endif
 		{
-		mtherr( "zetac", OVERFLOW );
+		torch_cephes_mtherr( "zetac", OVERFLOW );
 		return(0.0);
 		}
 	s = 1.0 - x;
-	w = zetac( s );
-	b = sin(0.5*PI*x) * pow(2.0*PI, x) * gamma(s) * (1.0 + w) / PI;
+	w = torch_cephes_zetac( s );
+	b = torch_cephes_sin(0.5*torch_cephes_PI*x) *
+                torch_cephes_pow(2.0*torch_cephes_PI, x)
+                * torch_cephes_gamma(s) *
+                (1.0 + w) / torch_cephes_PI;
 	return(b - 1.0);
 	}
 
@@ -553,29 +557,31 @@ if( w == x )
 if( x < 1.0 )
 	{
 	w = 1.0 - x;
-	a = polevl( x, R, 5 ) / ( w * p1evl( x, S, 5 ));
+	a = torch_cephes_polevl( x, R, 5 ) /
+            ( w * torch_cephes_p1evl( x, S, 5 ));
 	return( a );
 	}
 
 if( x == 1.0 )
 	{
-	mtherr( "zetac", SING );
-	return( MAXNUM );
+	torch_cephes_mtherr( "zetac", SING );
+	return( torch_cephes_MAXNUM );
 	}
 
 if( x <= 10.0 )
 	{
-	b = pow( 2.0, x ) * (x - 1.0);
+	b = torch_cephes_pow( 2.0, x ) * (x - 1.0);
 	w = 1.0/x;
-	s = (x * polevl( w, P, 8 )) / (b * p1evl( w, Q, 8 ));
+	s = (x * torch_cephes_polevl( w, P, 8 )) /
+            (b * torch_cephes_p1evl( w, Q, 8 ));
 	return( s );
 	}
 
 if( x <= 50.0 )
 	{
-	b = pow( 2.0, -x );
-	w = polevl( x, A, 10 ) / p1evl( x, B, 10 );
-	w = exp(w) + b;
+	b = torch_cephes_pow( 2.0, -x );
+	w = torch_cephes_polevl( x, A, 10 ) / torch_cephes_p1evl( x, B, 10 );
+	w = torch_cephes_exp(w) + b;
 	return(w);
 	}
 
@@ -588,12 +594,12 @@ a = 1.0;
 do
 	{
 	a += 2.0;
-	b = pow( a, -x );
+	b = torch_cephes_pow( a, -x );
 	s += b;
 	}
-while( b/s > MACHEP );
+while( b/s > torch_cephes_MACHEP );
 
-b = pow( 2.0, -x );
+b = torch_cephes_pow( 2.0, -x );
 s = (s + b)/(1.0-b);
 return(s);
 }

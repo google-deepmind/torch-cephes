@@ -14,13 +14,14 @@
 #include "mconf.h"
 
 
-extern double PI, PIO2, MACHEP, MAXNUM;
+extern double torch_cephes_PI, torch_cephes_PIO2, torch_cephes_MACHEP,
+    torch_cephes_MAXNUM;
 
 static double aa[ARRSIZ];
 static double pp[ARRSIZ];
 static double y[ARRSIZ];
 static double zs[ARRSIZ];
-cmplx z[ARRSIZ];
+static cmplx z[ARRSIZ];
 static double wr = 0.0;
 static double cbp = 0.0;
 static double wc = 0.0;
@@ -28,13 +29,13 @@ static double rn = 8.0;
 static double c = 0.0;
 static double cgam = 0.0;
 static double scale = 0.0;
-double fs = 1.0e4;
+static double fs = 1.0e4;
 static double dbr = 0.5;
 static double dbd = -40.0;
 static double f1 = 1.5e3;
 static double f2 = 2.0e3;
 static double f3 = 2.4e3;
-double dbfac = 0.0;
+static double dbfac = 0.0;
 static double a = 0.0;
 static double b = 0.0;
 static double q = 0.0;
@@ -62,13 +63,13 @@ static double cang = 0.0;
 static double sang = 0.0;
 static double bw = 0.0;
 static double ang = 0.0;
-double fnyq = 0.0;
+static double fnyq = 0.0;
 static double ai = 0.0;
 static double pn = 0.0;
 static double an = 0.0;
 static double gam = 0.0;
 static double cng = 0.0;
-double gain = 0.0;
+static double gain = 0.0;
 static int lr = 0;
 static int nt = 0;
 static int i = 0;
@@ -77,7 +78,7 @@ static int jt = 0;
 static int nc = 0;
 static int ii = 0;
 static int ir = 0;
-int zord = 0;
+static int zord = 0;
 static int icnt = 0;
 static int mh = 0;
 static int jj = 0;
@@ -96,45 +97,50 @@ static char salut[] =
 {"Filter shape:\n1 low pass\n2 band pass\n3 high pass\n4 band stop\n"};
 
 #ifdef ANSIPROT
-extern double exp ( double );
-extern double log ( double );
-extern double cos ( double );
-extern double sin ( double );
-extern double sqrt ( double );
-extern double fabs ( double );
-extern double asin ( double );
-extern double atan ( double );
-extern double atan2 ( double, double );
-extern double pow ( double, double );
-extern double cabs ( cmplx *z );
-extern void cadd ( cmplx *a, cmplx *b, cmplx *c );
-extern void cdiv ( cmplx *a, cmplx *b, cmplx *c );
-extern void cmov ( void *a, void *b );
-extern void cmul ( cmplx *a, cmplx *b, cmplx *c );
-extern void cneg ( cmplx *a );
-extern void csqrt ( cmplx *z, cmplx *w );
-extern void csub ( cmplx *a, cmplx *b, cmplx *c );
-extern double ellie ( double phi, double m );
-extern double ellik ( double phi, double m );
-extern double ellpe ( double x );
-extern int ellpj ( double, double, double *, double *, double *, double * );
-extern double ellpk ( double x );
-int getnum ( char *line, double *val );
-double cay ( double q );
-int lampln ( void );
-int spln ( void );
-int xfun ( void );
-int zplna ( void );
-int zplnb ( void );
-int zplnc ( void );
-int quadf ( double, double, int );
-double response ( double, double );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_cos ( double );
+extern double torch_cephes_sin ( double );
+extern double torch_cephes_sqrt ( double );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_asin ( double );
+extern double torch_cephes_atan ( double );
+extern double torch_cephes_atan2 ( double, double );
+extern double torch_cephes_pow ( double, double );
+extern double torch_cephes_cabs ( cmplx *z );
+extern void torch_cephes_cadd ( cmplx *a, cmplx *b, cmplx *c );
+extern void torch_cephes_cdiv ( cmplx *a, cmplx *b, cmplx *c );
+extern void torch_cephes_cmov ( void *a, void *b );
+extern void torch_cephes_cmul ( cmplx *a, cmplx *b, cmplx *c );
+extern void torch_cephes_cneg ( cmplx *a );
+extern void torch_cephes_csqrt ( cmplx *z, cmplx *w );
+extern void torch_cephes_csub ( cmplx *a, cmplx *b, cmplx *c );
+extern double torch_cephes_ellie ( double phi, double m );
+extern double torch_cephes_ellik ( double phi, double m );
+extern double torch_cephes_ellpe ( double x );
+extern int torch_cephes_ellpj ( double, double, double *, double *, double *,
+                                double * );
+extern double torch_cephes_ellpk ( double x );
+int torch_cephes_getnum ( char *line, double *val );
+double torch_cephes_cay ( double q );
+int torch_cephes_lampln ( void );
+int torch_cephes_spln ( void );
+int torch_cephes_xfun ( void );
+int torch_cephes_zplna ( void );
+int torch_cephes_zplnb ( void );
+int torch_cephes_zplnc ( void );
+int torch_cephes_quadf ( double, double, int );
+double torch_cephes_response ( double, double );
 #else
-double exp(), log(), cos(), sin(), sqrt();
-double ellpk(), ellik(), asin(), atan(), atan2(), pow();
-double cay(), cabs();
-double response();
-int lampln(), spln(), xfun(), zplna(), zplnb(), zplnc(), quadf();
+double torch_cephes_exp(), torch_cephes_log(), torch_cephes_cos(),
+    torch_cephes_sin(), torch_cephes_sqrt();
+double torch_cephes_ellpk(), torch_cephes_ellik(), torch_cephes_asin(),
+    torch_cephes_atan(), torch_cephes_atan2(), torch_cephes_pow();
+double torch_cephes_cay(), torch_cephes_cabs();
+double torch_cephes_response();
+int torch_cephes_lampln(), torch_cephes_spln(), torch_cephes_xfun(),
+    torch_cephes_zplna(), torch_cephes_zplnb(), torch_cephes_zplnc(),
+    torch_cephes_quadf();
 #define fabs(x) ( (x) < 0 ? -(x) : (x) )
 #endif
 
@@ -1124,4 +1130,3 @@ if( s[0] != '\0' )
 	}
 return 0;
 }
-

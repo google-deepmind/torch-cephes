@@ -242,17 +242,17 @@ static short S[16] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern double sqrt ( double );
-double asin ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
+extern double torch_cephes_sqrt ( double );
+double torch_cephes_asin ( double );
 #else
-double sqrt(), polevl(), p1evl();
-double asin();
+double torch_cephes_sqrt(), torch_cephes_polevl(), torch_cephes_p1evl();
+double torch_cephes_asin();
 #endif
-extern double PIO2, PIO4, NAN;
+extern double torch_cephes_PIO2, torch_cephes_PIO4, torch_cephes_NAN;
 
-double asin(x)
+double torch_cephes_asin(x)
 double x;
 {
 double a, p, z, zz;
@@ -271,20 +271,20 @@ else
 
 if( a > 1.0 )
 	{
-	mtherr( "asin", DOMAIN );
-	return( NAN );
+	torch_cephes_mtherr( "asin", DOMAIN );
+	return( torch_cephes_NAN );
 	}
 
 if( a > 0.625 )
 	{
 	/* arcsin(1-x) = pi/2 - sqrt(2x)(1+R(x))  */
 	zz = 1.0 - a;
-	p = zz * polevl( zz, R, 4)/p1evl( zz, S, 4);
-	zz = sqrt(zz+zz);
-	z = PIO4 - zz;
+	p = zz * torch_cephes_polevl( zz, R, 4)/torch_cephes_p1evl( zz, S, 4);
+	zz = torch_cephes_sqrt(zz+zz);
+	z = torch_cephes_PIO4 - zz;
 	zz = zz * p - MOREBITS;
 	z = z - zz;
-	z = z + PIO4;
+	z = z + torch_cephes_PIO4;
 	}
 else
 	{
@@ -293,7 +293,7 @@ else
 		return(x);
 		}
 	zz = a * a;
-	z = zz * polevl( zz, P, 5)/p1evl( zz, Q, 5);
+	z = zz * torch_cephes_polevl( zz, P, 5)/torch_cephes_p1evl( zz, Q, 5);
 	z = a * z + a;
 	}
 if( sign < 0 )
@@ -303,22 +303,22 @@ return(z);
 
 
 
-double acos(x)
+double torch_cephes_acos(x)
 double x;
 {
 double z;
 
 if( (x < -1.0) || (x > 1.0) )
 	{
-	mtherr( "acos", DOMAIN );
-	return( NAN );
+	torch_cephes_mtherr( "acos", DOMAIN );
+	return( torch_cephes_NAN );
 	}
 if( x > 0.5 )
 	{
-	return( 2.0 * asin(  sqrt(0.5 - 0.5*x) ) );
+	return( 2.0 * torch_cephes_asin(  torch_cephes_sqrt(0.5 - 0.5*x) ) );
 	}
-z = PIO4 - asin(x);
+z = torch_cephes_PIO4 - torch_cephes_asin(x);
 z = z + MOREBITS;
-z = z + PIO4;
+z = z + torch_cephes_PIO4;
 return( z );
 }

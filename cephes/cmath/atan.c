@@ -168,17 +168,19 @@ static unsigned short T3P8A[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern double atan ( double );
-extern double fabs ( double );
-extern int signbit ( double );
-extern int isnan ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
+extern double torch_cephes_atan ( double );
+extern double torch_cephes_fabs ( double );
+extern int torch_cephes_signbit ( double );
+extern int torch_cephes_isnan ( double );
 #else
-double polevl(), p1evl(), atan(), fabs();
-int signbit(), isnan();
+double torch_cephes_polevl(), torch_cephes_p1evl(), torch_cephes_atan(),
+    torch_cephes_fabs();
+int torch_cephes_signbit(), torch_cephes_isnan();
 #endif
-extern double PI, PIO2, PIO4, INFINITY, NEGZERO, MAXNUM;
+extern double torch_cephes_PI, torch_cephes_PIO2, torch_cephes_PIO4,
+    torch_cephes_INFINITY, torch_cephes_NEGZERO, torch_cephes_MAXNUM;
 
 /* pi/2 = PIO2 + MOREBITS.  */
 #ifdef DEC
@@ -188,7 +190,7 @@ extern double PI, PIO2, PIO4, INFINITY, NEGZERO, MAXNUM;
 #endif
 
 
-double atan(x)
+double torch_cephes_atan(x)
 double x;
 {
 double y, z;
@@ -199,10 +201,10 @@ if( x == 0.0 )
 	return(x);
 #endif
 #ifdef INFINITIES
-if(x == INFINITY)
-	return(PIO2);
-if(x == -INFINITY)
-	return(-PIO2);
+if(x == torch_cephes_INFINITY)
+	return(torch_cephes_PIO2);
+if(x == -torch_cephes_INFINITY)
+	return(-torch_cephes_PIO2);
 #endif
 /* make argument positive and save the sign */
 sign = 1;
@@ -215,7 +217,7 @@ if( x < 0.0 )
 flag = 0;
 if( x > T3P8 )
 	{
-	y = PIO2;
+	y = torch_cephes_PIO2;
 	flag = 1;
 	x = -( 1.0/x );
 	}
@@ -225,12 +227,12 @@ else if( x <= 0.66 )
 	}
 else
 	{
-	y = PIO4;
+	y = torch_cephes_PIO4;
 	flag = 2;
 	x = (x-1.0)/(x+1.0);
 	}
 z = x * x;
-z = z * polevl( z, P, 4 ) / p1evl( z, Q, 5 );
+z = z * torch_cephes_polevl( z, P, 4 ) / torch_cephes_p1evl( z, Q, 5 );
 z = x * z + x;
 if( flag == 2 )
 	z += 0.5 * MOREBITS;
@@ -245,9 +247,9 @@ return(y);
 /*							atan2	*/
 
 #ifdef ANSIC
-double atan2( y, x )
+double torch_cephes_atan2( y, x )
 #else
-double atan2( x, y )
+double torch_cephes_atan2( x, y )
 #endif
 double x, y;
 {
@@ -257,24 +259,24 @@ short code;
 code = 0;
 
 #ifdef NANS
-if( isnan(x) )
+if( torch_cephes_isnan(x) )
 	return(x);
-if( isnan(y) )
+if( torch_cephes_isnan(y) )
 	return(y);
 #endif
 #ifdef MINUSZERO
 if( y == 0.0 )
 	{
-	if( signbit(y) )
+	if( torch_cephes_signbit(y) )
 		{
 		if( x > 0.0 )
 			z = y;
 		else if( x < 0.0 )
-			z = -PI;
+			z = -torch_cephes_PI;
 		else
 			{
-			if( signbit(x) )
-				z = -PI;
+			if( torch_cephes_signbit(x) )
+				z = -torch_cephes_PI;
 			else
 				z = y;
 			}
@@ -283,56 +285,56 @@ if( y == 0.0 )
 		{
 		if( x == 0.0 )
 			{
-			if( signbit(x) )
-				z = PI;
+			if( torch_cephes_signbit(x) )
+				z = torch_cephes_PI;
 			else
 				z = 0.0;
 			}
 		else if( x > 0.0 )
 			z = 0.0;
 		else
-			z = PI;
+			z = torch_cephes_PI;
 		}
 	return z;
 	}
 if( x == 0.0 )
 	{
 	if( y > 0.0 )
-		z = PIO2;
+		z = torch_cephes_PIO2;
 	else
-		z = -PIO2;
+		z = -torch_cephes_PIO2;
 	return z;
 	}
 #endif /* MINUSZERO */
 #ifdef INFINITIES
-if( x == INFINITY )
+if( x == torch_cephes_INFINITY )
 	{
-	if( y == INFINITY )
-		z = 0.25 * PI;
-	else if( y == -INFINITY )
-		z = -0.25 * PI;
+	if( y == torch_cephes_INFINITY )
+		z = 0.25 * torch_cephes_PI;
+	else if( y == -torch_cephes_INFINITY )
+		z = -0.25 * torch_cephes_PI;
 	else if( y < 0.0 )
-		z = NEGZERO;
+		z = torch_cephes_NEGZERO;
 	else
 		z = 0.0;
 	return z;
 	}
-if( x == -INFINITY )
+if( x == -torch_cephes_INFINITY )
 	{
-	if( y == INFINITY )
-		z = 0.75 * PI;
-	else if( y <= -INFINITY )
-		z = -0.75 * PI;
+	if( y == torch_cephes_INFINITY )
+		z = 0.75 * torch_cephes_PI;
+	else if( y <= -torch_cephes_INFINITY )
+		z = -0.75 * torch_cephes_PI;
 	else if( y >= 0.0 )
-		z = PI;
+		z = torch_cephes_PI;
 	else
-		z = -PI;
+		z = -torch_cephes_PI;
 	return z;
 	}
-if( y == INFINITY )
-	return( PIO2 );
-if( y == -INFINITY )
-	return( -PIO2 );
+if( y == torch_cephes_INFINITY )
+	return( torch_cephes_PIO2 );
+if( y == -torch_cephes_INFINITY )
+	return( -torch_cephes_PIO2 );
 #endif
 
 if( x < 0.0 )
@@ -343,26 +345,26 @@ if( y < 0.0 )
 #ifdef INFINITIES
 if( x == 0.0 )
 #else
-if( fabs(x) <= (fabs(y) / MAXNUM) )
+if( torch_cephes_fabs(x) <= (torch_cephes_fabs(y) / torch_cephes_MAXNUM) )
 #endif
 	{
 	if( code & 1 )
 		{
 #if ANSIC
-		return( -PIO2 );
+		return( -torch_cephes_PIO2 );
 #else
-		return( 3.0*PIO2 );
+		return( 3.0*torch_cephes_PIO2 );
 #endif
 		}
 	if( y == 0.0 )
 		return( 0.0 );
-	return( PIO2 );
+	return( torch_cephes_PIO2 );
 	}
 
 if( y == 0.0 )
 	{
 	if( code & 2 )
-		return( PI );
+		return( torch_cephes_PI );
 	return( 0.0 );
 	}
 
@@ -373,21 +375,21 @@ switch( code )
 	default:
 	case 0:
 	case 1: w = 0.0; break;
-	case 2: w = PI; break;
-	case 3: w = -PI; break;
+	case 2: w = torch_cephes_PI; break;
+	case 3: w = -torch_cephes_PI; break;
 #else
 	default:
 	case 0: w = 0.0; break;
-	case 1: w = 2.0 * PI; break;
+	case 1: w = 2.0 * torch_cephes_PI; break;
 	case 2:
-	case 3: w = PI; break;
+	case 3: w = torch_cephes_PI; break;
 #endif
 	}
 
-z = w + atan( y/x );
+z = w + torch_cephes_atan( y/x );
 #ifdef MINUSZERO
 if( z == 0.0 && y < 0 )
-	z = NEGZERO;
+	z = torch_cephes_NEGZERO;
 #endif
 return( z );
 }
