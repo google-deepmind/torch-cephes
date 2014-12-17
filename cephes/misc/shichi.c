@@ -500,17 +500,18 @@ static unsigned short C2[] = {
 /* Sine and cosine integrals */
 
 #ifdef ANSIPROT
-extern double log ( double );
-extern double exp ( double );
-extern double fabs ( double );
-extern double chbevl ( double, void *, int );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_chbevl ( double, void *, int );
 #else
-double log(), exp(), fabs(), chbevl();
+double torch_cephes_log(), torch_cephes_exp(), torch_cephes_fabs(),
+    torch_cephes_chbevl();
 #endif
 #define EUL 0.57721566490153286061
-extern double MACHEP, MAXNUM, PIO2;
+extern double torch_cephes_MACHEP, torch_cephes_MAXNUM, torch_cephes_PIO2;
 
-int shichi( x, si, ci )
+int torch_cephes_shichi( x, si, ci )
 double x;
 double *si, *ci;
 {
@@ -529,7 +530,7 @@ else
 if( x == 0.0 )
 	{
 	*si = 0.0;
-	*ci = -MAXNUM;
+	*ci = -torch_cephes_MAXNUM;
 	return( 0 );
 	}
 
@@ -554,7 +555,7 @@ do
 	s += a/k;
 	k += 1.0;
 	}
-while( fabs(a/s) > MACHEP );
+while( torch_cephes_fabs(a/s) > torch_cephes_MACHEP );
 
 s *= x;
 goto done;
@@ -565,27 +566,27 @@ chb:
 if( x < 18.0 )
 	{
 	a = (576.0/x - 52.0)/10.0;
-	k = exp(x) / x;
-	s = k * chbevl( a, S1, 22 );
-	c = k * chbevl( a, C1, 23 );
+	k = torch_cephes_exp(x) / x;
+	s = k * torch_cephes_chbevl( a, S1, 22 );
+	c = k * torch_cephes_chbevl( a, C1, 23 );
 	goto done;
 	}
 
 if( x <= 88.0 )
 	{
 	a = (6336.0/x - 212.0)/70.0;
-	k = exp(x) / x;
-	s = k * chbevl( a, S2, 23 );
-	c = k * chbevl( a, C2, 24 );
+	k = torch_cephes_exp(x) / x;
+	s = k * torch_cephes_chbevl( a, S2, 23 );
+	c = k * torch_cephes_chbevl( a, C2, 24 );
 	goto done;
 	}
 else
 	{
 	if( sign )
-		*si = -MAXNUM;
+		*si = -torch_cephes_MAXNUM;
 	else
-		*si = MAXNUM;
-	*ci = MAXNUM;
+		*si = torch_cephes_MAXNUM;
+	*ci = torch_cephes_MAXNUM;
 	return(0);
 	}
 done:
@@ -594,6 +595,6 @@ if( sign )
 
 *si = s;
 
-*ci = EUL + log(x) + c;
+*ci = EUL + torch_cephes_log(x) + c;
 return(0);
 }

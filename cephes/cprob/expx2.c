@@ -38,13 +38,13 @@ Copyright 2000 by Stephen L. Moshier
 #include "mconf.h"
 
 #ifdef ANSIPROT
-extern double fabs (double);
-extern double floor (double);
-extern double exp (double);
+extern double torch_cephes_fabs (double);
+extern double torch_cephes_floor (double);
+extern double torch_cephes_exp (double);
 #else
-double fabs();
-double floor();
-double exp();
+double torch_cephes_fabs();
+double torch_cephes_floor();
+double torch_cephes_exp();
 #endif
 
 #ifdef DEC
@@ -55,23 +55,23 @@ double exp();
 #define MINV .0078125
 #endif
 
-extern double MAXLOG;
-extern double INFINITY;
+extern double torch_cephes_MAXLOG;
+extern double torch_cephes_INFINITY;
 
-double expx2 (x, sign)
+double torch_cephes_expx2 (x, sign)
      double x;
      int sign;
 {
   double u, u1, m, f;
 
-  x = fabs (x);
+  x = torch_cephes_fabs (x);
   if (sign < 0)
     x = -x;
 
   /* Represent x as an exact multiple of M plus a residual.
      M is a power of 2 chosen so that exp(m * m) does not overflow
      or underflow and so that |x - m| is small.  */
-  m = MINV * floor(M * x + 0.5);
+  m = MINV * torch_cephes_floor(M * x + 0.5);
   f = x - m;
 
   /* x^2 = m^2 + 2mf + f^2 */
@@ -84,10 +84,10 @@ double expx2 (x, sign)
       u1 = -u1;
     }
 
-  if ((u+u1) > MAXLOG)
-    return (INFINITY);
+  if ((u+u1) > torch_cephes_MAXLOG)
+    return (torch_cephes_INFINITY);
 
   /* u is exact, u1 is small.  */
-  u = exp(u) * exp(u1);
+  u = torch_cephes_exp(u) * torch_cephes_exp(u1);
   return(u);
 }

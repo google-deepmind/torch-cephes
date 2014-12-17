@@ -51,14 +51,14 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 */
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double incbet ( double, double, double );
+extern double torch_cephes_incbet ( double, double, double );
 #else
-double incbet();
+double torch_cephes_incbet();
 #endif
 
-double btdtr( a, b, x )
+double torch_cephes_btdtr( a, b, x )
 double a, b, x;
 {
 
-return( incbet( a, b, x ) );
+return( torch_cephes_incbet( a, b, x ) );
 }

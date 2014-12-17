@@ -180,23 +180,24 @@ static double lossth = 1.073741824e9;
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern double floor ( double );
-extern double ldexp ( double, int );
-extern int isnan ( double );
-extern int isfinite ( double );
-static double tancot(double, int);
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
+extern double torch_cephes_floor ( double );
+extern double torch_cephes_ldexp ( double, int );
+extern int torch_cephes_isnan ( double );
+extern int torch_cephes_isfinite ( double );
+static double torch_cephes_tancot(double, int);
 #else
-double polevl(), p1evl(), floor(), ldexp();
-static double tancot();
-int isnan(), isfinite();
+double torch_cephes_polevl(), torch_cephes_p1evl(), torch_cephes_floor(),
+    torch_cephes_ldexp();
+static double torch_cephes_tancot();
+int torch_cephes_isnan(), torch_cephes_isfinite();
 #endif
-extern double PIO4;
-extern double INFINITY;
-extern double NAN;
+extern double torch_cephes_PIO4;
+extern double torch_cephes_INFINITY;
+extern double torch_cephes_NAN;
 
-double tan(x)
+double torch_cephes_tan(x)
 double x;
 {
 #ifdef MINUSZERO
@@ -204,32 +205,32 @@ if( x == 0.0 )
 	return(x);
 #endif
 #ifdef NANS
-if( isnan(x) )
+if( torch_cephes_isnan(x) )
 	return(x);
-if( !isfinite(x) )
+if( !torch_cephes_isfinite(x) )
 	{
-	mtherr( "tan", DOMAIN );
-	return(NAN);
+	torch_cephes_mtherr( "tan", DOMAIN );
+	return(torch_cephes_NAN);
 	}
 #endif
-return( tancot(x,0) );
+return( torch_cephes_tancot(x,0) );
 }
 
 
-double cot(x)
+double torch_cephes_cot(x)
 double x;
 {
 
 if( x == 0.0 )
 	{
-	mtherr( "cot", SING );
-	return( INFINITY );
+	torch_cephes_mtherr( "cot", SING );
+	return( torch_cephes_INFINITY );
 	}
-return( tancot(x,1) );
+return( torch_cephes_tancot(x,1) );
 }
 
 
-static double tancot( xx, cotflg )
+static double torch_cephes_tancot( xx, cotflg )
 double xx;
 int cotflg;
 {
@@ -251,19 +252,19 @@ else
 if( x > lossth )
 	{
 	if( cotflg )
-		mtherr( "cot", TLOSS );
+		torch_cephes_mtherr( "cot", TLOSS );
 	else
-		mtherr( "tan", TLOSS );
+		torch_cephes_mtherr( "tan", TLOSS );
 	return(0.0);
 	}
 
 /* compute x mod PIO4 */
-y = floor( x/PIO4 );
+y = torch_cephes_floor( x/torch_cephes_PIO4 );
 
 /* strip high bits of integer part */
-z = ldexp( y, -3 );
-z = floor(z);		/* integer part of y/8 */
-z = y - ldexp( z, 3 );  /* y - 16 * (y/16) */
+z = torch_cephes_ldexp( y, -3 );
+z = torch_cephes_floor(z);		/* integer part of y/8 */
+z = y - torch_cephes_ldexp( z, 3 );  /* y - 16 * (y/16) */
 
 /* integer and fractional part modulo one octant */
 j = z;
@@ -280,7 +281,8 @@ z = ((x - y * DP1) - y * DP2) - y * DP3;
 zz = z * z;
 
 if( zz > 1.0e-14 )
-	y = z  +  z * (zz * polevl( zz, P, 2 )/p1evl(zz, Q, 4));
+	y = z  +  z * (zz * torch_cephes_polevl( zz, P, 2 )
+                       /torch_cephes_p1evl(zz, Q, 4));
 else
 	y = z;
 	

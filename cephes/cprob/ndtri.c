@@ -52,7 +52,7 @@ Copyright 1984, 1987, 1989, 2000 by Stephen L. Moshier
 */
 
 #include "mconf.h"
-extern double MAXNUM;
+extern double torch_cephes_MAXNUM;
 
 #ifdef UNK
 /* sqrt(2pi) */
@@ -361,15 +361,16 @@ static unsigned short Q2[32] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern double log ( double );
-extern double sqrt ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_sqrt ( double );
 #else
-double polevl(), p1evl(), log(), sqrt();
+double torch_cephes_polevl(), torch_cephes_p1evl(), torch_cephes_log(),
+    torch_cephes_sqrt();
 #endif
 
-double ndtri(y0)
+double torch_cephes_ndtri(y0)
 double y0;
 {
 double x, y, z, y2, x0, x1;
@@ -377,13 +378,13 @@ int code;
 
 if( y0 <= 0.0 )
 	{
-	mtherr( "ndtri", DOMAIN );
-	return( -MAXNUM );
+	torch_cephes_mtherr( "ndtri", DOMAIN );
+	return( -torch_cephes_MAXNUM );
 	}
 if( y0 >= 1.0 )
 	{
-	mtherr( "ndtri", DOMAIN );
-	return( MAXNUM );
+	torch_cephes_mtherr( "ndtri", DOMAIN );
+	return( torch_cephes_MAXNUM );
 	}
 code = 1;
 y = y0;
@@ -397,19 +398,20 @@ if( y > 0.13533528323661269189 )
 	{
 	y = y - 0.5;
 	y2 = y * y;
-	x = y + y * (y2 * polevl( y2, P0, 4)/p1evl( y2, Q0, 8 ));
-	x = x * s2pi; 
+	x = y + y * (y2 * torch_cephes_polevl( y2, P0, 4)/
+                     torch_cephes_p1evl( y2, Q0, 8 ));
+	x = x * s2pi;
 	return(x);
 	}
 
-x = sqrt( -2.0 * log(y) );
-x0 = x - log(x)/x;
+x = torch_cephes_sqrt( -2.0 * torch_cephes_log(y) );
+x0 = x - torch_cephes_log(x)/x;
 
 z = 1.0/x;
 if( x < 8.0 ) /* y > exp(-32) = 1.2664165549e-14 */
-	x1 = z * polevl( z, P1, 8 )/p1evl( z, Q1, 8 );
+	x1 = z * torch_cephes_polevl( z, P1, 8 )/torch_cephes_p1evl( z, Q1, 8 );
 else
-	x1 = z * polevl( z, P2, 8 )/p1evl( z, Q2, 8 );
+	x1 = z * torch_cephes_polevl( z, P2, 8 )/torch_cephes_p1evl( z, Q2, 8 );
 x = x0 - x1;
 if( code != 0 )
 	x = -x;

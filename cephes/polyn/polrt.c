@@ -54,12 +54,12 @@ typedef struct
 	}cmplx;
 */
 #ifdef ANSIPROT
-extern double fabs ( double );
+extern double torch_cephes_fabs ( double );
 #else
-double fabs();
+double torch_cephes_fabs();
 #endif
 
-int polrt( xcof, cof, m, root )
+int torch_cephes_polrt( xcof, cof, m, root )
 double xcof[], cof[];
 int m;
 cmplx root[];
@@ -179,7 +179,7 @@ n1 = i;
 if( !final )
 	{
 	final = 1;
-	if( fabs(x.i/x.r) < 1.0e-4 )
+	if( torch_cephes_fabs(x.i/x.r) < 1.0e-4 )
 		x.i = 0.0;
 	xsav.r = x.r;
 	xsav.i = x.i;
@@ -188,7 +188,7 @@ if( !final )
 
 findon:
 final = 0;
-if( fabs(x.i/x.r) >= 1.0e-5 )
+if( torch_cephes_fabs(x.i/x.r) >= 1.0e-5 )
 	{
 	cofj = x.r + x.r;
 	mag = x.r * x.r  +  x.i * x.i;

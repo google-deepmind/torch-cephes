@@ -45,16 +45,18 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double log ( double );
-extern double frexp ( double, int * );
-extern int signbit ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_frexp ( double, int * );
+extern int torch_cephes_signbit ( double );
 #else
-double log(), frexp();
-int signbit();
+double torch_cephes_log(), torch_cephes_frexp();
+int torch_cephes_signbit();
 #endif
-extern double NEGZERO, INFINITY, MAXNUM, MAXLOG, MINLOG, LOGE2;
+extern double torch_cephes_NEGZERO, torch_cephes_INFINITY,
+  torch_cephes_MAXNUM, torch_cephes_MAXLOG, torch_cephes_MINLOG,
+  torch_cephes_LOGE2;
 
-double powi( x, nn )
+double torch_cephes_powi( x, nn )
 double x;
 int nn;
 {
@@ -67,7 +69,7 @@ if( x == 0.0 )
 	if( nn == 0 )
 		return( 1.0 );
 	else if( nn < 0 )
-	    return( INFINITY );
+	    return( torch_cephes_INFINITY );
 	else
 	  {
 	    if( nn & 1 )
@@ -110,27 +112,27 @@ if( (n & 1) == 0 )
 /* Overflow detection */
 
 /* Calculate approximate logarithm of answer */
-s = frexp( x, &lx );
+s = torch_cephes_frexp( x, &lx );
 e = (lx - 1)*n;
 if( (e == 0) || (e > 64) || (e < -64) )
 	{
 	s = (s - 7.0710678118654752e-1) / (s +  7.0710678118654752e-1);
-	s = (2.9142135623730950 * s - 0.5 + lx) * nn * LOGE2;
+	s = (2.9142135623730950 * s - 0.5 + lx) * nn * torch_cephes_LOGE2;
 	}
 else
 	{
-	s = LOGE2 * e;
+	s = torch_cephes_LOGE2 * e;
 	}
 
-if( s > MAXLOG )
+if( s > torch_cephes_MAXLOG )
 	{
-	mtherr( "powi", OVERFLOW );
-	y = INFINITY;
+	torch_cephes_mtherr( "powi", OVERFLOW );
+	y = torch_cephes_INFINITY;
 	goto done;
 	}
 
 #if DENORMAL
-if( s < MINLOG )
+if( s < torch_cephes_MINLOG )
 	{
 	y = 0.0;
 	goto done;
@@ -140,14 +142,14 @@ if( s < MINLOG )
  * since roundoff error in 1.0/x will be amplified.
  * The precise demarcation should be the gradual underflow threshold.
  */
-if( (s < (-MAXLOG+2.0)) && (sign < 0) )
+if( (s < (-torch_cephes_MAXLOG+2.0)) && (sign < 0) )
 	{
 	x = 1.0/x;
 	sign = -sign;
 	}
 #else
 /* do not produce denormal answer */
-if( s < -MAXLOG )
+if( s < -torch_cephes_MAXLOG )
 	return(0.0);
 #endif
 
@@ -178,7 +180,7 @@ if( asign )
 	{
 	/* odd power of negative number */
 	if( y == 0.0 )
-		y = NEGZERO;
+		y = torch_cephes_NEGZERO;
 	else
 		y = -y;
 	}

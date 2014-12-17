@@ -127,14 +127,14 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double igam ( double, double );
-extern double igamc ( double, double );
-extern double igami ( double, double );
+extern double torch_cephes_igam ( double, double );
+extern double torch_cephes_igamc ( double, double );
+extern double torch_cephes_igami ( double, double );
 #else
-double igam(), igamc(), igami();
+double torch_cephes_igam(), torch_cephes_igamc(), torch_cephes_igami();
 #endif
 
-double pdtrc( k, m )
+double torch_cephes_pdtrc( k, m )
 int k;
 double m;
 {
@@ -142,16 +142,16 @@ double v;
 
 if( (k < 0) || (m <= 0.0) )
 	{
-	mtherr( "pdtrc", DOMAIN );
+	torch_cephes_mtherr( "pdtrc", DOMAIN );
 	return( 0.0 );
 	}
 v = k+1;
-return( igam( v, m ) );
+return( torch_cephes_igam( v, m ) );
 }
 
 
 
-double pdtr( k, m )
+double torch_cephes_pdtr( k, m )
 int k;
 double m;
 {
@@ -159,15 +159,15 @@ double v;
 
 if( (k < 0) || (m <= 0.0) )
 	{
-	mtherr( "pdtr", DOMAIN );
+	torch_cephes_mtherr( "pdtr", DOMAIN );
 	return( 0.0 );
 	}
 v = k+1;
-return( igamc( v, m ) );
+return( torch_cephes_igamc( v, m ) );
 }
 
 
-double pdtri( k, y )
+double torch_cephes_pdtri( k, y )
 int k;
 double y;
 {
@@ -175,10 +175,10 @@ double v;
 
 if( (k < 0) || (y < 0.0) || (y >= 1.0) )
 	{
-	mtherr( "pdtri", DOMAIN );
+	torch_cephes_mtherr( "pdtri", DOMAIN );
 	return( 0.0 );
 	}
 v = k+1;
-v = igami( v, y );
+v = torch_cephes_igami( v, y );
 return( v );
 }

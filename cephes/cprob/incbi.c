@@ -46,20 +46,23 @@ Copyright 1984, 1996, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 
-extern double MACHEP, MAXNUM, MAXLOG, MINLOG;
+extern double torch_cephes_MACHEP, torch_cephes_MAXNUM, torch_cephes_MAXLOG,
+    torch_cephes_MINLOG;
 #ifdef ANSIPROT
-extern double ndtri ( double );
-extern double exp ( double );
-extern double fabs ( double );
-extern double log ( double );
-extern double sqrt ( double );
-extern double lgam ( double );
-extern double incbet ( double, double, double );
+extern double torch_cephes_ndtri ( double );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_sqrt ( double );
+extern double torch_cephes_lgam ( double );
+extern double torch_cephes_incbet ( double, double, double );
 #else
-double ndtri(), exp(), fabs(), log(), sqrt(), lgam(), incbet();
+double torch_cephes_ndtri(), torch_cephes_exp(), torch_cephes_fabs(),
+    torch_cephes_log(), torch_cephes_sqrt(), torch_cephes_lgam(),
+    torch_cephes_incbet();
 #endif
 
-double incbi( aa, bb, yy0 )
+double torch_cephes_incbi( aa, bb, yy0 )
 double aa, bb, yy0;
 {
 double a, b, y0, d, y, x, x0, x1, lgm, yp, di, dithresh, yl, yh, xt;
@@ -85,7 +88,7 @@ if( aa <= 1.0 || bb <= 1.0 )
 	b = bb;
 	y0 = yy0;
 	x = a/(a+b);
-	y = incbet( a, b, x );
+	y = torch_cephes_incbet( a, b, x );
 	goto ihalve;
 	}
 else
@@ -94,7 +97,7 @@ else
 	}
 /* approximation to inverse function */
 
-yp = -ndtri(yy0);
+yp = -torch_cephes_ndtri(yy0);
 
 if( yy0 > 0.5 )
 	{
@@ -114,19 +117,19 @@ else
 
 lgm = (yp * yp - 3.0)/6.0;
 x = 2.0/( 1.0/(2.0*a-1.0)  +  1.0/(2.0*b-1.0) );
-d = yp * sqrt( x + lgm ) / x
+d = yp * torch_cephes_sqrt( x + lgm ) / x
 	- ( 1.0/(2.0*b-1.0) - 1.0/(2.0*a-1.0) )
 	* (lgm + 5.0/6.0 - 2.0/(3.0*x));
 d = 2.0 * d;
-if( d < MINLOG )
+if( d < torch_cephes_MINLOG )
 	{
 	x = 1.0;
 	goto under;
 	}
-x = a/( a + b * exp(d) );
-y = incbet( a, b, x );
+x = a/( a + b * torch_cephes_exp(d) );
+y = torch_cephes_incbet( a, b, x );
 yp = (y - y0)/y0;
-if( fabs(yp) < 0.2 )
+if( torch_cephes_fabs(yp) < 0.2 )
 	goto newt;
 
 /* Resort to interval halving if not close enough. */
@@ -140,7 +143,7 @@ for( i=0; i<100; i++ )
 		{
 		x = x0  +  di * (x1 - x0);
 		if( x == 1.0 )
-			x = 1.0 - MACHEP;
+			x = 1.0 - torch_cephes_MACHEP;
 		if( x == 0.0 )
 			{
 			di = 0.5;
@@ -148,12 +151,12 @@ for( i=0; i<100; i++ )
 			if( x == 0.0 )
 				goto under;
 			}
-		y = incbet( a, b, x );
+		y = torch_cephes_incbet( a, b, x );
 		yp = (x1 - x0)/(x1 + x0);
-		if( fabs(yp) < dithresh )
+		if( torch_cephes_fabs(yp) < dithresh )
 			goto newt;
 		yp = (y-y0)/y0;
-		if( fabs(yp) < dithresh )
+		if( torch_cephes_fabs(yp) < dithresh )
 			goto newt;
 		}
 	if( y < y0 )
@@ -189,7 +192,7 @@ for( i=0; i<100; i++ )
 				y0 = 1.0 - yy0;
 				}
 			x = 1.0 - x;
-			y = incbet( a, b, x );
+			y = torch_cephes_incbet( a, b, x );
 			x0 = 0.0;
 			yl = 0.0;
 			x1 = 1.0;
@@ -200,7 +203,7 @@ for( i=0; i<100; i++ )
 	else
 		{
 		x1 = x;
-		if( rflg == 1 && x1 < MACHEP )
+		if( rflg == 1 && x1 < torch_cephes_MACHEP )
 			{
 			x = 0.0;
 			goto done;
@@ -220,16 +223,16 @@ for( i=0; i<100; i++ )
 		dir -= 1;
 		}
 	}
-mtherr( "incbi", PLOSS );
+torch_cephes_mtherr( "incbi", PLOSS );
 if( x0 >= 1.0 )
 	{
-	x = 1.0 - MACHEP;
+	x = 1.0 - torch_cephes_MACHEP;
 	goto done;
 	}
 if( x <= 0.0 )
 	{
 under:
-	mtherr( "incbi", UNDERFLOW );
+	torch_cephes_mtherr( "incbi", UNDERFLOW );
 	x = 0.0;
 	goto done;
 	}
@@ -239,13 +242,13 @@ newt:
 if( nflg )
 	goto done;
 nflg = 1;
-lgm = lgam(a+b) - lgam(a) - lgam(b);
+lgm = torch_cephes_lgam(a+b) - torch_cephes_lgam(a) - torch_cephes_lgam(b);
 
 for( i=0; i<8; i++ )
 	{
 	/* Compute the function at this point. */
 	if( i != 0 )
-		y = incbet(a,b,x);
+		y = torch_cephes_incbet(a,b,x);
 	if( y < yl )
 		{
 		x = x0;
@@ -269,10 +272,11 @@ for( i=0; i<8; i++ )
 	if( x == 1.0 || x == 0.0 )
 		break;
 	/* Compute the derivative of the function at this point. */
-	d = (a - 1.0) * log(x) + (b - 1.0) * log(1.0-x) + lgm;
-	if( d < MINLOG )
+	d = (a - 1.0) * torch_cephes_log(x) + (b - 1.0) *
+            torch_cephes_log(1.0-x) + lgm;
+	if( d < torch_cephes_MINLOG )
 		goto done;
-	if( d > MAXLOG )
+	if( d > torch_cephes_MAXLOG )
 		break;
 	d = exp(d);
 	/* Compute the step to the next approximation of x. */
@@ -293,19 +297,19 @@ for( i=0; i<8; i++ )
 			break;
 		}
 	x = xt;
-	if( fabs(d/x) < 128.0 * MACHEP )
+	if( torch_cephes_fabs(d/x) < 128.0 * torch_cephes_MACHEP )
 		goto done;
 	}
 /* Did not converge.  */
-dithresh = 256.0 * MACHEP;
+dithresh = 256.0 * torch_cephes_MACHEP;
 goto ihalve;
 
 done:
 
 if( rflg )
 	{
-	if( x <= MACHEP )
-		x = 1.0 - MACHEP;
+	if( x <= torch_cephes_MACHEP )
+		x = 1.0 - torch_cephes_MACHEP;
 	else
 		x = 1.0 - x;
 	}

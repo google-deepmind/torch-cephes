@@ -207,13 +207,13 @@ static unsigned short factbl[] = {
 #endif
 
 #ifdef ANSIPROT
-double gamma ( double );
+double torch_cephes_gamma ( double );
 #else
-double gamma();
+double torch_cephes_gamma();
 #endif
-extern double MAXNUM;
+extern double torch_cephes_MAXNUM;
 
-double fac(i)
+double torch_cephes_fac(i)
 int i;
 {
 double x, f, n;
@@ -221,14 +221,14 @@ int j;
 
 if( i < 0 )
 	{
-	mtherr( "fac", SING );
-	return( MAXNUM );
+	torch_cephes_mtherr( "fac", SING );
+	return( torch_cephes_MAXNUM );
 	}
 
 if( i > MAXFAC )
 	{
-	mtherr( "fac", OVERFLOW );
-	return( MAXNUM );
+	torch_cephes_mtherr( "fac", OVERFLOW );
+	return( torch_cephes_MAXNUM );
 	}
 
 /* Get answer from table for small i. */
@@ -244,7 +244,7 @@ if( i < 34 )
 if( i > 55 )
 	{
 	x = i + 1;
-	return( gamma(x) );
+	return( torch_cephes_gamma(x) );
 	}
 /* Compute directly for intermediate i. */
 n = 34.0;

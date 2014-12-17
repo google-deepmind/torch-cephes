@@ -576,19 +576,20 @@ static unsigned short GD8[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double log ( double );
-extern double sin ( double );
-extern double cos ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_sin ( double );
+extern double torch_cephes_cos ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
 #else
-double log(), sin(), cos(), polevl(), p1evl();
+double torch_cephes_log(), torch_cephes_sin(), torch_cephes_cos(),
+    torch_cephes_polevl(), torch_cephes_p1evl();
 #endif
 #define EUL 0.57721566490153286061
-extern double MAXNUM, PIO2, MACHEP;
+extern double torch_cephes_MAXNUM, torch_cephes_PIO2, torch_cephes_MACHEP;
 
 
-int sici( x, si, ci )
+int torch_cephes_sici( x, si, ci )
 double x;
 double *si, *ci;
 {
@@ -607,15 +608,15 @@ else
 if( x == 0.0 )
 	{
 	*si = 0.0;
-	*ci = -MAXNUM;
+	*ci = -torch_cephes_MAXNUM;
 	return( 0 );
 	}
 
 
 if( x > 1.0e9 )
 	{
-	*si = PIO2 - cos(x)/x;
-	*ci = sin(x)/x;
+	*si = torch_cephes_PIO2 - torch_cephes_cos(x)/x;
+	*ci = torch_cephes_sin(x)/x;
 	return( 0 );
 	}
 
@@ -625,13 +626,13 @@ if( x > 4.0 )
 	goto asympt;
 
 z = x * x;
-s = x * polevl( z, SN, 5 ) / polevl( z, SD, 5 );
-c = z * polevl( z, CN, 5 ) / polevl( z, CD, 5 );
+s = x * torch_cephes_polevl( z, SN, 5 ) / torch_cephes_polevl( z, SD, 5 );
+c = z * torch_cephes_polevl( z, CN, 5 ) / torch_cephes_polevl( z, CD, 5 );
 
 if( sign )
 	s = -s;
 *si = s;
-*ci = EUL + log(x) + c;	/* real part if x < 0 */
+*ci = EUL + torch_cephes_log(x) + c;	/* real part if x < 0 */
 return(0);
 
 
@@ -653,20 +654,24 @@ return(0);
 
 asympt:
 
-s = sin(x);
-c = cos(x);
+s = torch_cephes_sin(x);
+c = torch_cephes_cos(x);
 z = 1.0/(x*x);
 if( x < 8.0 )
 	{
-	f = polevl( z, FN4, 6 ) / (x * p1evl( z, FD4, 7 ));
-	g = z * polevl( z, GN4, 7 ) / p1evl( z, GD4, 7 );
+	f = torch_cephes_polevl( z, FN4, 6 ) /
+            (x * torch_cephes_p1evl( z, FD4, 7 ));
+	g = z * torch_cephes_polevl( z, GN4, 7 )
+            / torch_cephes_p1evl( z, GD4, 7 );
 	}
 else
 	{
-	f = polevl( z, FN8, 8 ) / (x * p1evl( z, FD8, 8 ));
-	g = z * polevl( z, GN8, 8 ) / p1evl( z, GD8, 9 );
+	f = torch_cephes_polevl( z, FN8, 8 ) /
+            (x * torch_cephes_p1evl( z, FD8, 8 ));
+	g = z * torch_cephes_polevl( z, GN8, 8 ) /
+            torch_cephes_p1evl( z, GD8, 9 );
 	}
-*si = PIO2 - f * c - g * s;
+*si = torch_cephes_PIO2 - f * c - g * s;
 if( sign )
 	*si = -( *si );
 *ci = f * s - g * c;

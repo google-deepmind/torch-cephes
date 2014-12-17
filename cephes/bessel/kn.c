@@ -82,16 +82,18 @@ asymptotically, where
 #define EUL 5.772156649015328606065e-1
 #define MAXFAC 31
 #ifdef ANSIPROT
-extern double fabs ( double );
-extern double exp ( double );
-extern double log ( double );
-extern double sqrt ( double );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_sqrt ( double );
 #else
-double fabs(), exp(), log(), sqrt();
+double torch_cephes_fabs(), torch_cephes_exp(), torch_cephes_log(),
+    torch_cephes_sqrt();
 #endif
-extern double MACHEP, MAXNUM, MAXLOG, PI;
+extern double torch_cephes_MACHEP, torch_cephes_MAXNUM, torch_cephes_MAXLOG,
+    torch_cephes_PI;
 
-double kn( nn, x )
+double torch_cephes_kn( nn, x )
 int nn;
 double x;
 {
@@ -107,17 +109,17 @@ else
 if( n > MAXFAC )
 	{
 overf:
-	mtherr( "kn", OVERFLOW );
-	return( MAXNUM );
+	torch_cephes_mtherr( "kn", OVERFLOW );
+	return( torch_cephes_MAXNUM );
 	}
 
 if( x <= 0.0 )
 	{
 	if( x < 0.0 )
-		mtherr( "kn", DOMAIN );
+		torch_cephes_mtherr( "kn", DOMAIN );
 	else
-		mtherr( "kn", SING );
-	return( MAXNUM );
+		torch_cephes_mtherr( "kn", SING );
+	return( torch_cephes_MAXNUM );
 	}
 
 
@@ -163,24 +165,25 @@ if( n > 0 )
 			zn *= z;
 			t = nk1f * zn / kf;
 			s += t;   
-			if( (MAXNUM - fabs(t)) < fabs(s) )
+			if( (torch_cephes_MAXNUM - torch_cephes_fabs(t))
+                            < torch_cephes_fabs(s) )
 				goto overf;
-			if( (tox > 1.0) && ((MAXNUM/tox) < zmn) )
+			if( (tox > 1.0) && ((torch_cephes_MAXNUM/tox) < zmn) )
 				goto overf;
 			zmn *= tox;
 			}
 		s *= 0.5;
-		t = fabs(s);
-		if( (zmn > 1.0) && ((MAXNUM/zmn) < t) )
+		t = torch_cephes_fabs(s);
+		if( (zmn > 1.0) && ((torch_cephes_MAXNUM/zmn) < t) )
 			goto overf;
-		if( (t > 1.0) && ((MAXNUM/t) < zmn) )
+		if( (t > 1.0) && ((torch_cephes_MAXNUM/t) < zmn) )
 			goto overf;
 		ans = s * zmn;
 		}
 	}
 
 
-tlg = 2.0 * log( 0.5 * x );
+tlg = 2.0 * torch_cephes_log( 0.5 * x );
 pk = -EUL;
 if( n == 0 )
 	{
@@ -202,7 +205,7 @@ do
 	s += (pk+pn-tlg)*t;
 	k += 1.0;
 	}
-while( fabs(t/s) > MACHEP );
+while( torch_cephes_fabs(t/s) > torch_cephes_MACHEP );
 
 s = 0.5 * s / zmn;
 if( n & 1 )
@@ -218,9 +221,9 @@ return(ans);
 
 asymp:
 
-if( x > MAXLOG )
+if( x > torch_cephes_MAXLOG )
 	{
-	mtherr( "kn", UNDERFLOW );
+	torch_cephes_mtherr( "kn", UNDERFLOW );
 	return(0.0);
 	}
 k = n;
@@ -230,13 +233,13 @@ z0 = 8.0 * x;
 fn = 1.0;
 t = 1.0;
 s = t;
-nkf = MAXNUM;
+nkf = torch_cephes_MAXNUM;
 i = 0;
 do
 	{
 	z = pn - pk * pk;
 	t = t * z /(fn * z0);
-	nk1f = fabs(t);
+	nk1f = torch_cephes_fabs(t);
 	if( (i >= n) && (nk1f > nkf) )
 		{
 		goto adone;
@@ -247,9 +250,9 @@ do
 	pk += 2.0;
 	i += 1;
 	}
-while( fabs(t/s) > MACHEP );
+while( torch_cephes_fabs(t/s) > torch_cephes_MACHEP );
 
 adone:
-ans = exp(-x) * sqrt( PI/(2.0*x) ) * s;
+ans = torch_cephes_exp(-x) * torch_cephes_sqrt( torch_cephes_PI/(2.0*x) ) * s;
 return(ans);
 }

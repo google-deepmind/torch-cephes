@@ -75,7 +75,7 @@ Copyright 1984, 1995 by Stephen L. Moshier
 
 /* Return 1 if the sign bit of x is 1, else 0.  */
 
-int signbit(x)
+int torch_cephes_signbit(x)
 double x;
 {
 union
@@ -116,7 +116,7 @@ else
 
 /* Return 1 if x is a number that is Not a Number, else return 0.  */
 
-int isnan(x)
+int torch_cephes_isnan(x)
 double x;
 {
 #ifdef NANS
@@ -185,7 +185,7 @@ return(0);
 
 /* Return 1 if x is not infinite and is not a NaN.  */
 
-int isfinite(x)
+int torch_cephes_isfinite(x)
 double x;
 {
 #ifdef INFINITIES

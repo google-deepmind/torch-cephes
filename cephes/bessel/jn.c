@@ -47,15 +47,15 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 */
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double fabs ( double );
-extern double j0 ( double );
-extern double j1 ( double );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_j0 ( double );
+extern double torch_cephes_j1 ( double );
 #else
-double fabs(), j0(), j1();
+double torch_cephes_fabs(), torch_cephes_j0(), torch_cephes_j1();
 #endif
-extern double MACHEP;
+extern double torch_cephes_MACHEP;
 
-double jn( n, x )
+double torch_cephes_jn( n, x )
 int n;
 double x;
 {
@@ -81,13 +81,13 @@ if( x < 0.0 )
 	}
 
 if( n == 0 )
-	return( sign * j0(x) );
+	return( sign * torch_cephes_j0(x) );
 if( n == 1 )
-	return( sign * j1(x) );
+	return( sign * torch_cephes_j1(x) );
 if( n == 2 )
-	return( sign * (2.0 * j1(x) / x  -  j0(x)) );
+	return( sign * (2.0 * torch_cephes_j1(x) / x  -  torch_cephes_j0(x)) );
 
-if( x < MACHEP )
+if( x < torch_cephes_MACHEP )
 	return( 0.0 );
 
 /* continued fraction */
@@ -125,7 +125,7 @@ do
 	}
 while( --k > 0 );
 
-if( fabs(pk) > fabs(pkm1) )
+if( torch_cephes_fabs(pk) > torch_cephes_fabs(pkm1) )
 	ans = j1(x)/pk;
 else
 	ans = j0(x)/pkm1;

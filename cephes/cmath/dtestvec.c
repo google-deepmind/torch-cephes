@@ -14,7 +14,7 @@ int isfinite (double);
 /* C9X spells lgam lgamma.  */
 #define GLIBC2 0
 
-extern double PI;
+extern double torch_cephes_PI;
 static double MPI, PIO2, MPIO2, PIO4, MPIO4, THPIO4, MTHPIO4;
 
 #if 0
@@ -28,43 +28,45 @@ static double MPI, PIO2, MPIO2, PIO4, MPIO4, THPIO4, MTHPIO4;
 #define MINF (-1.0/0.0)
 #endif
 
-extern double MACHEP, SQRTH, SQRT2;
-extern double NAN, INFINITY, NEGZERO;
-static double INF, MINF;
-static double ZERO, MZERO, HALF, MHALF, ONE, MONE, TWO, MTWO, THREE, MTHREE;
+extern double torch_cephes_MACHEP, torch_cephes_SQRTH, torch_cephes_SQRT2;
+extern double torch_cephes_NAN, torch_cephes_INFINITY, torch_cephes_NEGZERO;
+static double torch_cephes_INF, torch_cephes_MINF;
+static double torch_cephes_ZERO, torch_cephes_MZERO, torch_cephes_HALF,
+    torch_cephes_MHALF, torch_cephes_ONE, torch_cephes_MONE, torch_cephes_TWO,
+    torch_cephes_MTWO, torch_cephes_THREE, torch_cephes_MTHREE;
 /* #define NAN (1.0/0.0 - 1.0/0.0) */
 
 /* Functions of one variable.  */
-double log (double);
-double exp ( double);
-double atan (double);
-double sin (double);
-double cos (double);
-double tan (double);
-double acos (double);
-double asin (double);
-double acosh (double);
-double asinh (double);
-double atanh (double);
-double sinh (double);
-double cosh (double);
-double tanh (double);
-double exp2 (double);
-double expm1 (double);
-double log10 (double);
-double log1p (double);
-double log2 (double);
-double fabs (double);
-double erf (double);
-double erfc (double);
-double gamma (double);
-double floor (double);
-double ceil (double);
-double cbrt (double);
+double torch_cephes_log (double);
+double torch_cephes_exp ( double);
+double torch_cephes_atan (double);
+double torch_cephes_sin (double);
+double torch_cephes_cos (double);
+double torch_cephes_tan (double);
+double torch_cephes_acos (double);
+double torch_cephes_asin (double);
+double torch_cephes_acosh (double);
+double torch_cephes_asinh (double);
+double torch_cephes_atanh (double);
+double torch_cephes_sinh (double);
+double torch_cephes_cosh (double);
+double torch_cephes_tanh (double);
+double torch_cephes_exp2 (double);
+double torch_cephes_expm1 (double);
+double torch_cephes_log10 (double);
+double torch_cephes_log1p (double);
+double torch_cephes_log2 (double);
+double torch_cephes_fabs (double);
+double torch_cephes_erf (double);
+double torch_cephes_erfc (double);
+double torch_cephes_gamma (double);
+double torch_cephes_floor (double);
+double torch_cephes_ceil (double);
+double torch_cephes_cbrt (double);
 #if GLIBC2
-double lgamma (double);
+double torch_cephes_lgamma (double);
 #else
-double lgam (double);
+double torch_cephes_lgam (double);
 #endif
 
 struct oneargument
@@ -78,181 +80,181 @@ struct oneargument
 
 struct oneargument test1[] =
 {
-  {"atan", atan, &ONE, &PIO4, 0},
-  {"sin", sin, &PIO2, &ONE, 0},
+  {"atan", torch_cephes_atan, &ONE, &PIO4, 0},
+  {"sin", torch_cephes_sin, &PIO2, &ONE, 0},
 #if 0
-  {"cos", cos, &PIO4, &SQRTH, 0},
-  {"sin", sin, 32767., 1.8750655394138942394239E-1, 0},
-  {"cos", cos, 32767., 9.8226335176928229845654E-1, 0},
-  {"tan", tan, 32767., 1.9089234430221485740826E-1, 0},
-  {"sin", sin, 8388607., 9.9234509376961249835628E-1, 0},
-  {"cos", cos, 8388607., -1.2349580912475928183718E-1, 0},
-  {"tan", tan, 8388607., -8.0354556223613614748329E0, 0},
+  {"cos", torch_cephes_cos, &PIO4, &SQRTH, 0},
+  {"sin", torch_cephes_sin, 32767., 1.8750655394138942394239E-1, 0},
+  {"cos", torch_cephes_cos, 32767., 9.8226335176928229845654E-1, 0},
+  {"tan", torch_cephes_tan, 32767., 1.9089234430221485740826E-1, 0},
+  {"sin", torch_cephes_sin, 8388607., 9.9234509376961249835628E-1, 0},
+  {"cos", torch_cephes_cos, 8388607., -1.2349580912475928183718E-1, 0},
+  {"tan", torch_cephes_tan, 8388607., -8.0354556223613614748329E0, 0},
   /*
-  {"sin", sin, 2147483647., -7.2491655514455639054829E-1, 0},
-  {"cos", cos, 2147483647., -6.8883669187794383467976E-1, 0},
-  {"tan", tan, 2147483647., 1.0523779637351339136698E0, 0},
+  {"sin", torch_cephes_sin, 2147483647., -7.2491655514455639054829E-1, 0},
+  {"cos", torch_cephes_cos, 2147483647., -6.8883669187794383467976E-1, 0},
+  {"tan", torch_cephes_tan, 2147483647., 1.0523779637351339136698E0, 0},
   */
-  {"cos", cos, &PIO2, 6.1232339957367574e-17, 1},
-  {"sin", sin, &PIO4, &SQRTH, 1},
+  {"cos", torch_cephes_cos, &PIO2, 6.1232339957367574e-17, 1},
+  {"sin", torch_cephes_sin, &PIO4, &SQRTH, 1},
 #endif
-  {"acos", acos, &NAN, &NAN, 0},
-  {"acos", acos, &ONE, &ZERO, 0},
-  {"acos", acos, &TWO, &NAN, 0},
-  {"acos", acos, &MTWO, &NAN, 0},
-  {"asin", asin, &NAN, &NAN, 0},
-  {"asin", asin, &ZERO, &ZERO, 0},
-  {"asin", asin, &MZERO, &MZERO, 0},
-  {"asin", asin, &TWO, &NAN, 0},
-  {"asin", asin, &MTWO, &NAN, 0},
-  {"atan", atan, &NAN, &NAN, 0},
-  {"atan", atan, &ZERO, &ZERO, 0},
-  {"atan", atan, &MZERO, &MZERO, 0},
-  {"atan", atan, &INF, &PIO2, 0},
-  {"atan", atan, &MINF, &MPIO2, 0},
-  {"cos", cos, &NAN, &NAN, 0},
-  {"cos", cos, &ZERO, &ONE, 0},
-  {"cos", cos, &MZERO, &ONE, 0},
-  {"cos", cos, &INF, &NAN, 0},
-  {"cos", cos, &MINF, &NAN, 0},
-  {"sin", sin, &NAN, &NAN, 0},
-  {"sin", sin, &MZERO, &MZERO, 0},
-  {"sin", sin, &ZERO, &ZERO, 0},
-  {"sin", sin, &INF, &NAN, 0},
-  {"sin", sin, &MINF, &NAN, 0},
-  {"tan", tan, &NAN, &NAN, 0},
-  {"tan", tan, &ZERO, &ZERO, 0},
-  {"tan", tan, &MZERO, &MZERO, 0},
-  {"tan", tan, &INF, &NAN, 0},
-  {"tan", tan, &MINF, &NAN, 0},
-  {"acosh", acosh, &NAN, &NAN, 0},
-  {"acosh", acosh, &ONE, &ZERO, 0},
-  {"acosh", acosh, &INF, &INF, 0},
-  {"acosh", acosh, &HALF, &NAN, 0},
-  {"acosh", acosh, &MONE, &NAN, 0},
-  {"asinh", asinh, &NAN, &NAN, 0},
-  {"asinh", asinh, &ZERO, &ZERO, 0},
-  {"asinh", asinh, &MZERO, &MZERO, 0},
-  {"asinh", asinh, &INF, &INF, 0},
-  {"asinh", asinh, &MINF, &MINF, 0},
-  {"atanh", atanh, &NAN, &NAN, 0},
-  {"atanh", atanh, &ZERO, &ZERO, 0},
-  {"atanh", atanh, &MZERO, &MZERO, 0},
-  {"atanh", atanh, &ONE, &INF, 0},
-  {"atanh", atanh, &MONE, &MINF, 0},
-  {"atanh", atanh, &TWO, &NAN, 0},
-  {"atanh", atanh, &MTWO, &NAN, 0},
-  {"cosh", cosh, &NAN, &NAN, 0},
-  {"cosh", cosh, &ZERO, &ONE, 0},
-  {"cosh", cosh, &MZERO, &ONE, 0},
-  {"cosh", cosh, &INF, &INF, 0},
-  {"cosh", cosh, &MINF, &INF, 0},
-  {"sinh", sinh, &NAN, &NAN, 0},
-  {"sinh", sinh, &ZERO, &ZERO, 0},
-  {"sinh", sinh, &MZERO, &MZERO, 0},
-  {"sinh", sinh, &INF, &INF, 0},
-  {"sinh", sinh, &MINF, &MINF, 0},
-  {"tanh", tanh, &NAN, &NAN, 0},
-  {"tanh", tanh, &ZERO, &ZERO, 0},
-  {"tanh", tanh, &MZERO, &MZERO, 0},
-  {"tanh", tanh, &INF, &ONE, 0},
-  {"tanh", tanh, &MINF, &MONE, 0},
-  {"exp", exp, &NAN, &NAN, 0},
-  {"exp", exp, &ZERO, &ONE, 0},
-  {"exp", exp, &MZERO, &ONE, 0},
-  {"exp", exp, &INF, &INF, 0},
-  {"exp", exp, &MINF, &ZERO, 0},
+  {"acos", torch_cephes_acos, &NAN, &NAN, 0},
+  {"acos", torch_cephes_acos, &ONE, &ZERO, 0},
+  {"acos", torch_cephes_acos, &TWO, &NAN, 0},
+  {"acos", torch_cephes_acos, &MTWO, &NAN, 0},
+  {"asin", torch_cephes_asin, &NAN, &NAN, 0},
+  {"asin", torch_cephes_asin, &ZERO, &ZERO, 0},
+  {"asin", torch_cephes_asin, &MZERO, &MZERO, 0},
+  {"asin", torch_cephes_asin, &TWO, &NAN, 0},
+  {"asin", torch_cephes_asin, &MTWO, &NAN, 0},
+  {"atan", torch_cephes_atan, &NAN, &NAN, 0},
+  {"atan", torch_cephes_atan, &ZERO, &ZERO, 0},
+  {"atan", torch_cephes_atan, &MZERO, &MZERO, 0},
+  {"atan", torch_cephes_atan, &INF, &PIO2, 0},
+  {"atan", torch_cephes_atan, &MINF, &MPIO2, 0},
+  {"cos", torch_cephes_cos, &NAN, &NAN, 0},
+  {"cos", torch_cephes_cos, &ZERO, &ONE, 0},
+  {"cos", torch_cephes_cos, &MZERO, &ONE, 0},
+  {"cos", torch_cephes_cos, &INF, &NAN, 0},
+  {"cos", torch_cephes_cos, &MINF, &NAN, 0},
+  {"sin", torch_cephes_sin, &NAN, &NAN, 0},
+  {"sin", torch_cephes_sin, &MZERO, &MZERO, 0},
+  {"sin", torch_cephes_sin, &ZERO, &ZERO, 0},
+  {"sin", torch_cephes_sin, &INF, &NAN, 0},
+  {"sin", torch_cephes_sin, &MINF, &NAN, 0},
+  {"tan", torch_cephes_tan, &NAN, &NAN, 0},
+  {"tan", torch_cephes_tan, &ZERO, &ZERO, 0},
+  {"tan", torch_cephes_tan, &MZERO, &MZERO, 0},
+  {"tan", torch_cephes_tan, &INF, &NAN, 0},
+  {"tan", torch_cephes_tan, &MINF, &NAN, 0},
+  {"acosh", torch_cephes_acosh, &NAN, &NAN, 0},
+  {"acosh", torch_cephes_acosh, &ONE, &ZERO, 0},
+  {"acosh", torch_cephes_acosh, &INF, &INF, 0},
+  {"acosh", torch_cephes_acosh, &HALF, &NAN, 0},
+  {"acosh", torch_cephes_acosh, &MONE, &NAN, 0},
+  {"asinh", torch_cephes_asinh, &NAN, &NAN, 0},
+  {"asinh", torch_cephes_asinh, &ZERO, &ZERO, 0},
+  {"asinh", torch_cephes_asinh, &MZERO, &MZERO, 0},
+  {"asinh", torch_cephes_asinh, &INF, &INF, 0},
+  {"asinh", torch_cephes_asinh, &MINF, &MINF, 0},
+  {"atanh", torch_cephes_atanh, &NAN, &NAN, 0},
+  {"atanh", torch_cephes_atanh, &ZERO, &ZERO, 0},
+  {"atanh", torch_cephes_atanh, &MZERO, &MZERO, 0},
+  {"atanh", torch_cephes_atanh, &ONE, &INF, 0},
+  {"atanh", torch_cephes_atanh, &MONE, &MINF, 0},
+  {"atanh", torch_cephes_atanh, &TWO, &NAN, 0},
+  {"atanh", torch_cephes_atanh, &MTWO, &NAN, 0},
+  {"cosh", torch_cephes_cosh, &NAN, &NAN, 0},
+  {"cosh", torch_cephes_cosh, &ZERO, &ONE, 0},
+  {"cosh", torch_cephes_cosh, &MZERO, &ONE, 0},
+  {"cosh", torch_cephes_cosh, &INF, &INF, 0},
+  {"cosh", torch_cephes_cosh, &MINF, &INF, 0},
+  {"sinh", torch_cephes_sinh, &NAN, &NAN, 0},
+  {"sinh", torch_cephes_sinh, &ZERO, &ZERO, 0},
+  {"sinh", torch_cephes_sinh, &MZERO, &MZERO, 0},
+  {"sinh", torch_cephes_sinh, &INF, &INF, 0},
+  {"sinh", torch_cephes_sinh, &MINF, &MINF, 0},
+  {"tanh", torch_cephes_tanh, &NAN, &NAN, 0},
+  {"tanh", torch_cephes_tanh, &ZERO, &ZERO, 0},
+  {"tanh", torch_cephes_tanh, &MZERO, &MZERO, 0},
+  {"tanh", torch_cephes_tanh, &INF, &ONE, 0},
+  {"tanh", torch_cephes_tanh, &MINF, &MONE, 0},
+  {"exp", torch_cephes_exp, &NAN, &NAN, 0},
+  {"exp", torch_cephes_exp, &ZERO, &ONE, 0},
+  {"exp", torch_cephes_exp, &MZERO, &ONE, 0},
+  {"exp", torch_cephes_exp, &INF, &INF, 0},
+  {"exp", torch_cephes_exp, &MINF, &ZERO, 0},
 #if !GLIBC2
-  {"exp2", exp2, &NAN, &NAN, 0},
-  {"exp2", exp2, &ZERO, &ONE, 0},
-  {"exp2", exp2, &MZERO, &ONE, 0},
-  {"exp2", exp2, &INF, &INF, 0},
-  {"exp2", exp2, &MINF, &ZERO, 0},
+  {"exp2", torch_cephes_exp2, &NAN, &NAN, 0},
+  {"exp2", torch_cephes_exp2, &ZERO, &ONE, 0},
+  {"exp2", torch_cephes_exp2, &MZERO, &ONE, 0},
+  {"exp2", torch_cephes_exp2, &INF, &INF, 0},
+  {"exp2", torch_cephes_exp2, &MINF, &ZERO, 0},
 #endif
-  {"expm1", expm1, &NAN, &NAN, 0},
-  {"expm1", expm1, &ZERO, &ZERO, 0},
-  {"expm1", expm1, &MZERO, &MZERO, 0},
-  {"expm1", expm1, &INF, &INF, 0},
-  {"expm1", expm1, &MINF, &MONE, 0},
-  {"log", log, &NAN, &NAN, 0},
-  {"log", log, &ZERO, &MINF, 0},
-  {"log", log, &MZERO, &MINF, 0},
-  {"log", log, &ONE, &ZERO, 0},
-  {"log", log, &MONE, &NAN, 0},
-  {"log", log, &INF, &INF, 0},
-  {"log10", log10, &NAN, &NAN, 0},
-  {"log10", log10, &ZERO, &MINF, 0},
-  {"log10", log10, &MZERO, &MINF, 0},
-  {"log10", log10, &ONE, &ZERO, 0},
-  {"log10", log10, &MONE, &NAN, 0},
-  {"log10", log10, &INF, &INF, 0},
-  {"log1p", log1p, &NAN, &NAN, 0},
-  {"log1p", log1p, &ZERO, &ZERO, 0},
-  {"log1p", log1p, &MZERO, &MZERO, 0},
-  {"log1p", log1p, &MONE, &MINF, 0},
-  {"log1p", log1p, &MTWO, &NAN, 0},
-  {"log1p", log1p, &INF, &INF, 0},
+  {"expm1", torch_cephes_expm1, &NAN, &NAN, 0},
+  {"expm1", torch_cephes_expm1, &ZERO, &ZERO, 0},
+  {"expm1", torch_cephes_expm1, &MZERO, &MZERO, 0},
+  {"expm1", torch_cephes_expm1, &INF, &INF, 0},
+  {"expm1", torch_cephes_expm1, &MINF, &MONE, 0},
+  {"log", torch_cephes_log, &NAN, &NAN, 0},
+  {"log", torch_cephes_log, &ZERO, &MINF, 0},
+  {"log", torch_cephes_log, &MZERO, &MINF, 0},
+  {"log", torch_cephes_log, &ONE, &ZERO, 0},
+  {"log", torch_cephes_log, &MONE, &NAN, 0},
+  {"log", torch_cephes_log, &INF, &INF, 0},
+  {"log10", torch_cephes_log10, &NAN, &NAN, 0},
+  {"log10", torch_cephes_log10, &ZERO, &MINF, 0},
+  {"log10", torch_cephes_log10, &MZERO, &MINF, 0},
+  {"log10", torch_cephes_log10, &ONE, &ZERO, 0},
+  {"log10", torch_cephes_log10, &MONE, &NAN, 0},
+  {"log10", torch_cephes_log10, &INF, &INF, 0},
+  {"log1p", torch_cephes_log1p, &NAN, &NAN, 0},
+  {"log1p", torch_cephes_log1p, &ZERO, &ZERO, 0},
+  {"log1p", torch_cephes_log1p, &MZERO, &MZERO, 0},
+  {"log1p", torch_cephes_log1p, &MONE, &MINF, 0},
+  {"log1p", torch_cephes_log1p, &MTWO, &NAN, 0},
+  {"log1p", torch_cephes_log1p, &INF, &INF, 0},
 #if !GLIBC2
-  {"log2", log2, &NAN, &NAN, 0},
-  {"log2", log2, &ZERO, &MINF, 0},
-  {"log2", log2, &MZERO, &MINF, 0},
-  {"log2", log2, &MONE, &NAN, 0},
-  {"log2", log2, &INF, &INF, 0},
+  {"log2", torch_cephes_log2, &NAN, &NAN, 0},
+  {"log2", torch_cephes_log2, &ZERO, &MINF, 0},
+  {"log2", torch_cephes_log2, &MZERO, &MINF, 0},
+  {"log2", torch_cephes_log2, &MONE, &NAN, 0},
+  {"log2", torch_cephes_log2, &INF, &INF, 0},
 #endif
   /*  {"fabs", fabs, NAN, NAN, 0}, */
-  {"fabs", fabs, &ONE, &ONE, 0},
-  {"fabs", fabs, &MONE, &ONE, 0},
-  {"fabs", fabs, &ZERO, &ZERO, 0},
-  {"fabs", fabs, &MZERO, &ZERO, 0},
-  {"fabs", fabs, &INF, &INF, 0},
-  {"fabs", fabs, &MINF, &INF, 0},
-  {"cbrt", cbrt, &NAN, &NAN, 0},
-  {"cbrt", cbrt, &ZERO, &ZERO, 0},
-  {"cbrt", cbrt, &MZERO, &MZERO, 0},
-  {"cbrt", cbrt, &INF, &INF, 0},
-  {"cbrt", cbrt, &MINF, &MINF, 0},
-  {"erf", erf, &NAN, &NAN, 0},
-  {"erf", erf, &ZERO, &ZERO, 0},
-  {"erf", erf, &MZERO, &MZERO, 0},
-  {"erf", erf, &INF, &ONE, 0},
-  {"erf", erf, &MINF, &MONE, 0},
-  {"erfc", erfc, &NAN, &NAN, 0},
-  {"erfc", erfc, &INF, &ZERO, 0},
-  {"erfc", erfc, &MINF, &TWO, 0},
-  {"gamma", gamma, &NAN, &NAN, 0},
-  {"gamma", gamma, &INF, &INF, 0},
-  {"gamma", gamma, &MONE, &NAN, 0},
-  {"gamma", gamma, &ZERO, &NAN, 0},
-  {"gamma", gamma, &MINF, &NAN, 0},
+  {"fabs", torch_cephes_fabs, &ONE, &ONE, 0},
+  {"fabs", torch_cephes_fabs, &MONE, &ONE, 0},
+  {"fabs", torch_cephes_fabs, &ZERO, &ZERO, 0},
+  {"fabs", torch_cephes_fabs, &MZERO, &ZERO, 0},
+  {"fabs", torch_cephes_fabs, &INF, &INF, 0},
+  {"fabs", torch_cephes_fabs, &MINF, &INF, 0},
+  {"cbrt", torch_cephes_cbrt, &NAN, &NAN, 0},
+  {"cbrt", torch_cephes_cbrt, &ZERO, &ZERO, 0},
+  {"cbrt", torch_cephes_cbrt, &MZERO, &MZERO, 0},
+  {"cbrt", torch_cephes_cbrt, &INF, &INF, 0},
+  {"cbrt", torch_cephes_cbrt, &MINF, &MINF, 0},
+  {"erf", torch_cephes_erf, &NAN, &NAN, 0},
+  {"erf", torch_cephes_erf, &ZERO, &ZERO, 0},
+  {"erf", torch_cephes_erf, &MZERO, &MZERO, 0},
+  {"erf", torch_cephes_erf, &INF, &ONE, 0},
+  {"erf", torch_cephes_erf, &MINF, &MONE, 0},
+  {"erfc", torch_cephes_erfc, &NAN, &NAN, 0},
+  {"erfc", torch_cephes_erfc, &INF, &ZERO, 0},
+  {"erfc", torch_cephes_erfc, &MINF, &TWO, 0},
+  {"gamma", torch_cephes_gamma, &NAN, &NAN, 0},
+  {"gamma", torch_cephes_gamma, &INF, &INF, 0},
+  {"gamma", torch_cephes_gamma, &MONE, &NAN, 0},
+  {"gamma", torch_cephes_gamma, &ZERO, &NAN, 0},
+  {"gamma", torch_cephes_gamma, &MINF, &NAN, 0},
 #if GLIBC2
-  {"lgamma", lgamma, &NAN, &NAN, 0},
-  {"lgamma", lgamma, &INF, &INF, 0},
-  {"lgamma", lgamma, &MONE, &INF, 0},
-  {"lgamma", lgamma, &ZERO, &INF, 0},
-  {"lgamma", lgamma, &MINF, &INF, 0},
+  {"lgamma", torch_cephes_lgamma, &NAN, &NAN, 0},
+  {"lgamma", torch_cephes_lgamma, &INF, &INF, 0},
+  {"lgamma", torch_cephes_lgamma, &MONE, &INF, 0},
+  {"lgamma", torch_cephes_lgamma, &ZERO, &INF, 0},
+  {"lgamma", torch_cephes_lgamma, &MINF, &INF, 0},
 #else
-  {"lgam", lgam, &NAN, &NAN, 0},
-  {"lgam", lgam, &INF, &INF, 0},
-  {"lgam", lgam, &MONE, &INF, 0},
-  {"lgam", lgam, &ZERO, &INF, 0},
-  {"lgam", lgam, &MINF, &INF, 0},
+  {"lgam", torch_cephes_lgam, &NAN, &NAN, 0},
+  {"lgam", torch_cephes_lgam, &INF, &INF, 0},
+  {"lgam", torch_cephes_lgam, &MONE, &INF, 0},
+  {"lgam", torch_cephes_lgam, &ZERO, &INF, 0},
+  {"lgam", torch_cephes_lgam, &MINF, &INF, 0},
 #endif
-  {"ceil", ceil, &NAN, &NAN, 0},
-  {"ceil", ceil, &ZERO, &ZERO, 0},
-  {"ceil", ceil, &MZERO, &MZERO, 0},
-  {"ceil", ceil, &INF, &INF, 0},
-  {"ceil", ceil, &MINF, &MINF, 0},
-  {"floor", floor, &NAN, &NAN, 0},
-  {"floor", floor, &ZERO, &ZERO, 0},
-  {"floor", floor, &MZERO, &MZERO, 0},
-  {"floor", floor, &INF, &INF, 0},
-  {"floor", floor, &MINF, &MINF, 0},
+  {"ceil", torch_cephes_ceil, &NAN, &NAN, 0},
+  {"ceil", torch_cephes_ceil, &ZERO, &ZERO, 0},
+  {"ceil", torch_cephes_ceil, &MZERO, &MZERO, 0},
+  {"ceil", torch_cephes_ceil, &INF, &INF, 0},
+  {"ceil", torch_cephes_ceil, &MINF, &MINF, 0},
+  {"floor", torch_cephes_floor, &NAN, &NAN, 0},
+  {"floor", torch_cephes_floor, &ZERO, &ZERO, 0},
+  {"floor", torch_cephes_floor, &MZERO, &MZERO, 0},
+  {"floor", torch_cephes_floor, &INF, &INF, 0},
+  {"floor", torch_cephes_floor, &MINF, &MINF, 0},
   {"null", NULL, &ZERO, &ZERO, 0},
 };
 
 /* Functions of two variables.  */
-double atan2 (double, double);
-double pow (double, double);
+double torch_cephes_atan2 (double, double);
+double torch_cephes_pow (double, double);
 
 struct twoarguments
   {
@@ -266,81 +268,81 @@ struct twoarguments
 
 struct twoarguments test2[] =
 {
-  {"atan2", atan2, &ZERO, &ONE, &ZERO, 0},
-  {"atan2", atan2, &MZERO, &ONE, &MZERO, 0},
-  {"atan2", atan2, &ZERO, &ZERO, &ZERO, 0},
-  {"atan2", atan2, &MZERO, &ZERO, &MZERO, 0},
-  {"atan2", atan2, &ZERO, &MONE, &PI, 0},
-  {"atan2", atan2, &MZERO, &MONE, &MPI, 0},
-  {"atan2", atan2, &ZERO, &MZERO, &PI, 0},
-  {"atan2", atan2, &MZERO, &MZERO, &MPI, 0},
-  {"atan2", atan2, &ONE, &ZERO, &PIO2, 0},
-  {"atan2", atan2, &ONE, &MZERO, &PIO2, 0},
-  {"atan2", atan2, &MONE, &ZERO, &MPIO2, 0},
-  {"atan2", atan2, &MONE, &MZERO, &MPIO2, 0},
-  {"atan2", atan2, &ONE, &INF, &ZERO, 0},
-  {"atan2", atan2, &MONE, &INF, &MZERO, 0},
-  {"atan2", atan2, &INF, &ONE, &PIO2, 0},
-  {"atan2", atan2, &INF, &MONE, &PIO2, 0},
-  {"atan2", atan2, &MINF, &ONE, &MPIO2, 0},
-  {"atan2", atan2, &MINF, &MONE, &MPIO2, 0},
-  {"atan2", atan2, &ONE, &MINF, &PI, 0},
-  {"atan2", atan2, &MONE, &MINF, &MPI, 0},
-  {"atan2", atan2, &INF, &INF, &PIO4, 0},
-  {"atan2", atan2, &MINF, &INF, &MPIO4, 0},
-  {"atan2", atan2, &INF, &MINF, &THPIO4, 0},
-  {"atan2", atan2, &MINF, &MINF, &MTHPIO4, 0},
-  {"atan2", atan2, &ONE, &ONE, &PIO4, 0},
-  {"atan2", atan2, &NAN, &ONE, &NAN, 0},
-  {"atan2", atan2, &ONE, &NAN, &NAN, 0},
-  {"atan2", atan2, &NAN, &NAN, &NAN, 0},
-  {"pow", pow, &ONE, &ZERO, &ONE, 0},
-  {"pow", pow, &ONE, &MZERO, &ONE, 0},
-  {"pow", pow, &MONE, &ZERO, &ONE, 0},
-  {"pow", pow, &MONE, &MZERO, &ONE, 0},
-  {"pow", pow, &INF, &ZERO, &ONE, 0},
-  {"pow", pow, &INF, &MZERO, &ONE, 0},
-  {"pow", pow, &NAN, &ZERO, &ONE, 0},
-  {"pow", pow, &NAN, &MZERO, &ONE, 0},
-  {"pow", pow, &TWO, &INF, &INF, 0},
-  {"pow", pow, &MTWO, &INF, &INF, 0},
-  {"pow", pow, &HALF, &INF, &ZERO, 0},
-  {"pow", pow, &MHALF, &INF, &ZERO, 0},
-  {"pow", pow, &TWO, &MINF, &ZERO, 0},
-  {"pow", pow, &MTWO, &MINF, &ZERO, 0},
-  {"pow", pow, &HALF, &MINF, &INF, 0},
-  {"pow", pow, &MHALF, &MINF, &INF, 0},
-  {"pow", pow, &INF, &HALF, &INF, 0},
-  {"pow", pow, &INF, &TWO, &INF, 0},
-  {"pow", pow, &INF, &MHALF, &ZERO, 0},
-  {"pow", pow, &INF, &MTWO, &ZERO, 0},
-  {"pow", pow, &MINF, &THREE, &MINF, 0},
-  {"pow", pow, &MINF, &TWO, &INF, 0},
-  {"pow", pow, &MINF, &MTHREE, &MZERO, 0},
-  {"pow", pow, &MINF, &MTWO, &ZERO, 0},
-  {"pow", pow, &NAN, &ONE, &NAN, 0},
-  {"pow", pow, &ONE, &NAN, &NAN, 0},
-  {"pow", pow, &NAN, &NAN, &NAN, 0},
-  {"pow", pow, &ONE, &INF, &NAN, 0},
-  {"pow", pow, &MONE, &INF, &NAN, 0},
-  {"pow", pow, &ONE, &MINF, &NAN, 0},
-  {"pow", pow, &MONE, &MINF, &NAN, 0},
-  {"pow", pow, &MTWO, &HALF, &NAN, 0},
-  {"pow", pow, &ZERO, &MTHREE, &INF, 0},
-  {"pow", pow, &MZERO, &MTHREE, &MINF, 0},
-  {"pow", pow, &ZERO, &MHALF, &INF, 0},
-  {"pow", pow, &MZERO, &MHALF, &INF, 0},
-  {"pow", pow, &ZERO, &THREE, &ZERO, 0},
-  {"pow", pow, &MZERO, &THREE, &MZERO, 0},
-  {"pow", pow, &ZERO, &HALF, &ZERO, 0},
-  {"pow", pow, &MZERO, &HALF, &ZERO, 0},
+  {"atan2", torch_cephes_atan2, &ZERO, &ONE, &ZERO, 0},
+  {"atan2", torch_cephes_atan2, &MZERO, &ONE, &MZERO, 0},
+  {"atan2", torch_cephes_atan2, &ZERO, &ZERO, &ZERO, 0},
+  {"atan2", torch_cephes_atan2, &MZERO, &ZERO, &MZERO, 0},
+  {"atan2", torch_cephes_atan2, &ZERO, &MONE, &PI, 0},
+  {"atan2", torch_cephes_atan2, &MZERO, &MONE, &MPI, 0},
+  {"atan2", torch_cephes_atan2, &ZERO, &MZERO, &PI, 0},
+  {"atan2", torch_cephes_atan2, &MZERO, &MZERO, &MPI, 0},
+  {"atan2", torch_cephes_atan2, &ONE, &ZERO, &PIO2, 0},
+  {"atan2", torch_cephes_atan2, &ONE, &MZERO, &PIO2, 0},
+  {"atan2", torch_cephes_atan2, &MONE, &ZERO, &MPIO2, 0},
+  {"atan2", torch_cephes_atan2, &MONE, &MZERO, &MPIO2, 0},
+  {"atan2", torch_cephes_atan2, &ONE, &INF, &ZERO, 0},
+  {"atan2", torch_cephes_atan2, &MONE, &INF, &MZERO, 0},
+  {"atan2", torch_cephes_atan2, &INF, &ONE, &PIO2, 0},
+  {"atan2", torch_cephes_atan2, &INF, &MONE, &PIO2, 0},
+  {"atan2", torch_cephes_atan2, &MINF, &ONE, &MPIO2, 0},
+  {"atan2", torch_cephes_atan2, &MINF, &MONE, &MPIO2, 0},
+  {"atan2", torch_cephes_atan2, &ONE, &MINF, &PI, 0},
+  {"atan2", torch_cephes_atan2, &MONE, &MINF, &MPI, 0},
+  {"atan2", torch_cephes_atan2, &INF, &INF, &PIO4, 0},
+  {"atan2", torch_cephes_atan2, &MINF, &INF, &MPIO4, 0},
+  {"atan2", torch_cephes_atan2, &INF, &MINF, &THPIO4, 0},
+  {"atan2", torch_cephes_atan2, &MINF, &MINF, &MTHPIO4, 0},
+  {"atan2", torch_cephes_atan2, &ONE, &ONE, &PIO4, 0},
+  {"atan2", torch_cephes_atan2, &NAN, &ONE, &NAN, 0},
+  {"atan2", torch_cephes_atan2, &ONE, &NAN, &NAN, 0},
+  {"atan2", torch_cephes_atan2, &NAN, &NAN, &NAN, 0},
+  {"pow", torch_cephes_pow, &ONE, &ZERO, &ONE, 0},
+  {"pow", torch_cephes_pow, &ONE, &MZERO, &ONE, 0},
+  {"pow", torch_cephes_pow, &MONE, &ZERO, &ONE, 0},
+  {"pow", torch_cephes_pow, &MONE, &MZERO, &ONE, 0},
+  {"pow", torch_cephes_pow, &INF, &ZERO, &ONE, 0},
+  {"pow", torch_cephes_pow, &INF, &MZERO, &ONE, 0},
+  {"pow", torch_cephes_pow, &NAN, &ZERO, &ONE, 0},
+  {"pow", torch_cephes_pow, &NAN, &MZERO, &ONE, 0},
+  {"pow", torch_cephes_pow, &TWO, &INF, &INF, 0},
+  {"pow", torch_cephes_pow, &MTWO, &INF, &INF, 0},
+  {"pow", torch_cephes_pow, &HALF, &INF, &ZERO, 0},
+  {"pow", torch_cephes_pow, &MHALF, &INF, &ZERO, 0},
+  {"pow", torch_cephes_pow, &TWO, &MINF, &ZERO, 0},
+  {"pow", torch_cephes_pow, &MTWO, &MINF, &ZERO, 0},
+  {"pow", torch_cephes_pow, &HALF, &MINF, &INF, 0},
+  {"pow", torch_cephes_pow, &MHALF, &MINF, &INF, 0},
+  {"pow", torch_cephes_pow, &INF, &HALF, &INF, 0},
+  {"pow", torch_cephes_pow, &INF, &TWO, &INF, 0},
+  {"pow", torch_cephes_pow, &INF, &MHALF, &ZERO, 0},
+  {"pow", torch_cephes_pow, &INF, &MTWO, &ZERO, 0},
+  {"pow", torch_cephes_pow, &MINF, &THREE, &MINF, 0},
+  {"pow", torch_cephes_pow, &MINF, &TWO, &INF, 0},
+  {"pow", torch_cephes_pow, &MINF, &MTHREE, &MZERO, 0},
+  {"pow", torch_cephes_pow, &MINF, &MTWO, &ZERO, 0},
+  {"pow", torch_cephes_pow, &NAN, &ONE, &NAN, 0},
+  {"pow", torch_cephes_pow, &ONE, &NAN, &NAN, 0},
+  {"pow", torch_cephes_pow, &NAN, &NAN, &NAN, 0},
+  {"pow", torch_cephes_pow, &ONE, &INF, &NAN, 0},
+  {"pow", torch_cephes_pow, &MONE, &INF, &NAN, 0},
+  {"pow", torch_cephes_pow, &ONE, &MINF, &NAN, 0},
+  {"pow", torch_cephes_pow, &MONE, &MINF, &NAN, 0},
+  {"pow", torch_cephes_pow, &MTWO, &HALF, &NAN, 0},
+  {"pow", torch_cephes_pow, &ZERO, &MTHREE, &INF, 0},
+  {"pow", torch_cephes_pow, &MZERO, &MTHREE, &MINF, 0},
+  {"pow", torch_cephes_pow, &ZERO, &MHALF, &INF, 0},
+  {"pow", torch_cephes_pow, &MZERO, &MHALF, &INF, 0},
+  {"pow", torch_cephes_pow, &ZERO, &THREE, &ZERO, 0},
+  {"pow", torch_cephes_pow, &MZERO, &THREE, &MZERO, 0},
+  {"pow", torch_cephes_pow, &ZERO, &HALF, &ZERO, 0},
+  {"pow", torch_cephes_pow, &MZERO, &HALF, &ZERO, 0},
   {"null", NULL, &ZERO, &ZERO, &ZERO, 0},
 };
 
 /* Integer functions of one variable.  */
 
-int isnan (double);
-int signbit (double);
+int torch_cephes_isnan (double);
+int torch_cephes_signbit (double);
 
 struct intans
   {
@@ -352,19 +354,19 @@ struct intans
 
 struct intans test3[] =
 {
-  {"isfinite", isfinite, &ZERO, 1},
-  {"isfinite", isfinite, &INF, 0},
-  {"isfinite", isfinite, &MINF, 0},
-  {"isnan", isnan, &NAN, 1},
-  {"isnan", isnan, &INF, 0},
-  {"isnan", isnan, &ZERO, 0},
-  {"isnan", isnan, &MZERO, 0},
-  {"signbit", signbit, &MZERO, 1},
-  {"signbit", signbit, &MONE, 1},
-  {"signbit", signbit, &ZERO, 0},
-  {"signbit", signbit, &ONE, 0},
-  {"signbit", signbit, &MINF, 1},
-  {"signbit", signbit, &INF, 0},
+  {"isfinite", torch_cephes_isfinite, &ZERO, 1},
+  {"isfinite", torch_cephes_isfinite, &INF, 0},
+  {"isfinite", torch_cephes_isfinite, &MINF, 0},
+  {"isnan", torch_cephes_isnan, &NAN, 1},
+  {"isnan", torch_cephes_isnan, &INF, 0},
+  {"isnan", torch_cephes_isnan, &ZERO, 0},
+  {"isnan", torch_cephes_isnan, &MZERO, 0},
+  {"signbit", torch_cephes_signbit, &MZERO, 1},
+  {"signbit", torch_cephes_signbit, &MONE, 1},
+  {"signbit", torch_cephes_signbit, &ZERO, 0},
+  {"signbit", torch_cephes_signbit, &ONE, 0},
+  {"signbit", torch_cephes_signbit, &MINF, 1},
+  {"signbit", torch_cephes_signbit, &INF, 0},
   {"null", NULL, &ZERO, 0},
 };
 

@@ -125,43 +125,45 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern double log ( double );
-extern double sqrt ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_sqrt ( double );
 #else
-double log(), sqrt(), polevl(), p1evl();
+double torch_cephes_log(), torch_cephes_sqrt(), torch_cephes_polevl(),
+    torch_cephes_p1evl();
 #endif
-extern double LOGE2, INFINITY, NAN;
+extern double torch_cephes_LOGE2, torch_cephes_INFINITY, torch_cephes_NAN;
 
-double acosh(x)
+double torch_cephes_acosh(x)
 double x;
 {
 double a, z;
 
 if( x < 1.0 )
 	{
-	mtherr( "acosh", DOMAIN );
-	return(NAN);
+	torch_cephes_mtherr( "acosh", DOMAIN );
+	return(torch_cephes_NAN);
 	}
 
 if( x > 1.0e8 )
 	{
 #ifdef INFINITIES
-	if( x == INFINITY )
-		return( INFINITY );
+	if( x == torch_cephes_INFINITY )
+		return( torch_cephes_INFINITY );
 #endif
-	return( log(x) + LOGE2 );
+	return(torch_cephes_log(x) + torch_cephes_LOGE2 );
 	}
 
 z = x - 1.0;
 
 if( z < 0.5 )
 	{
-	a = sqrt(z) * (polevl(z, P, 4) / p1evl(z, Q, 5) );
+	a = torch_cephes_sqrt(z) * (torch_cephes_polevl(z, P, 4)
+                                    / torch_cephes_p1evl(z, Q, 5) );
 	return( a );
 	}
 
-a = sqrt( z*(x+1.0) );
-return( log(x + a) );
+a = torch_cephes_sqrt( z*(x+1.0) );
+return( torch_cephes_log(x + a) );
 }

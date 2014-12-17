@@ -64,7 +64,7 @@ static double simcon[] =
 */
 
 /*							simpsn.c 3	*/
-double simpsn( f, delta )
+double torch_cephes_simpsn( f, delta )
 double f[];	/* tabulated function */
 double delta;	/* spacing of arguments */
 {

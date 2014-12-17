@@ -140,15 +140,15 @@ static unsigned short B[32] = {
 #endif
 
 #ifdef ANSIPROT
-extern double fabs ( double );
-extern double log ( double );
-extern double polevl ( double, void *, int );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_polevl ( double, void *, int );
 #else
-double fabs(), log(), polevl();
+double torch_cephes_fabs(), torch_cephes_log(), torch_cephes_polevl();
 #endif
-extern double PI, MACHEP;
+extern double torch_cephes_PI, torch_cephes_MACHEP;
 
-double spence(x)
+double torch_cephes_spence(x)
 double x;
 {
 double w, y, z;
@@ -156,7 +156,7 @@ int flag;
 
 if( x < 0.0 )
 	{
-	mtherr( "spence", DOMAIN );
+	torch_cephes_mtherr( "spence", DOMAIN );
 	return(0.0);
 	}
 
@@ -164,7 +164,7 @@ if( x == 1.0 )
 	return( 0.0 );
 
 if( x == 0.0 )
-	return( PI*PI/6.0 );
+	return( torch_cephes_PI*torch_cephes_PI/6.0 );
 
 flag = 0;
 
@@ -190,14 +190,15 @@ else
 	w = x - 1.0;
 
 
-y = -w * polevl( w, A, 7) / polevl( w, B, 7 );
+y = -w * torch_cephes_polevl( w, A, 7) / torch_cephes_polevl( w, B, 7 );
 
 if( flag & 1 )
-	y = (PI * PI)/6.0  - log(x) * log(1.0-x) - y;
+	y = (torch_cephes_PI * torch_cephes_PI)/6.0
+            - torch_cephes_log(x) * torch_cephes_log(1.0-x) - y;
 
 if( flag & 2 )
 	{
-	z = log(x);
+	z = torch_cephes_log(x);
 	y = -0.5 * z * z  -  y;
 	}
 

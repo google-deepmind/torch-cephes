@@ -445,20 +445,21 @@ static unsigned short DZ2[] = {0x4048,0x9bf6,0x6072,0xa432};
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern double log ( double );
-extern double sin ( double );
-extern double cos ( double );
-extern double sqrt ( double );
-double j1 ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_sin ( double );
+extern double torch_cephes_cos ( double );
+extern double torch_cephes_sqrt ( double );
+double torch_cephes_j1 ( double );
 #else
-double polevl(), p1evl(), log(), sin(), cos(), sqrt();
-double j1();
+double torch_cephes_polevl(), torch_cephes_p1evl(), torch_cephes_log(),
+    torch_cephes_sin(), torch_cephes_cos(), torch_cephes_sqrt();
+double torch_cephes_j1();
 #endif
-extern double TWOOPI, THPIO4, SQ2OPI;
+extern double torch_cephes_TWOOPI, torch_cephes_THPIO4, torch_cephes_SQ2OPI;
 
-double j1(x)
+double torch_cephes_j1(x)
 double x;
 {
 double w, z, p, q, xn;
@@ -469,25 +470,25 @@ if( x < 0 )
 
 if( w <= 5.0 )
 	{
-	z = x * x;	
-	w = polevl( z, RP, 3 ) / p1evl( z, RQ, 8 );
+	z = x * x;
+	w = torch_cephes_polevl( z, RP, 3 ) / torch_cephes_p1evl( z, RQ, 8 );
 	w = w * x * (z - Z1) * (z - Z2);
 	return( w );
 	}
 
 w = 5.0/x;
 z = w * w;
-p = polevl( z, PP, 6)/polevl( z, PQ, 6 );
-q = polevl( z, QP, 7)/p1evl( z, QQ, 7 );
-xn = x - THPIO4;
-p = p * cos(xn) - w * q * sin(xn);
-return( p * SQ2OPI / sqrt(x) );
+p = torch_cephes_polevl( z, PP, 6)/torch_cephes_polevl( z, PQ, 6 );
+q = torch_cephes_polevl( z, QP, 7)/torch_cephes_p1evl( z, QQ, 7 );
+xn = x - torch_cephes_THPIO4;
+p = p * torch_cephes_cos(xn) - w * q * torch_cephes_sin(xn);
+return( p * torch_cephes_SQ2OPI / torch_cephes_sqrt(x) );
 }
 
 
-extern double MAXNUM;
+extern double torch_cephes_MAXNUM;
 
-double y1(x)
+double torch_cephes_y1(x)
 double x;
 {
 double w, z, p, q, xn;
@@ -496,20 +497,22 @@ if( x <= 5.0 )
 	{
 	if( x <= 0.0 )
 		{
-		mtherr( "y1", DOMAIN );
-		return( -MAXNUM );
+		torch_cephes_mtherr( "y1", DOMAIN );
+		return( -torch_cephes_MAXNUM );
 		}
 	z = x * x;
-	w = x * (polevl( z, YP, 5 ) / p1evl( z, YQ, 8 ));
-	w += TWOOPI * ( j1(x) * log(x)  -  1.0/x );
+	w = x * (torch_cephes_polevl( z, YP, 5 ) /
+                 torch_cephes_p1evl( z, YQ, 8 ));
+	w += torch_cephes_TWOOPI * ( torch_cephes_j1(x) * torch_cephes_log(x)
+                                      -  1.0/x );
 	return( w );
 	}
 
 w = 5.0/x;
 z = w * w;
-p = polevl( z, PP, 6)/polevl( z, PQ, 6 );
-q = polevl( z, QP, 7)/p1evl( z, QQ, 7 );
-xn = x - THPIO4;
-p = p * sin(xn) + w * q * cos(xn);
-return( p * SQ2OPI / sqrt(x) );
+p = torch_cephes_polevl( z, PP, 6)/torch_cephes_polevl( z, PQ, 6 );
+q = torch_cephes_polevl( z, QP, 7)/torch_cephes_p1evl( z, QQ, 7 );
+xn = x - torch_cephes_THPIO4;
+p = p * torch_cephes_sin(xn) + w * q * torch_cephes_cos(xn);
+return( p * torch_cephes_SQ2OPI / torch_cephes_sqrt(x) );
 }

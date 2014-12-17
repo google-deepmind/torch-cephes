@@ -61,9 +61,9 @@ static double c1 = 0.35502805388781723926;
 static double c2 = 0.258819403792806798405;
 static double sqrt3 = 1.732050807568877293527;
 static double sqpii = 5.64189583547756286948E-1;
-extern double PI;
+extern double torch_cephes_PI;
 
-extern double MAXNUM, MACHEP;
+extern double torch_cephes_MAXNUM, torch_cephes_MACHEP;
 #ifdef UNK
 #define MAXAIRY 25.77
 #endif
@@ -823,19 +823,20 @@ static unsigned short APGD[40] = {
 #endif
 
 #ifdef ANSIPROT
-extern double fabs ( double );
-extern double exp ( double );
-extern double sqrt ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern double sin ( double );
-extern double cos ( double );
+extern double torch_cephes_fabs ( double );
+extern double torch_cephes_exp ( double );
+extern double torch_cephes_sqrt ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
+extern double torch_cephes_sin ( double );
+extern double torch_cephes_cos ( double );
 #else
-double fabs(), exp(), sqrt();
-double polevl(), p1evl(), sin(), cos();
+double torch_cephes_fabs(), torch_cephes_exp(), torch_cephes_sqrt();
+double torch_cephes_polevl(), torch_cephes_p1evl(),
+    torch_cephes_sin(), torch_cephes_cos();
 #endif
 
-int airy( x, ai, aip, bi, bip )
+int torch_cephes_airy( x, ai, aip, bi, bip )
 double x, *ai, *aip, *bi, *bip;
 {
 double z, zz, t, f, g, uf, ug, k, zeta, theta;
@@ -846,29 +847,33 @@ if( x > MAXAIRY )
 	{
 	*ai = 0;
 	*aip = 0;
-	*bi = MAXNUM;
-	*bip = MAXNUM;
+	*bi = torch_cephes_MAXNUM;
+	*bip = torch_cephes_MAXNUM;
 	return(-1);
 	}
 
 if( x < -2.09 )
 	{
 	domflg = 15;
-	t = sqrt(-x);
+	t = torch_cephes_sqrt(-x);
 	zeta = -2.0 * x * t / 3.0;
-	t = sqrt(t);
+	t = torch_cephes_sqrt(t);
 	k = sqpii / t;
 	z = 1.0/zeta;
 	zz = z * z;
-	uf = 1.0 + zz * polevl( zz, AFN, 8 ) / p1evl( zz, AFD, 9 );
-	ug = z * polevl( zz, AGN, 10 ) / p1evl( zz, AGD, 10 );
-	theta = zeta + 0.25 * PI;
-	f = sin( theta );
-	g = cos( theta );
+	uf = 1.0 + zz * torch_cephes_polevl( zz, AFN, 8 ) /
+            torch_cephes_p1evl( zz, AFD, 9 );
+	ug = z * torch_cephes_polevl( zz, AGN, 10 ) /
+            torch_cephes_p1evl( zz, AGD, 10 );
+	theta = zeta + 0.25 * torch_cephes_PI;
+	f = torch_cephes_sin( theta );
+	g = torch_cephes_cos( theta );
 	*ai = k * (f * uf - g * ug);
 	*bi = k * (g * uf + f * ug);
-	uf = 1.0 + zz * polevl( zz, APFN, 8 ) / p1evl( zz, APFD, 9 );
-	ug = z * polevl( zz, APGN, 10 ) / p1evl( zz, APGD, 10 );
+	uf = 1.0 + zz * torch_cephes_polevl( zz, APFN, 8 ) /
+            torch_cephes_p1evl( zz, APFD, 9 );
+	ug = z * torch_cephes_polevl( zz, APGN, 10 ) /
+            torch_cephes_p1evl( zz, APGD, 10 );
 	k = sqpii * t;
 	*aip = -k * (g * uf + f * ug);
 	*bip = k * (f * uf - g * ug);
@@ -878,24 +883,26 @@ if( x < -2.09 )
 if( x >= 2.09 )	/* cbrt(9) */
 	{
 	domflg = 5;
-	t = sqrt(x);
+	t = torch_cephes_sqrt(x);
 	zeta = 2.0 * x * t / 3.0;
-	g = exp( zeta );
-	t = sqrt(t);
+	g = torch_cephes_exp( zeta );
+	t = torch_cephes_sqrt(t);
 	k = 2.0 * t * g;
 	z = 1.0/zeta;
-	f = polevl( z, AN, 7 ) / polevl( z, AD, 7 );
+	f = torch_cephes_polevl( z, AN, 7 ) / torch_cephes_polevl( z, AD, 7 );
 	*ai = sqpii * f / k;
 	k = -0.5 * sqpii * t / g;
-	f = polevl( z, APN, 7 ) / polevl( z, APD, 7 );
+	f = torch_cephes_polevl( z, APN, 7 ) / torch_cephes_polevl( z, APD, 7 );
 	*aip = f * k;
 
 	if( x > 8.3203353 )	/* zeta > 16 */
 		{
-		f = z * polevl( z, BN16, 4 ) / p1evl( z, BD16, 5 );
+		f = z * torch_cephes_polevl( z, BN16, 4 ) /
+                    torch_cephes_p1evl( z, BD16, 5 );
 		k = sqpii * g;
 		*bi = k * (1.0 + f) / t;
-		f = z * polevl( z, BPPN, 4 ) / p1evl( z, BPPD, 5 );
+		f = z * torch_cephes_polevl( z, BPPN, 4 ) /
+                    torch_cephes_p1evl( z, BPPD, 5 );
 		*bip = k * t * (1.0 + f);
 		return(0);
 		}
@@ -908,7 +915,7 @@ uf = 1.0;
 ug = x;
 k = 1.0;
 z = x * x * x;
-while( t > MACHEP )
+while( t > torch_cephes_MACHEP )
 	{
 	uf *= z;
 	k += 1.0;
@@ -921,7 +928,7 @@ while( t > MACHEP )
 	k += 1.0;
 	ug /=k;
 	g += ug;
-	t = fabs(uf/f);
+	t = torch_cephes_fabs(uf/f);
 	}
 uf = c1 * f;
 ug = c2 * g;
@@ -939,7 +946,7 @@ g = 1.0 + ug;
 uf /= 3.0;
 t = 1.0;
 
-while( t > MACHEP )
+while( t > torch_cephes_MACHEP )
 	{
 	uf *= z;
 	ug /=k;
@@ -952,7 +959,7 @@ while( t > MACHEP )
 	uf /=k;
 	g += ug;
 	k += 1.0;
-	t = fabs(ug/g);
+	t = torch_cephes_fabs(ug/g);
 	}
 
 uf = c1 * f;

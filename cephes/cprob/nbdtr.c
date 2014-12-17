@@ -116,13 +116,13 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double incbet ( double, double, double );
-extern double incbi ( double, double, double );
+extern double torch_cephes_incbet ( double, double, double );
+extern double torch_cephes_incbi ( double, double, double );
 #else
-double incbet(), incbi();
+double torch_cephes_incbet(), torch_cephes_incbi();
 #endif
 
-double nbdtrc( k, n, p )
+double torch_cephes_nbdtrc( k, n, p )
 int k, n;
 double p;
 {
@@ -133,18 +133,18 @@ if( (p < 0.0) || (p > 1.0) )
 if( k < 0 )
 	{
 domerr:
-	mtherr( "nbdtr", DOMAIN );
+	torch_cephes_mtherr( "nbdtr", DOMAIN );
 	return( 0.0 );
 	}
 
 dk = k+1;
 dn = n;
-return( incbet( dk, dn, 1.0 - p ) );
+return( torch_cephes_incbet( dk, dn, 1.0 - p ) );
 }
 
 
 
-double nbdtr( k, n, p )
+double torch_cephes_nbdtr( k, n, p )
 int k, n;
 double p;
 {
@@ -155,17 +155,17 @@ if( (p < 0.0) || (p > 1.0) )
 if( k < 0 )
 	{
 domerr:
-	mtherr( "nbdtr", DOMAIN );
+	torch_cephes_mtherr( "nbdtr", DOMAIN );
 	return( 0.0 );
 	}
 dk = k+1;
 dn = n;
-return( incbet( dn, dk, p ) );
+return( torch_cephes_incbet( dn, dk, p ) );
 }
 
 
 
-double nbdtri( k, n, p )
+double torch_cephes_nbdtri( k, n, p )
 int k, n;
 double p;
 {
@@ -176,11 +176,11 @@ if( (p < 0.0) || (p > 1.0) )
 if( k < 0 )
 	{
 domerr:
-	mtherr( "nbdtri", DOMAIN );
+	torch_cephes_mtherr( "nbdtri", DOMAIN );
 	return( 0.0 );
 	}
 dk = k+1;
 dn = n;
-w = incbi( dn, dk, p );
+w = torch_cephes_incbi( dn, dk, p );
 return( w );
 }

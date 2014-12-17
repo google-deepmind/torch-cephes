@@ -71,7 +71,7 @@ Copyright 1999 by Stephen L. Moshier
 */
 
 #include "mconf.h"
-extern double PI;
+extern double torch_cephes_PI;
 
 /* polylog(4, 1-x) = zeta(4) - x zeta(3) + x^2 A4(x)/B4(x)
    0 <= x <= 0.125
@@ -206,27 +206,28 @@ static short B4[48] = {
 #endif
 
 #ifdef ANSIPROT
-extern double spence ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern double zetac ( double );
-extern double pow ( double, double );
-extern double powi ( double, int );
-extern double log ( double );
-extern double fac ( int i );
-extern double fabs (double);
-double polylog (int, double);
+extern double torch_cephes_spence ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
+extern double torch_cephes_zetac ( double );
+extern double torch_cephes_pow ( double, double );
+extern double torch_cephes_powi ( double, int );
+extern double torch_cephes_log ( double );
+extern double torch_cephes_fac ( int i );
+extern double torch_cephes_fabs (double);
+double torch_cephes_polylog (int, double);
 #else
-extern double spence(), polevl(), p1evl(), zetac();
-extern double pow(), powi(), log();
-extern double fac(); /* factorial */
-extern double fabs();
-double polylog();
+extern double torch_cephes_spence(), torch_cephes_polevl(),
+    torch_cephes_p1evl(), torch_cephes_zetac();
+extern double torch_cephes_pow(), torch_cephes_powi(), torch_cephes_log();
+extern double torch_cephes_fac(); /* factorial */
+extern double torch_cephes_fabs();
+double torch_cephes_polylog();
 #endif
-extern double MACHEP;
+extern double torch_cephes_MACHEP;
 
 double
-polylog (n, x)
+torch_cephes_polylog (n, x)
      int n;
      double x;
 {
@@ -259,20 +260,20 @@ polylog (n, x)
      Not defined for x > 1.  Use cpolylog if you need that.  */
   if (x > 1.0 || n < -1)
     {
-      mtherr("polylog", DOMAIN);
+      torch_cephes_mtherr("polylog", DOMAIN);
       return 0.0;
     }
 
   if (n == 1)
     {
-      s = -log (1.0 - x);
+      s = -torch_cephes_log (1.0 - x);
       return s;
     }
 
   /* Argument +1 */
   if (x == 1.0 && n > 1)
     {
-      s = zetac ((double) n) + 1.0;
+      s = torch_cephes_zetac ((double) n) + 1.0;
       return s;
     }
 
@@ -284,8 +285,8 @@ polylog (n, x)
   if (x == -1.0 && n > 1)
     {
       /* Li_n(1) = zeta(n) */
-      s = zetac ((double) n) + 1.0;
-      s = s * (powi (2.0, 1 - n) - 1.0);
+      s = torch_cephes_zetac ((double) n) + 1.0;
+      s = s * (torch_cephes_powi (2.0, 1 - n) - 1.0);
       return s;
     }
 
@@ -301,12 +302,12 @@ polylog (n, x)
       double q, w;
       int r;
 
-      w = log (-x);
+      w = torch_cephes_log (-x);
       s = 0.0;
       for (r = 1; r <= n / 2; r++)
 	{
 	  j = 2 * r;
-	  p = polylog (j, -1.0);
+	  p = torch_cephes_polylog (j, -1.0);
 	  j = n - j;
 	  if (j == 0)
 	    {
@@ -314,22 +315,22 @@ polylog (n, x)
 	      break;
 	    }
 	  q = (double) j;
-	  q = pow (w, q) * p / fac (j);
+	  q = torch_cephes_pow (w, q) * p / torch_cephes_fac (j);
 	  s = s + q;
 	}
       s = 2.0 * s;
-      q = polylog (n, 1.0 / x);
+      q = torch_cephes_polylog (n, 1.0 / x);
       if (n & 1)
 	q = -q;
       s = s - q;
-      s = s - pow (w, (double) n) / fac (n);
+      s = s - torch_cephes_pow (w, (double) n) / torch_cephes_fac (n);
       return s;
     }
 
   if (n == 2)
     {
       if (x < 0.0 || x > 1.0)
-	return (spence (1.0 - x));
+	return (torch_cephes_spence (1.0 - x));
     }
 
 
@@ -354,10 +355,10 @@ polylog (n, x)
 	  s = u * u * u / 6.0;
 	  xc = 1.0 - x;
 	  s = s - 0.5 * u * u * log(xc);
-          s = s + PI * PI * u / 6.0;
-          s = s - polylog (3, -xc/x);
-	  s = s - polylog (3, xc);
-	  s = s + zetac(3.0);
+          s = s + torch_cephes_PI * torch_cephes_PI * u / 6.0;
+          s = s - torch_cephes_polylog (3, -xc/x);
+	  s = s - torch_cephes_polylog (3, xc);
+	  s = s + torch_cephes_zetac(3.0);
 	  s = s + 1.0;
 	  return s;
 	}
@@ -375,7 +376,7 @@ polylog (n, x)
 	  s = s + h;
 	  k += 1.0;
 	}
-      while (fabs(h/s) > 1.1e-16);
+      while (torch_cephes_fabs(h/s) > 1.1e-16);
       return (s + t);
     }
 
@@ -384,7 +385,7 @@ if (n == 4)
     if (x >= 0.875)
       {
 	u = 1.0 - x;
-	s = polevl(u, A4, 12) / p1evl(u, B4, 12);
+	s = torch_cephes_polevl(u, A4, 12) / torch_cephes_p1evl(u, B4, 12);
 	s =  s * u * u - 1.202056903159594285400 * u;
 	s +=  1.0823232337111381915160;
 	return s;
@@ -419,29 +420,29 @@ if (n == 4)
                               k=1
   */
 
-  z = log(x);
-  h = -log(-z);
+  z = torch_cephes_log(x);
+  h = -torch_cephes_log(-z);
   for (i = 1; i < n; i++)
     h = h + 1.0/i;
   p = 1.0;
-  s = zetac((double)n) + 1.0;
+  s = torch_cephes_zetac((double)n) + 1.0;
   for (j=1; j<=n+1; j++)
   {
     p = p * z / j;
     if (j == n-1)
       s = s + h * p;
     else
-      s = s + (zetac((double)(n-j)) + 1.0) * p;
+      s = s + (torch_cephes_zetac((double)(n-j)) + 1.0) * p;
   }
   j = n + 3;
   z = z * z;
   for(;;)
     {
       p = p * z / ((j-1)*j);
-      h = (zetac((double)(n-j)) + 1.0);
+      h = (torch_cephes_zetac((double)(n-j)) + 1.0);
       h = h * p;
       s = s + h;
-      if (fabs(h/s) < MACHEP)
+      if (torch_cephes_fabs(h/s) < torch_cephes_MACHEP)
 	break;
       j += 2;
     }
@@ -457,12 +458,12 @@ pseries:
     {
       p = p * x;
       k += 1.0;
-      h = p / powi(k, n);
+      h = p / torch_cephes_powi(k, n);
       s = s + h;
     }
-  while (fabs(h/s) > MACHEP);
-  s += x * x * x / powi(3.0,n);
-  s += x * x / powi(2.0,n);
+  while (torch_cephes_fabs(h/s) > torch_cephes_MACHEP);
+  s += x * x * x / torch_cephes_powi(3.0,n);
+  s += x * x / torch_cephes_powi(2.0,n);
   s += x;
   return s;
 }

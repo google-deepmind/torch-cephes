@@ -58,25 +58,26 @@ Copyright 1999 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double polylog (int, double);
-extern double exp (double);
-extern double log1p (double); /* log(1+x) */
-extern double expm1 (double); /* exp(x) - 1 */
-double planckc(double, double);
-double plancki(double, double);
+extern double torch_cephes_polylog (int, double);
+extern double torch_cephes_exp (double);
+extern double torch_cephes_log1p (double); /* log(1+x) */
+extern double torch_cephes_expm1 (double); /* exp(x) - 1 */
+double torch_cephes_planckc(double, double);
+double torch_cephes_plancki(double, double);
 #else
-double polylog(), exp(), log1p(), expm1();
-double planckc(), plancki();
+double torch_cephes_polylog(), torch_cephes_exp(), torch_cephes_log1p(),
+    torch_cephes_expm1();
+double torch_cephes_planckc(), torch_cephes_plancki();
 #endif
 
 /*  NIST value (1999): 2 pi h c^2 = 3.741 7749(22) Å◊ 10-16 W m2  */
-double planck_c1 = 3.7417749e-16;
+static double planck_c1 = 3.7417749e-16;
 /*  NIST value (1999):  h c / k  = 0.014 387 69 m K */
-double planck_c2 = 0.01438769;
+static double planck_c2 = 0.01438769;
 
 
 double
-plancki(w, T)
+torch_cephes_plancki(w, T)
   double w, T;
 {
   double b, h, y, bw;
@@ -89,17 +90,17 @@ plancki(w, T)
       y = b * b;
       h = y * y;
       /* Right tail.  */
-      y = planckc (w, T);
+      y = torch_cephes_planckc (w, T);
       /* pi^4 / 15  */
       y =  6.493939402266829149096 * planck_c1 * h  -  y;
       return y;
     }
 
-  h = exp(-planck_c2/(w*T));
-  y =      6. * polylog (4, h)  * bw;
-  y = (y + 6. * polylog (3, h)) * bw;
-  y = (y + 3. * polylog (2, h)) * bw;
-  y = (y          - log1p (-h)) * bw;
+  h = torch_cephes_exp(-planck_c2/(w*T));
+  y =      6. * torch_cephes_polylog (4, h)  * bw;
+  y = (y + 6. * torch_cephes_polylog (3, h)) * bw;
+  y = (y + 3. * torch_cephes_polylog (2, h)) * bw;
+  y = (y          - torch_cephes_log1p (-h)) * bw;
   h = w * w;
   h = h * h;
   y = y * (planck_c1 / h);
@@ -138,7 +139,7 @@ plancki(w, T)
  */
 
 double
-planckc (w, T)
+torch_cephes_planckc (w, T)
      double w;
      double T;
 {
@@ -149,7 +150,7 @@ planckc (w, T)
   if (d <= 0.59375)
     {
       y =  6.493939402266829149096 * planck_c1 * b*b*b*b;
-      return (y - plancki(w,T));
+      return (y - torch_cephes_plancki(w,T));
     }
   u = 1.0/d;
   p = u * u;
@@ -204,10 +205,11 @@ planckc (w, T)
  */
 
 double
-planckd(w, T)
+torch_cephes_planckd(w, T)
   double w, T;
 {
-   return (planck_c2 / ((w*w*w*w*w) * (exp(planck_c2/(w*T)) - 1.0)));
+   return (planck_c2 / ((w*w*w*w*w) *
+                        (torch_cephes_exp(planck_c2/(w*T)) - 1.0)));
 }
 
 
@@ -216,7 +218,7 @@ planckd(w, T)
    Wein displacement law.
   */
 double
-planckw(T)
+torch_cephes_planckw(T)
   double T;
 {
   return (planck_c2 / (4.96511423174427630 * T));

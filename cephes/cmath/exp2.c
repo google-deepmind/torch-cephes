@@ -119,52 +119,53 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern double floor ( double );
-extern double ldexp ( double, int );
-extern int isnan ( double );
-extern int isfinite ( double );
+extern double torch_cephes_polevl ( double, void *, int );
+extern double torch_cephes_p1evl ( double, void *, int );
+extern double torch_cephes_floor ( double );
+extern double torch_cephes_ldexp ( double, int );
+extern int torch_cephes_isnan ( double );
+extern int torch_cephes_isfinite ( double );
 #else
-double polevl(), p1evl(), floor(), ldexp();
-int isnan(), isfinite();
+double torch_cephes_polevl(), torch_cephes_p1evl(), torch_cephes_floor(),
+  torch_cephes_ldexp();
+int torch_cephes_isnan(), torch_cephes_isfinite();
 #endif
 #ifdef INFINITIES
-extern double INFINITY;
+extern double torch_cephes_INFINITY;
 #endif
-extern double MAXNUM;
+extern double torch_cephes_MAXNUM;
 
-double exp2(x)
+double torch_cephes_exp2(x)
 double x;
 {
 double px, xx;
 short n;
 
 #ifdef NANS
-if( isnan(x) )
+if( torch_cephes_isnan(x) )
 	return(x);
 #endif
 if( x > MAXL2)
 	{
 #ifdef INFINITIES
-	return( INFINITY );
+	return( torch_cephes_INFINITY );
 #else
-	mtherr( "exp2", OVERFLOW );
-	return( MAXNUM );
+	torch_cephes_mtherr( "exp2", OVERFLOW );
+	return( torch_cephes_MAXNUM );
 #endif
 	}
 
 if( x < MINL2 )
 	{
 #ifndef INFINITIES
-	mtherr( "exp2", UNDERFLOW );
+	torch_cephes_mtherr( "exp2", UNDERFLOW );
 #endif
 	return(0.0);
 	}
 
 xx = x;	/* save x */
 /* separate into integer and fractional parts */
-px = floor(x+0.5);
+px = torch_cephes_floor(x+0.5);
 n = px;
 x = x - px;
 
@@ -173,11 +174,11 @@ x = x - px;
  * where xx = x**2
  */
 xx = x * x;
-px = x * polevl( xx, P, 2 );
-x =  px / ( p1evl( xx, Q, 2 ) - px );
-x = 1.0 + ldexp( x, 1 );
+px = x * torch_cephes_polevl( xx, P, 2 );
+x =  px / ( torch_cephes_p1evl( xx, Q, 2 ) - px );
+x = 1.0 + torch_cephes_ldexp( x, 1 );
 
 /* scale by power of 2 */
-x = ldexp( x, n );
+x = torch_cephes_ldexp( x, n );
 return(x);
 }
