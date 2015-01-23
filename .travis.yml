@@ -1,0 +1,18 @@
+language: C
+
+env:
+  - LUA="th"
+
+before_script:
+  - sudo apt-get update -qq >/dev/null
+  - sudo apt-get install -qq gfortran  >/dev/null
+  - sudo apt-get install -qq  gcc-multilib gfortran-multilib  >/dev/null
+  - sudo apt-get install -qq liblapack-dev >/dev/null
+  - curl -s https://raw.githubusercontent.com/torch/ezinstall/master/install-all | bash
+  - wget https://raw.githubusercontent.com/deepmind/torch-totem/master/rocks/totem-0-0.rockspec
+  - sudo /usr/local/bin/luarocks install totem-0-0.rockspec
+  - echo "==== Building torch-cephes, using luarocks ===="
+  - sudo /usr/local/bin/luarocks make cephes-0-0.rockspec
+
+script: 'for x in luasrc/tests/test*.lua ; do echo "==== $x ====" ; th $x ; done'
+
