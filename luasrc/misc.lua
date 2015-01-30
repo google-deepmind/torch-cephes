@@ -49,5 +49,5 @@ Returns:
 1. $\Gamma_p(x)$
 ]]
 function cephes.mvgam(...)
-  return cephes.exp(...)
+  return cephes.exp(cephes.lmvgam(...))
 end
