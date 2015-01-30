@@ -35,7 +35,7 @@ function cephes.lmvgam(x,p)
   return result
 end
 
- --[[ Multivariate Gamma Function.
+--[[ Multivariate Gamma Function.
     The multivariate Gamma function generalizes the gamma function:
     $\Gamma_p(x) = \pi^{p(p-1)/4} \prod_{j=1}^p \Gamma[x + (1-j)/2]
 
@@ -48,6 +48,6 @@ Returns:
  
 1. $\Gamma_p(x)$
 ]]
-function cephes.mvgam(..)
-  return cephes.exp(..)
+function cephes.mvgam(...)
+  return cephes.exp(...)
 end
