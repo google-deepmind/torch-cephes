@@ -1,6 +1,7 @@
 
 require 'cephes'
 require 'totem'
+require 'pl.strict'
 local ffi = require 'ffi'
 local callTests = {}
 local tester = totem.Tester()
