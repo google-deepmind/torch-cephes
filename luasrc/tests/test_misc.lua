@@ -174,5 +174,17 @@ function callTests.test_betagrad()
     tester:assertalmosteq(fdBetagrad(60, 50), cephes.betagrad(60, 50), 1e-5)
 end
 
+function callTests.test_lmvgam()
+    local x = 2.5
+    local p = 10
+    tester:assert(cephes.lmvgam(x,p))
+end
+
+function callTests.test_mvgam()
+    local x = 2.5
+    local p = 10
+    tester:assert(cephes.mvgam(x,p))
+end
+
 tester:add(callTests)
 return tester:run()
