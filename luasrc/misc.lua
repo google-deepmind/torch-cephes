@@ -13,3 +13,41 @@ end
 function cephes.betagrad(x, y)
     return cephes.beta(x, y) * (cephes.digamma(x) - cephes.digamma(x + y))
 end
+
+--[[ Log Multivariate Gamma Function.
+    The multivariate Gamma function generalizes the gamma function:
+    $\Gamma_p(x) = \pi^{p(p-1)/4} \prod_{j=1}^p \Gamma[x + (1-j)/2]
+
+Parameters:
+
+* `x` value passed to multivariate gamma function
+* `p` degree of multivariate gamma function. If 1, reduces to log gamma
+
+Returns:
+ 
+1. log($\Gamma_p(x)$)
+]]
+function cephes.lmvgam(x,p)
+  local result = p * (p-1) / 4 * math.log(math.pi)
+  for j = 1, p do
+    result = result + cephes.lgam(x + (1-j)/2)
+  end
+  return result
+end
+
+--[[ Multivariate Gamma Function.
+    The multivariate Gamma function generalizes the gamma function:
+    $\Gamma_p(x) = \pi^{p(p-1)/4} \prod_{j=1}^p \Gamma[x + (1-j)/2]
+
+Parameters:
+
+* `x` value passed to multivariate gamma function
+* `p` degree of multivariate gamma function. If 1, reduces to log gamma
+
+Returns:
+ 
+1. $\Gamma_p(x)$
+]]
+function cephes.mvgam(...)
+  return cephes.exp(cephes.lmvgam(...))
+end
