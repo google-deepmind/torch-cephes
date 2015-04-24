@@ -264,7 +264,7 @@ end
 
 Process the optional return storage, the sizes of the parameter functions, etc
 
-@param K number of actual parameters for the sampler
+@param K number of actual parameters required by the sampler
 @param defaultResultType Tensor class corresponding to the expected result type (e.g. torch.DoubleTensor, torch.IntegerTensor, etc)
 @param ... List of all parameters passed to the original caller
 
@@ -339,8 +339,10 @@ function cephes._check1DParams(K, defaultResultType, ...)
         result:resize(Nresult)
     end
 
+    -- Expand parameters which are of the wrong size. Note: they have
+    -- to be single-element to be expanded
     for paramIndex, param in ipairs(params) do
-        if param:size(1) == 1 then
+        if param:nElement() == 1 then
             local sizes = param:size()
             sizes[1] = Nparams
             params[paramIndex] = params[paramIndex]:expand(sizes)

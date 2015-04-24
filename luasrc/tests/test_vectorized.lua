@@ -125,5 +125,26 @@ function vectorizeTests.testNdtr()
     tester:asserteq(result:size(1), n, "should get " .. n .. " results")
 end
 
+
+function vectorizeTests.testSingleRowInput()
+  local x = torch.Tensor({{1, 2}})
+  local a = cephes.erf(x)
+  tester:assertTensorEq(a,
+                        torch.Tensor{cephes.erf(1),
+                        cephes.erf(2)},
+                        1e-16,
+                        'Wrong output')
+end
+
+
+function vectorizeTests.testSingleColumnInput()
+  local x = torch.Tensor{{1}, {2}}
+  local a = cephes.erf(x)
+  tester:assertTensorEq(a,
+                        torch.Tensor{cephes.erf(1),
+                        cephes.erf(2)},
+                        1e-16,
+                        'Wrong output')
+end
 tester:add(vectorizeTests)
 return tester:run()
