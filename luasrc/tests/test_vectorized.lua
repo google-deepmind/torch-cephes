@@ -137,9 +137,33 @@ function vectorizeTests.testSingleRowInput()
 end
 
 
+function vectorizeTests.testSingleRowInputWithResult()
+  local x = torch.Tensor({{1, 2}})
+  local a = torch.Tensor(2)
+  cephes.erf(a, x)
+  tester:assertTensorEq(a,
+                        torch.Tensor{cephes.erf(1),
+                        cephes.erf(2)},
+                        1e-16,
+                        'Wrong output')
+end
+
+
 function vectorizeTests.testSingleColumnInput()
   local x = torch.Tensor{{1}, {2}}
   local a = cephes.erf(x)
+  tester:assertTensorEq(a,
+                        torch.Tensor{cephes.erf(1),
+                        cephes.erf(2)},
+                        1e-16,
+                        'Wrong output')
+end
+
+
+function vectorizeTests.testSingleColumnInputWithResult()
+  local x = torch.Tensor{{1}, {2}}
+  local a = torch.Tensor(2)
+  cephes.erf(a, x)
   tester:assertTensorEq(a,
                         torch.Tensor{cephes.erf(1),
                         cephes.erf(2)},
