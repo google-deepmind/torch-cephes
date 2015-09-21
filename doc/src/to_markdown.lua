@@ -85,7 +85,7 @@ local function convertDocs(input, output)
     if name then
       assert(descriptions[name])
       outfile:writeLn()
-      outfile:writeLn('<a name="' .. name .. '">')
+      outfile:writeLn('<a name="' .. name .. '"></a>')
       outfile:writeLn("## " .. name .. " - " .. descriptions[name])
       curSubsection = nil
     elseif trim(line) == "*" then
