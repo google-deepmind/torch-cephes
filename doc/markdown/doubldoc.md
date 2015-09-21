@@ -1,5 +1,7 @@
 
 # Cephes double precision special functions suite
+
+<a name="acosh">
 ## acosh - Inverse hyperbolic cosine
 
 Inverse hyperbolic cosine
@@ -34,7 +36,7 @@ Error messages:
       message         condition      value returned
     acosh domain       |x| < 1            NAN
 
-    
+<a name="airy">
 ## airy - Airy functions
 
 Airy function
@@ -79,7 +81,7 @@ Accuracy:
     DEC         -10, 10    Bi        10000       5.5e-16     6.8e-17
     DEC         -10, 10    Bi'        7000       5.3e-16     8.7e-17
 
-    
+<a name="asin">
 ## asin - Inverse circular sine
 
 Inverse circular sine
@@ -112,7 +114,7 @@ Error messages:
       message         condition      value returned
     asin domain        |x| > 1           NAN
 
-    
+<a name="acos">
 ## acos - Inverse circular cosine
 
 Inverse circular cosine
@@ -149,7 +151,8 @@ Error messages:
 
       message         condition      value returned
     asin domain        |x| > 1           NAN
-    
+
+<a name="asinh">
 ## asinh - Inverse hyperbolic sine
 
 Inverse hyperbolic sine
@@ -177,7 +180,7 @@ Accuracy:
        IEEE     -1,1         30000       3.7e-16     7.8e-17
        IEEE      1,3         30000       2.5e-16     6.7e-17
 
-    
+<a name="atan">
 ## atan - Inverse circular tangent
 
 Inverse circular tangent
@@ -205,7 +208,7 @@ Accuracy:
        DEC       -10, 10     50000       2.4e-17     8.3e-18
        IEEE      -10, 10      10^6       1.8e-16     5.0e-17
 
-    
+<a name="atan2">
 ## atan2 - Quadrant correct inverse circular tangent
 
 Quadrant correct inverse circular tangent
@@ -230,7 +233,7 @@ Accuracy:
        IEEE      -10, 10      10^6       2.5e-16     6.9e-17
     See atan.c.
 
-    
+<a name="atanh">
 ## atanh - Inverse hyperbolic tangent
 
 Inverse hyperbolic tangent
@@ -257,7 +260,7 @@ Accuracy:
        DEC       -1,1        50000       2.4e-17     6.4e-18
        IEEE      -1,1        30000       1.9e-16     5.2e-17
 
-    
+<a name="bdtr">
 ## bdtr - Binomial distribution
 
 Binomial distribution
@@ -303,7 +306,8 @@ Error messages:
     bdtr domain         k < 0            0.0
                         n < k
                         x < 0, x > 1
-    
+
+<a name="bdtrc">
 ## bdtrc - Complemented binomial distribution
 
 Complemented binomial distribution
@@ -348,7 +352,8 @@ Error messages:
 
       message         condition      value returned
     bdtrc domain      x<0, x>1, n<k       0.0
-    
+
+<a name="bdtri">
 ## bdtri - Inverse binomial distribution
 
 Inverse binomial distribution
@@ -390,7 +395,8 @@ Error messages:
       message         condition      value returned
     bdtri domain     k < 0, n <= k         0.0
                      x < 0, x > 1
-    
+
+<a name="beta">
 ## beta - Beta function
 
 Beta function
@@ -425,7 +431,7 @@ Error messages:
     beta overflow    log(beta) > MAXLOG       0.0
                      a or b <0 integer        0.0
 
-    
+<a name="btdtr">
 ## btdtr - Beta distribution
 
 Beta distribution
@@ -460,7 +466,7 @@ Accuracy:
 
     See incbet.c.
 
-    
+<a name="cbrt">
 ## cbrt - Cube root
 
 Cube root
@@ -489,7 +495,7 @@ Accuracy:
        DEC        -10,10     200000      1.8e-17     6.2e-18
        IEEE       0,1e308     30000      1.5e-16     5.0e-17
 
-    
+<a name="chbevl">
 ## chbevl - Evaluate Chebyshev series
 
 Evaluate Chebyshev series
@@ -534,7 +540,7 @@ Speed:
     addition per loop than evaluating a nested polynomial of
     the same degree.
 
-    
+<a name="chdtr">
 ## chdtr - Chi-square distribution
 
 Chi-square distribution
@@ -576,7 +582,8 @@ Error messages:
 
       message         condition      value returned
     chdtr domain   x < 0 or v < 1        0.0
-    
+
+<a name="chdtrc">
 ## chdtrc - Complemented Chi-square distribution
 
 Complemented Chi-square distribution
@@ -618,7 +625,8 @@ Error messages:
 
       message         condition      value returned
     chdtrc domain  x < 0 or v < 1        0.0
-    
+
+<a name="chdtri">
 ## chdtri - Inverse of complemented Chi-square distribution
 
 Inverse of complemented Chi-square distribution
@@ -650,7 +658,7 @@ Error messages:
     chdtri domain   y < 0 or y > 1        0.0
                         v < 1
 
-    
+<a name="cheby">
 ## cheby - Find Chebyshev coefficients
 
 Program to calculate coefficients of the Chebyshev polynomial
@@ -660,6 +668,7 @@ at unevenly spaced points.  Library routine chbevl.c uses the
 coefficients to calculate an approximate value of the original
 function.
 
+<a name="clog">
 ## clog - Complex natural logarithm
 
 Complex natural logarithm
@@ -692,7 +701,8 @@ Accuracy:
     Larger relative error can be observed for z near 1 +i0.
     In IEEE arithmetic the peak absolute error is 5.2e-16, rms
     absolute error 1.0e-16.
-    
+
+<a name="cexp">
 ## cexp - Complex exponential function
 
 Complex exponential function
@@ -724,7 +734,7 @@ Accuracy:
        DEC       -10,+10      8700       3.7e-17     1.1e-17
        IEEE      -10,+10     30000       3.0e-16     8.7e-17
 
-    
+<a name="csin">
 ## csin - Complex circular sine
 
 Complex circular sine
@@ -753,7 +763,7 @@ Accuracy:
        IEEE      -10,+10     30000       3.8e-16     1.0e-16
     Also tested by csin(casin(z)) = z.
 
-    
+<a name="ccos">
 ## ccos - Complex circular cosine
 
 Complex circular cosine
@@ -780,7 +790,8 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        DEC       -10,+10      8400       4.5e-17     1.3e-17
        IEEE      -10,+10     30000       3.8e-16     1.0e-16
-    
+
+<a name="ctan">
 ## ctan - Complex circular tangent
 
 Complex circular tangent
@@ -814,7 +825,8 @@ Accuracy:
        DEC       -10,+10      5200       7.1e-17     1.6e-17
        IEEE      -10,+10     30000       7.2e-16     1.2e-16
     Also tested by ctan * ccot = 1 and catan(ctan(z))  =  z.
-    
+
+<a name="ccot">
 ## ccot - Complex circular cotangent
 
 Complex circular cotangent
@@ -848,7 +860,8 @@ Accuracy:
        DEC       -10,+10      3000       6.5e-17     1.6e-17
        IEEE      -10,+10     30000       9.2e-16     1.2e-16
     Also tested by ctan * ccot = 1 + i0.
-    
+
+<a name="casin">
 ## casin - Complex circular arc sine
 
 Complex circular arc sine
@@ -875,7 +888,8 @@ Accuracy:
        IEEE      -10,+10     30000       2.2e-14     2.7e-15
     Larger relative error can be observed for z near zero.
     Also tested by csin(casin(z)) = z.
-    
+
+<a name="cacos">
 ## cacos - Complex circular arc cosine
 
 Complex circular arc cosine
@@ -897,7 +911,8 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        DEC       -10,+10      5200      1.6e-15      2.8e-16
        IEEE      -10,+10     30000      1.8e-14      2.2e-15
-    
+
+<a name="catan">
 ## catan - Complex circular arc tangent
 
 Complex circular arc tangent
@@ -937,7 +952,8 @@ Accuracy:
     The check catan( ctan(z) )  =  z, with |x| and |y| < PI/2,
     had peak relative error 1.5e-16, rms relative error
     2.9e-17.  See also clog().
-    
+
+<a name="csinh">
 ## csinh - Complex hyperbolic sine
 
 Complex hyperbolic sine
@@ -960,7 +976,7 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE      -10,+10     30000       3.1e-16     8.2e-17
 
-    
+<a name="casinh">
 ## casinh - Complex inverse hyperbolic sine
 
 Complex inverse hyperbolic sine
@@ -982,7 +998,7 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE      -10,+10     30000       1.8e-14     2.6e-15
 
-    
+<a name="ccosh">
 ## ccosh - Complex hyperbolic cosine
 
 Complex hyperbolic cosine
@@ -1004,7 +1020,7 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE      -10,+10     30000       2.9e-16     8.1e-17
 
-    
+<a name="cacosh">
 ## cacosh - Complex inverse hyperbolic cosine
 
 Complex inverse hyperbolic cosine
@@ -1026,7 +1042,7 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE      -10,+10     30000       1.6e-14     2.1e-15
 
-    
+<a name="ctanh">
 ## ctanh - Complex hyperbolic tangent
 
 Complex hyperbolic tangent
@@ -1048,7 +1064,7 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE      -10,+10     30000       1.7e-14     2.4e-16
 
-    
+<a name="catanh">
 ## catanh - Complex inverse hyperbolic tangent
 
 Complex inverse hyperbolic tangent
@@ -1070,7 +1086,7 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE      -10,+10     30000       2.3e-16     6.2e-17
 
-    
+<a name="cpow">
 ## cpow - Complex power function
 
 Complex power function
@@ -1094,7 +1110,7 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE      -10,+10     30000       9.4e-15     1.5e-15
 
-    
+<a name="cmplx">
 ## cmplx - Complex number arithmetic
 
 Complex number arithmetic
@@ -1150,7 +1166,8 @@ Accuracy:
        IEEE       cmul      100000       2.1e-16     6.9e-17
        DEC        cdiv       18000       4.9e-17     1.3e-17
        IEEE       cdiv      100000       3.7e-16     1.1e-16
-    
+
+<a name="cabs">
 ## cabs - Complex absolute value
 
 Complex absolute value
@@ -1181,7 +1198,8 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        DEC       -30,+30     30000       3.2e-17     9.2e-18
        IEEE      -10,+10    100000       2.7e-16     6.9e-17
-    
+
+<a name="csqrt">
 ## csqrt - Complex square root
 
 Complex square root
@@ -1219,7 +1237,8 @@ Accuracy:
                            2
     Also tested by csqrt( z ) = z, and tested by arguments
     close to the real axis.
-    
+
+<a name="const">
 ## const - Globally declared constants
 
 Globally declared constants
@@ -1267,7 +1286,8 @@ Description:
     TWOOPI =  6.36619772367581343075535E-1     2/pi
 
     These lists are subject to change.
-    
+
+<a name="cosh">
 ## cosh - Hyperbolic cosine
 
 Hyperbolic cosine
@@ -1297,7 +1317,7 @@ Error messages:
       message         condition      value returned
     cosh overflow    |x| > MAXLOG       MAXNUM
 
-    
+<a name="dawsn">
 ## dawsn - Dawson's Integral
 
 Dawson's Integral
@@ -1330,7 +1350,7 @@ Accuracy:
        IEEE      0,10        10000       6.9e-16     1.0e-16
        DEC       0,10         6000       7.4e-17     1.4e-17
 
-    
+<a name="drand">
 ## drand - Pseudorandom number generator
 
 Pseudorandom number generator
@@ -1365,7 +1385,7 @@ Description:
     precision number.  This reduces the period by a factor of
     two but tends to overcome the problems mentioned.
 
-    
+<a name="ei">
 ## ei - Exponential Integral
 
 Exponential integral
@@ -1395,7 +1415,7 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE       0,100       50000      8.6e-16     1.3e-16
 
-    
+<a name="eigens">
 ## eigens - Eigenvalues and eigenvectors of a real symmetric matrix
 
 Eigenvalues and eigenvectors of a real symmetric matrix
@@ -1437,7 +1457,7 @@ Error messages:
 
     None.
 
-    
+<a name="ellie">
 ## ellie - Incomplete elliptic integral of the second kind
 
 Incomplete elliptic integral of the second kind
@@ -1474,7 +1494,7 @@ Accuracy:
        DEC        0,2         2000       1.9e-16     3.4e-17
        IEEE     -10,10      150000       3.3e-15     1.4e-16
 
-    
+<a name="ellik">
 ## ellik - Incomplete elliptic integral of the first kind
 
 Incomplete elliptic integral of the first kind
@@ -1510,7 +1530,7 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE     -10,10       200000      7.4e-16     1.0e-16
 
-    
+<a name="ellpe">
 ## ellpe - Complete elliptic integral of the second kind
 
 Complete elliptic integral of the second kind
@@ -1554,7 +1574,7 @@ Error messages:
       message         condition      value returned
     ellpe domain      x<0, x>1            0.0
 
-    
+<a name="ellpj">
 ## ellpj - Jacobian elliptic functions
 
 Jacobian Elliptic Functions
@@ -1603,7 +1623,7 @@ Accuracy:
     the above relation to the incomplete elliptic integral.
     Accuracy deteriorates when u is large.
 
-    
+<a name="ellpk">
 ## ellpk - Complete elliptic integral of the first kind
 
 Complete elliptic integral of the first kind
@@ -1650,7 +1670,7 @@ Error messages:
       message         condition      value returned
     ellpk domain       x<0, x>1           0.0
 
-    
+<a name="euclid">
 ## euclid - Rational arithmetic routines
 
 Rational arithmetic routines
@@ -1673,7 +1693,8 @@ Synopsis:
     Arguments of the routines are pointers to the structures.
     The double precision numbers are assumed, without checking,
     to be integer valued.  Overflow conditions are reported.
-    
+
+<a name="exp">
 ## exp - Exponential function
 
 Exponential function
@@ -1721,7 +1742,7 @@ Error messages:
     exp underflow    x < MINLOG         0.0
     exp overflow     x > MAXLOG         INFINITY
 
-    
+<a name="exp10">
 ## exp10 - Base 10 exponential function
 
 Base 10 exponential function
@@ -1762,7 +1783,7 @@ Error messages:
     DEC arithmetic: MAXL10 = 38.230809449325611792.
     IEEE arithmetic: MAXL10 = 308.2547155599167.
 
-    
+<a name="exp2">
 ## exp2 - Base 2 exponential function
 
 Base 2 exponential function
@@ -1804,7 +1825,8 @@ Error messages:
 
     For DEC arithmetic, MAXL2 = 127.
     For IEEE arithmetic, MAXL2 = 1024.
-    
+
+<a name="expn">
 ## expn - Exponential integral En
 
 	Exponential integral En
@@ -1843,7 +1865,7 @@ Accuracy:
        DEC       0, 30        5000       2.0e-16     4.6e-17
        IEEE      0, 30       10000       1.7e-15     3.6e-16
 
-    
+<a name="expx2">
 ## expx2 - Exponential of squared argument
 
 Exponential of squared argument
@@ -1869,7 +1891,7 @@ Accuracy:
     arithmetic    domain     # trials      peak         rms
       IEEE      -26.6, 26.6    10^7       3.9e-16     8.9e-17
 
-    
+<a name="fabs">
 ## fabs - Absolute value
 
 	Absolute value
@@ -1884,7 +1906,7 @@ Description:
 
     Returns the absolute value of the argument.
 
-    
+<a name="fac">
 ## fac - Factorial function
 
 Factorial function
@@ -1917,7 +1939,7 @@ Accuracy:
        IEEE      0, 170    1.4e-15
        DEC       0, 33      1.4e-17
 
-    
+<a name="fdtr">
 ## fdtr - F distribution
 
 F distribution
@@ -1963,7 +1985,7 @@ Error messages:
       message         condition      value returned
     fdtr domain     a<0, b<0, x<0         0.0
 
-    
+<a name="fdtrc">
 ## fdtrc - Complemented F distribution
 
 Complemented F distribution
@@ -2010,7 +2032,7 @@ Error messages:
       message         condition      value returned
     fdtrc domain    a<0, b<0, x<0         0.0
 
-    
+<a name="fdtri">
 ## fdtri - Inverse of complemented F distribution
 
 Inverse of complemented F distribution
@@ -2060,7 +2082,7 @@ Error messages:
     fdtri domain   p <= 0 or p > 1       0.0
                         v < 1
 
-    
+<a name="fftr">
 ## fftr - Fast Fourier transform
 
 FFT of Real Valued Sequence
@@ -2097,10 +2119,16 @@ Reference:
     E. Oran Brigham, The Fast Fourier Transform;
     Prentice-Hall, Inc., 1974
 
-    
+<a name="floor">
 ## floor - Floor function
+
+<a name="ceil">
 ## ceil - Ceil function
+
+<a name="frexp">
 ## frexp - Extract exponent
+
+<a name="ldexp">
 ## ldexp - Apply exponent
 						floor()
 						frexp()
@@ -2145,7 +2173,8 @@ Description:
     The IEEE versions assume that denormal numbers are implemented
     in the arithmetic.  Some modifications will be required if
     the arithmetic has abrupt rather than gradual underflow.
-    
+
+<a name="fresnl">
 ## fresnl - Fresnel integral
 
 Fresnel integral
@@ -2193,7 +2222,8 @@ Accuracy:
       IEEE       C(x)      0, 10       10000       1.8e-15     3.3e-16
       DEC        S(x)      0, 10        6000       2.2e-16     3.9e-17
       DEC        C(x)      0, 10        5000       2.3e-16     3.9e-17
-    
+
+<a name="gamma">
 ## gamma - Gamma function
 
 Gamma function
@@ -2231,7 +2261,7 @@ Accuracy:
     Error for arguments outside the test range will be larger
     owing to error amplification by the exponential function.
 
-    
+<a name="lgam">
 ## lgam - Natural logarithm of gamma function
 
 Natural logarithm of gamma function
@@ -2277,7 +2307,7 @@ Accuracy:
     indicated.
        IEEE    -200, -4             10000     4.8e-16     1.3e-16
 
-    
+<a name="gdtr">
 ## gdtr - Gamma distribution function
 
 Gamma distribution function
@@ -2315,7 +2345,7 @@ Error messages:
       message         condition      value returned
     gdtr domain         x < 0            0.0
 
-    
+<a name="gdtrc">
 ## gdtrc - Complemented gamma distribution function
 
 Complemented gamma distribution function
@@ -2353,8 +2383,10 @@ Error messages:
       message         condition      value returned
     gdtrc domain         x < 0            0.0
 
-    
+<a name="gels">
 ## gels - Linear system with symmetric coefficient matrix
+
+<a name="hyp2f1">
 ## hyp2f1 - Gauss hypergeometric function
 
 Gauss hypergeometric function   F
@@ -2407,7 +2439,8 @@ Error messages:
     the internally estimated relative error exceeds 1^-12.
     A "singularity" message is printed on overflow or
     in cases not addressed (such as x < -1).
-    
+
+<a name="hyperg">
 ## hyperg - Confluent hypergeometric function
 
 Confluent hypergeometric function
@@ -2454,7 +2487,7 @@ Accuracy:
     asymptotic series.  An error message is printed if the
     self-estimated relative error is greater than 1.0e-12.
 
-    
+<a name="i0">
 ## i0 - Modified Bessel function of order zero
 
 Modified Bessel function of order zero
@@ -2483,7 +2516,7 @@ Accuracy:
        DEC       0,30         6000       8.2e-17     1.9e-17
        IEEE      0,30        30000       5.8e-16     1.4e-16
 
-    
+<a name="i0e">
 ## i0e - Exponentially scaled modified Bessel function of order zero
 
 Modified Bessel function of order zero,
@@ -2509,7 +2542,7 @@ Accuracy:
        IEEE      0,30        30000       5.4e-16     1.2e-16
     See i0().
 
-    
+<a name="i1">
 ## i1 - Modified Bessel function of order one
 
 Modified Bessel function of order one
@@ -2538,7 +2571,7 @@ Accuracy:
        DEC       0, 30        3400       1.2e-16     2.3e-17
        IEEE      0, 30       30000       1.9e-15     2.1e-16
 
-    
+<a name="i1e">
 ## i1e - Exponentially scaled modified Bessel function of order one
 
 Modified Bessel function of order one,
@@ -2564,7 +2597,7 @@ Accuracy:
        IEEE      0, 30       30000       2.0e-15     2.0e-16
     See i1().
 
-    
+<a name="igam">
 ## igam - Incomplete gamma integral
 
 Incomplete gamma integral
@@ -2598,7 +2631,8 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE      0,30       200000       3.6e-14     2.9e-15
        IEEE      0,100      300000       9.9e-14     1.5e-14
-    
+
+<a name="igamc">
 ## igamc - Complemented incomplete gamma integral
 
 Complemented incomplete gamma integral
@@ -2635,7 +2669,8 @@ Accuracy:
     arithmetic   domain   domain     # trials      peak         rms
        IEEE     0.5,100   0,100      200000       1.9e-14     1.7e-15
        IEEE     0.01,0.5  0,100      200000       1.4e-13     1.6e-15
-    
+
+<a name="igami">
 ## igami - Inverse of complemented imcomplete gamma integral
 
      Inverse of complemented imcomplete gamma integral
@@ -2677,7 +2712,8 @@ Accuracy:
        IEEE     0.5,100   0,0.5       100000       1.0e-14     1.7e-15
        IEEE     0.01,0.5  0,0.5       100000       9.0e-14     3.4e-15
        IEEE    0.5,10000  0,0.5        20000       2.3e-13     3.8e-14
-    
+
+<a name="incbet">
 ## incbet - Incomplete beta integral
 
 Incomplete beta integral
@@ -2730,7 +2766,8 @@ Error messages:
       message         condition      value returned
     incbet domain      x<0, x>1          0.0
     incbet underflow                     0.0
-    
+
+<a name="incbi">
 ## incbi - Inverse of imcomplete beta integral
 
      Inverse of imcomplete beta integral
@@ -2764,9 +2801,14 @@ Accuracy:
        IEEE      0,1    .5,100    100000    1.7e-14   7.9e-16
     With a = .5, b constrained to half-integer or integer values:
        IEEE      0,1    .5,10000   10000    8.3e-11   1.0e-11
-    
+
+<a name="isnan">
 ## isnan - Test for not a number
+
+<a name="signbit">
 ## signbit - Extract sign
+
+<a name="isfinite">
 ## isfinite - Test for infinity
 						signbit()
 						isfinite()
@@ -2816,7 +2858,8 @@ Description:
     The IEEE versions assume that denormal numbers are implemented
     in the arithmetic.  Some modifications will be required if
     the arithmetic has abrupt rather than gradual underflow.
-    
+
+<a name="iv">
 ## iv - Modified Bessel function of noninteger order
 
 Modified Bessel function of noninteger order
@@ -2854,7 +2897,7 @@ Accuracy:
 
     See also hyperg.c.
 
-    
+<a name="j0">
 ## j0 - Bessel function of order zero
 
 Bessel function of order zero
@@ -2891,7 +2934,7 @@ Accuracy:
        DEC       0, 30       10000       4.4e-17     6.3e-18
        IEEE      0, 30       60000       4.2e-16     1.1e-16
 
-    
+<a name="y0">
 ## y0 - Bessel function of the second kind, order zero
 
 Bessel function of the second kind, order zero
@@ -2925,7 +2968,7 @@ Accuracy:
        DEC       0, 30        9400       7.0e-17     7.9e-18
        IEEE      0, 30       30000       1.3e-15     1.6e-16
 
-    
+<a name="j1">
 ## j1 - Bessel function of order one
 
 Bessel function of order one
@@ -2953,7 +2996,7 @@ Accuracy:
        DEC       0, 30       10000       4.0e-17     1.1e-17
        IEEE      0, 30       30000       2.6e-16     1.1e-16
 
-    
+<a name="y1">
 ## y1 - Bessel function of the second kind, order one
 
 Bessel function of second kind of order one
@@ -2984,7 +3027,7 @@ Accuracy:
 
     (error criterion relative when |y1| > 1).
 
-    
+<a name="jn">
 ## jn - Bessel function of integer order
 
 Bessel function of integer order
@@ -3019,7 +3062,7 @@ Accuracy:
 
     Not suitable for large n or x. Use jv() instead.
 
-    
+<a name="jv">
 ## jv - Bessel function of noninteger order
 
 Bessel function of noninteger order
@@ -3055,7 +3098,7 @@ Accuracy:
     Integer v:
        IEEE   -125,125   -125,125      50000      3.5e-15*   1.9e-16*
 
-    
+<a name="k0">
 ## k0 - Modified Bessel function, third kind, order zero
 
 Modified Bessel function, third kind, order zero
@@ -3089,7 +3132,7 @@ Error messages:
       message         condition      value returned
      K0 domain          x <= 0          MAXNUM
 
-    
+<a name="k0e">
 ## k0e - Modified Bessel function, third kind, order zero, exponentially scaled
 
 Modified Bessel function, third kind, order zero,
@@ -3113,7 +3156,7 @@ Accuracy:
        IEEE      0, 30       30000       1.4e-15     1.4e-16
     See k0().
 
-    
+<a name="k1">
 ## k1 - Modified Bessel function, third kind, order one
 
 Modified Bessel function, third kind, order one
@@ -3145,7 +3188,7 @@ Error messages:
       message         condition      value returned
     k1 domain          x <= 0          MAXNUM
 
-    
+<a name="k1e">
 ## k1e - Modified Bessel function, third kind, order one, exponentially scaled
 
 Modified Bessel function, third kind, order one,
@@ -3171,7 +3214,7 @@ Accuracy:
        IEEE      0, 30       30000       7.8e-16     1.2e-16
     See k1().
 
-    
+<a name="kn">
 ## kn - Modified Bessel function, third kind, integer order
 
 Modified Bessel function, third kind, integer order
@@ -3201,8 +3244,11 @@ Accuracy:
 
      Error is high only near the crossover point x = 9.55
     between the two expansions used.
-    
+
+<a name="kolmogorov">
 ## kolmogorov - Kolmogorov, Smirnov distributions
+
+<a name="lmdif">
 ## lmdif - Levenberg-Marquardt algorithm
 
     The purpose of lmdif is to minimize the sum of the squares of
@@ -3217,6 +3263,7 @@ Accuracy:
     the corresponding routine from Argonne National Laboratories
     MINPACK subroutine suite.
 
+<a name="levnsn">
 ## levnsn - Linear predictive coding
 linear predictive coding
 
@@ -3235,6 +3282,7 @@ that a filter impulse response has a coefficient of 1.0 preceding
 A1.  E is an array of mean square error for each prediction order
 1 to N.  REFL is an output array of the reflection coefficients.
 
+<a name="log">
 ## log - Natural logarithm
 
 Natural logarithm
@@ -3275,7 +3323,8 @@ Error messages:
 
     log singularity:  x = 0; returns -INFINITY
     log domain:       x < 0; returns NAN
-    
+
+<a name="log10">
 ## log10 - Common logarithm
 
 Common logarithm
@@ -3311,7 +3360,8 @@ Error messages:
 
     log10 singularity:  x = 0; returns -INFINITY
     log10 domain:       x < 0; returns NAN
-    
+
+<a name="log2">
 ## log2 - Base 2 logarithm
 
 Base 2 logarithm
@@ -3350,7 +3400,8 @@ Error messages:
 
     log2 singularity:  x = 0; returns -INFINITY
     log2 domain:       x < 0; returns NAN
-    
+
+<a name="lrand">
 ## lrand - Pseudorandom integer number generator
 
 Pseudorandom number generator
@@ -3370,7 +3421,7 @@ Description:
     pp 127-8) is used. The period, given by them, is
     6953607871644.
 
-    
+<a name="lsqrt">
 ## lsqrt - Integer square root
 
 Integer square root
@@ -3399,7 +3450,7 @@ Accuracy:
     is the nearest integer to the actual square root.
 Note:
 
-    
+<a name="minv">
 ## minv - Matrix inversion
 
 Matrix inversion
@@ -3423,7 +3474,7 @@ Description:
     The routine returns nonzero on error; error messages are printed
     by subroutine simq().
 
-    
+<a name="mtransp">
 ## mtransp - Matrix transpose
 
 Matrix transpose
@@ -3442,7 +3493,7 @@ Description:
     Transposes the n by n square matrix A and puts the result in T.
     The output, T, may occupy the same storage as A.
 
-    
+<a name="nbdtr">
 ## nbdtr - Negative binomial distribution
 
 Negative binomial distribution
@@ -3484,7 +3535,7 @@ Accuracy:
        IEEE     0,100       100000      1.7e-13     8.8e-15
     See also incbet.c.
 
-    
+<a name="nbdtrc">
 ## nbdtrc - Complemented negative binomial distribution
 
 Complemented negative binomial distribution
@@ -3522,7 +3573,8 @@ Accuracy:
     arithmetic  domain     # trials      peak         rms
        IEEE     0,100       100000      1.7e-13     8.8e-15
     See also incbet.c.
-    
+
+<a name="nbdtri">
 ## nbdtri - Functional inverse of negative binomial distribution
 
 Functional inverse of negative binomial distribution
@@ -3546,7 +3598,8 @@ Accuracy:
     arithmetic  domain     # trials      peak         rms
        IEEE     0,100       100000      1.5e-14     8.5e-16
     See also incbi.c.
-    
+
+<a name="ndtr">
 ## ndtr - Normal distribution function
 
 Normal distribution function
@@ -3587,7 +3640,7 @@ Error messages:
       message         condition         value returned
     erfc underflow    x > 37.519379347       0.0
 
-    
+<a name="erf">
 ## erf - Error function
 
 Error function
@@ -3623,7 +3676,7 @@ Accuracy:
        DEC       0,1         14000       4.7e-17     1.5e-17
        IEEE      0,1         30000       3.7e-16     1.0e-16
 
-    
+<a name="erfc">
 ## erfc - Complementary error function
 
 Complementary error function
@@ -3663,7 +3716,7 @@ Error messages:
       message         condition              value returned
     erfc underflow    x > 9.231948545 (DEC)       0.0
 
-    
+<a name="ndtri">
 ## ndtri - Inverse of normal distribution function
 
 Inverse of Normal distribution function
@@ -3702,7 +3755,7 @@ Error messages:
     ndtri domain       x <= 0        -MAXNUM
     ndtri domain       x >= 1         MAXNUM
 
-    
+<a name="pdtr">
 ## pdtr - Poisson distribution function
 
 Poisson distribution
@@ -3736,7 +3789,7 @@ Accuracy:
 
     See igamc().
 
-    
+<a name="pdtrc">
 ## pdtrc - Complemented Poisson distribution function
 
 Complemented poisson distribution
@@ -3770,7 +3823,7 @@ Accuracy:
 
     See igam.c.
 
-    
+<a name="pdtri">
 ## pdtri - Inverse of Poisson distribution function
 
 Inverse Poisson distribution
@@ -3803,7 +3856,7 @@ Error messages:
     pdtri domain    y < 0 or y >= 1       0.0
                         k < 0
 
-    
+<a name="planck">
 ## planck - Integral of Planck's black body radiation formula
 
 Integral of Planck's black body radiation formula
@@ -3849,8 +3902,10 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE      0.1, 10      50000      7.1e-15     5.4e-16
 
-    
+<a name="polevl">
 ## polevl - Evaluate polynomial
+
+<a name="p1evl">
 ## p1evl - Evaluate polynomial
 						p1evl.c
 
@@ -3888,11 +3943,12 @@ Speed:
     equipment features, the user may wish to rewrite the
     program in microcode or assembly language.
 
-    
+<a name="polmisc">
 ## polmisc - Functions of a polynomial
 Square root, sine, cosine, and arctangent of polynomial.
 See polyn.c for data structures and discussion.
 
+<a name="polrt">
 ## polrt - Roots of a polynomial
 
 Find roots of a polynomial
@@ -3929,7 +3985,7 @@ Accuracy:
     accuracy after the first root in the neighborhood has been
     found.
 
-    
+<a name="polylog">
 ## polylog - Polylogarithms
 
 Polylogarithms
@@ -3987,7 +4043,7 @@ Accuracy:
        IEEE      0, 1     4     30000      1.7e-16     4.9e-17
        IEEE      0, 1     5     30000      5.1e-16     7.8e-17
 
-    
+<a name="polyn">
 ## polyn - Arithmetic operations on polynomials
 						polyr.c
 Arithmetic operations on polynomials
@@ -4042,6 +4098,7 @@ Notes:
 poldiv() is an integer routine; poleva() is double.
 Any of the arguments a, b, c may refer to the same array.
 
+<a name="polyr">
 ## polyr - Arithmetic operations on polynomials with rational coefficients
 
 In the following descriptions a, b, c are polynomials of degree
@@ -4095,6 +4152,7 @@ Notes:
 poldiv() is an integer routine; poleva() is double.
 Any of the arguments a, b, c may refer to the same array.
 
+<a name="pow">
 ## pow - Power function
 
 Power function
@@ -4134,7 +4192,7 @@ Error messages:
     pow underflow   x**y < 1/MAXNUM       0.0
     pow domain      x<0 and y noninteger  0.0
 
-    
+<a name="powi">
 ## powi - Integer power function
 
 Real raised to integer power
@@ -4164,7 +4222,7 @@ Accuracy:
 
     Returns MAXNUM on overflow, zero on underflow.
 
-    
+<a name="psi">
 ## psi - Psi (digamma) function
 
 Psi (digamma) function
@@ -4216,7 +4274,8 @@ Error messages:
 
         message         condition      value returned
     psi singularity    x integer <=0      MAXNUM
-    
+
+<a name="revers">
 ## revers - Reversion of power series
 
 Reversion of power series
@@ -4272,7 +4331,7 @@ Restrictions:
 
      y[0] must be zero, and y[1] must be nonzero.
 
-    
+<a name="rgamma">
 ## rgamma - Reciprocal gamma function
 
 Reciprocal gamma function
@@ -4308,7 +4367,8 @@ Accuracy:
        IEEE     -30,+30      30000       1.1e-15     2.0e-16
     For arguments less than -34.034 the peak error is on the
     order of 5e-15 (DEC), excepting overflow or underflow.
-    
+
+<a name="round">
 ## round - Round to nearest or even integer
 
 Round double to nearest or even integer valued double
@@ -4330,7 +4390,8 @@ Accuracy:
     If x is greater than 1/(2*MACHEP), its closest machine
     representation is already an integer, so rounding does
     not change it.
-    
+
+<a name="shichi">
 ## shichi - Hyperbolic sine and cosine integrals
 
 Hyperbolic sine and cosine integrals
@@ -4377,7 +4438,8 @@ Accuracy:
            Absolute error, except relative when |Chi| > 1:
        DEC          Chi       2500       9.3e-17
        IEEE         Chi      30000       8.4e-16     1.4e-16
-    
+
+<a name="sici">
 ## sici - Sine and cosine integrals
 
 Sine and cosine integrals
@@ -4424,11 +4486,13 @@ Accuracy:
        IEEE        Ci        30000       6.9e-16     5.1e-17
        DEC         Si         5000       4.4e-17     9.0e-18
        DEC         Ci         5300       7.9e-17     5.2e-18
-    
+
+<a name="simpsn">
 ## simpsn - Numerical integration of tabulated function
 Numerical integration of function tabulated
 at equally spaced arguments
 
+<a name="simq">
 ## simq - Simultaneous linear equations
 
 Solution of simultaneous linear equations AX = B
@@ -4468,7 +4532,7 @@ Reference:
     Computer Solution of Linear Algebraic Systems,
     by George E. Forsythe and Cleve B. Moler; Prentice-Hall, 1967.
 
-    
+<a name="sin">
 ## sin - Circular sine
 
 Circular sine
@@ -4508,7 +4572,8 @@ Error messages:
     about 1 part in 10e7.  Results may be meaningless for
     x > 2**49 = 5.6e14.  The routine as implemented flags a
     TLOSS error for x > 2**30 and returns 0.0.
-    
+
+<a name="cos">
 ## cos - Circular cosine
 
 Circular cosine
@@ -4537,7 +4602,8 @@ Accuracy:
     arithmetic   domain      # trials      peak         rms
        IEEE -1.07e9,+1.07e9  130000       2.1e-16     5.4e-17
        DEC        0,+1.07e9   17000       3.0e-17     7.2e-18
-    
+
+<a name="sincos">
 ## sincos - Sine and cosine by interpolation
 
 Circular sine and cosine of argument in degrees
@@ -4630,7 +4696,8 @@ Accuracy:
     relative precision option.  In this case the relative error
     for small angles will increase to 9.5e-6 -- a reasonable
     tradeoff.
-    
+
+<a name="sindg">
 ## sindg - Circular sine of angle in degrees
 
 Circular sine of angle in degrees
@@ -4664,7 +4731,7 @@ Error messages:
     sindg total loss   x > 8.0e14 (DEC)      0.0
                        x > 1.0e14 (IEEE)
 
-    
+<a name="cosdg">
 ## cosdg - Circular cosine of angle in degrees
 
 Circular cosine of angle in degrees
@@ -4693,7 +4760,7 @@ Accuracy:
        IEEE     +-1000        30000       2.1e-16     5.7e-17
      See also sin().
 
-    
+<a name="sinh">
 ## sinh - Hyperbolic sine
 
 Hyperbolic sine
@@ -4720,7 +4787,7 @@ Accuracy:
        DEC      +- 88        50000       4.0e-17     7.7e-18
        IEEE     +-MAXLOG     30000       2.6e-16     5.7e-17
 
-    
+<a name="spence">
 ## spence - Dilogarithm
 
 Dilogarithm
@@ -4754,7 +4821,7 @@ Accuracy:
        IEEE      0,4         30000       3.9e-15     5.4e-16
        DEC       0,4          3000       2.5e-16     4.5e-17
 
-    
+<a name="sqrt">
 ## sqrt - Square root
 
 Square root
@@ -4786,7 +4853,7 @@ Error messages:
       message         condition      value returned
     sqrt domain        x < 0            0.0
 
-    
+<a name="stdtr">
 ## stdtr - Student's t distribution
 
 Student's t distribution
@@ -4834,7 +4901,8 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE     -100,-2      50000       5.9e-15     1.4e-15
        IEEE     -2,100      500000       2.7e-15     4.9e-17
-    
+
+<a name="stdtri">
 ## stdtri - Functional inverse of Student's t distribution
 
 Functional inverse of Student's t distribution
@@ -4858,7 +4926,8 @@ Accuracy:
     arithmetic   domain     # trials      peak         rms
        IEEE    .001,.999     25000       5.7e-15     8.0e-16
        IEEE    10^-6,.001    25000       2.0e-12     2.9e-14
-    
+
+<a name="struve">
 ## struve - Struve function
 
      Struve function
@@ -4882,7 +4951,7 @@ Accuracy:
 
     Not accurately characterized, but spot checked against tables.
 
-    
+<a name="tan">
 ## tan - Circular tangent
 
 Circular tangent
@@ -4913,7 +4982,7 @@ Error messages:
       message         condition          value returned
     tan total loss   x > 1.073741824e9     0.0
 
-    
+<a name="cot">
 ## cot - Circular cotangent
 
 Circular cotangent
@@ -4944,7 +5013,7 @@ Error messages:
     cot total loss   x > 1.073741824e9       0.0
     cot singularity  x = 0                  INFINITY
 
-    
+<a name="tandg">
 ## tandg - Circular tangent of argument in degrees
 
 Circular tangent of argument in degrees
@@ -4976,7 +5045,8 @@ Error messages:
     tandg total loss   x > 8.0e14 (DEC)      0.0
                        x > 1.0e14 (IEEE)
     tandg singularity  x = 180 k  +  90     MAXNUM
-    
+
+<a name="cotdg">
 ## cotdg - Circular cotangent of argument in degrees
 
 Circular cotangent of argument in degrees
@@ -5001,7 +5071,8 @@ Error messages:
     cotdg total loss   x > 8.0e14 (DEC)      0.0
                        x > 1.0e14 (IEEE)
     cotdg singularity  x = 180 k            MAXNUM
-    
+
+<a name="tanh">
 ## tanh - Hyperbolic tangent
 
 Hyperbolic tangent
@@ -5029,9 +5100,13 @@ Accuracy:
        DEC       -2,2        50000       3.3e-17     6.4e-18
        IEEE      -2,2        30000       2.5e-16     5.8e-17
 
-    
+<a name="log1p">
 ## log1p - Relative error logarithm
+
+<a name="expm1">
 ## expm1 - Relative error exponential
+
+<a name="cosm1">
 ## cosm1 - Relative error cosine
 
 Relative error approximations for function arguments near
@@ -5041,6 +5116,7 @@ unity.
    expm1(x) = exp(x) - 1
    cosm1(x) = cos(x) - 1
 
+<a name="yn">
 ## yn - Bessel function of second kind of integer order
 
 Bessel function of second kind of integer order
@@ -5080,7 +5156,7 @@ Error messages:
 
     Spot checked against tables for x, n between 0 and 100.
 
-    
+<a name="zeta">
 ## zeta - Zeta function of two arguments
 
 Riemann zeta function of two arguments
@@ -5125,7 +5201,7 @@ Reference:
     Gradshteyn, I. S., and I. M. Ryzhik, Tables of Integrals,
     Series, and Products, p. 1073; Academic Press, 1980.
 
-    
+<a name="zetac">
 ## zetac - Riemann zeta function of two arguments
 
 Riemann zeta function
@@ -5163,4 +5239,3 @@ Accuracy:
        IEEE      1,50        10000       9.8e-16	    1.3e-16
        DEC       1,50         2000       1.1e-16     1.9e-17
 
-    

@@ -63,6 +63,7 @@ local function convertDocs(input, output)
     if title then
       outfile:writeLn()
       outfile:writeLn("# " .. title)
+      outfile:writeLn()
     end
 
     -- Detect TOC entry
@@ -83,10 +84,14 @@ local function convertDocs(input, output)
     local first, last, name = line:find('<A NAME="([^"]*)">')
     if name then
       assert(descriptions[name])
+      outfile:writeLn()
+      outfile:writeLn('<a name="' .. name .. '">')
       outfile:writeLn("## " .. name .. " - " .. descriptions[name])
       curSubsection = nil
     elseif trim(line) == "*" then
       outfile:writeLn()
+    elseif trim(line) == "*/" then
+      -- Ignore
     elseif not subsection and startsWith(line, " *") then
       line = expandHtmlEntities(line:sub(4))
       if curSubsection then
