@@ -31,12 +31,18 @@ local function convertIndex(input, output)
   end
 
   local outfile = MdWriter(output)
+  local echo = true
 
   while true do
     line = infile:read()
     if line == nil then break end
     line = line:gsub("doubldoc.html", "doubldoc.md")
-    outfile:writeLn(line)
+    if line == "---" then
+      echo = not echo
+    end
+    if echo and line ~= "---" then
+      outfile:writeLn(line)
+    end
   end
 
   outfile:close()

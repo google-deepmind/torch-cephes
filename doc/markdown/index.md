@@ -1,7 +1,3 @@
----
-title: Cephes Mathematical Library wrapped for Torch
-layout: doc
----
 
 #Cephes Mathematical Functions Library, wrapped for Torch
 
