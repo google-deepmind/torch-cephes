@@ -17,3 +17,7 @@ And push:
 git checkout gh-pages
 git push
 {%endhighlight}
+
+## Generating Markdown files from the generated docs 
+Run `to_markdown.lua` from this directory.
+
