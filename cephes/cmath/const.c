@@ -61,6 +61,10 @@ Copyright 1984, 1995 by Stephen L. Moshier
 
 #include "mconf.h"
 
+#ifndef __has_builtin
+#define __has_builtin(x) 0
+#endif
+
 #ifdef UNK
 #if 1
 double torch_cephes_MACHEP =  1.11022302462515654042E-16;   /* 2**-53 */
@@ -90,13 +94,21 @@ double torch_cephes_LOGSQ2 =  3.46573590279972654709E-1;    /* log(2)/2 */
 double torch_cephes_THPIO4 =  2.35619449019234492885;       /* 3*pi/4 */
 double torch_cephes_TWOOPI =  6.36619772367581343075535E-1; /* 2/pi */
 #ifdef INFINITIES
+#if __has_builtin(__builtin_inf)
+double torch_cephes_INFINITY = __builtin_inf();  /* 99e999; */
+#else
 double torch_cephes_INFINITY = 1.0/0.0;  /* 99e999; */
+#endif
 #else
 double torch_cephes_INFINITY =
     1.79769313486231570815E308;    /* 2**1024*(1-MACHEP) */
 #endif
 #ifdef NANS
+#if __has_builtin(__builtin_nan)
+double torch_cephes_NAN = __builtin_nan("0");
+#else
 double torch_cephes_NAN = 1.0/0.0 - 1.0/0.0;
+#endif
 #else
 double torch_cephes_NAN = 0.0;
 #endif
