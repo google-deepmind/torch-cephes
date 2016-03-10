@@ -14,5 +14,5 @@ before_script:
   - echo "==== Building torch-cephes, using luarocks ===="
   - sudo /usr/local/bin/luarocks make cephes-0-0.rockspec
 
-script: 'for x in luasrc/tests/test*.lua ; do echo "==== $x ====" ; th $x ; done'
+script: 'for x in cephes/luasrc/tests/test*.lua ; do echo "==== $x ====" ; th $x ; done'
 
